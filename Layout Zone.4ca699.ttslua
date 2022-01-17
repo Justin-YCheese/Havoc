@@ -1,0 +1,20 @@
+zone_vars = {
+  allow_swapping=false,
+  cards_per_deck=1,
+  combine_into_decks=false,
+  meld_sort_existing=true,
+  --direction=0,
+  horizontal_group_padding=.1,
+  vertical_group_padding=.1,
+  horizontal_spread=.4,
+  vertical_spread=0,
+  max_objects_per_group=4,
+  max_objects_per_new_group=4,
+  new_object_facing=1,
+  split_added_decks=true,
+  sticky_cards=false
+}
+
+function onLoad()
+  self.LayoutZone.setOptions(zone_vars)
+end

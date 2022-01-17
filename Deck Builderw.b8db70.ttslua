@@ -1,0 +1,53 @@
+stats = {}
+stats['Ace'] = {1,1}
+stats['2'] = {2,2}
+stats['3'] = {15,3}
+stats['4'] = {4,4}
+stats['5'] = {5,5}
+stats['6'] = {6,6}
+stats['7'] = {7,7}
+stats['8'] = {8,8}
+stats['9'] = {9,9}
+stats['10'] = {10,10}
+stats['Jack'] = {10,11}
+stats['Queen'] = {10,12}
+stats['King'] = {10,13}
+stats['Joker'] = {0,0}
+
+function onLoad() -- Create Button
+  self.createButton(button_vars)
+end
+
+function build() -- For assigning values to cards when they are spread out
+  local zoneObjects = self.getObjects()
+  for i, item in pairs(zoneObjects) do
+    if item.tag == 'Card' then
+      log(item.getName()..' assigned '..stats[item.getName()][1].." and "..stats[item.getName()][2])
+      item.setVar('value',stats[item.getName()][1]) -- set value of card
+      item.setVar('power',stats[item.getName()][2]) -- set power of card
+    end
+  end
+end
+
+
+
+
+--- Extra (Not Used) ---
+
+function deckBuild() -- For assiging values to cards in a Deck but card.setVar doesn't work when card is in deck
+  local zoneObjects = self.getObjects() -- Get items in the zone
+  for i, item in pairs(zoneObjects) do
+      if item.tag == 'Deck' then        -- Check if item is a deck
+          log('Deck in deck builder:'..item.getGUID())
+          deckCards = item.getObjects() -- Get table of cards in deck
+          for j, card in ipairs(deckCards) do -- Go through all the cards
+            --log('test '..j)
+            log(card.name..' assigned '..stats[card.name][1].." and "..stats[card.name][2])
+            --card.setVar('value',stats[card.name][1]) -- set value of card
+            --card.setVar('power',stats[card.name][2]) -- set power of card
+          end
+          return true
+      end
+  end
+  log('Deck builder didn\'t find a deck')
+end

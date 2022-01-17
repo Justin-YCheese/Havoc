@@ -1,0 +1,266 @@
+--[[ Lua code. See documentation: https://api.tabletopsimulator.com/ --]]
+
+-- Notes:
+-- I use players['Blue'] because in a few functions you can input
+--     'players[Color of Player that clicked button]' to easily get the player variables
+-- Indexes start at 1. So the first elemtent in a table is at 'table[1]'
+-- You can use '#' to get the length of a table like '#table'
+--
+--
+--
+
+--assign GUIDs (get GUIDs from game, set here so only have to change GUIDs in one spot)
+button_GUID = '9fdc25'
+fieldZone_GUID = '7a6e1a'
+deckZone_GUID = '7f0e92'
+winPile_GUID = {}
+winPile_GUID['Blue'] = '4ca699'
+winPile_GUID['Orange'] = 'c641a0'
+hand_GUID = {}
+hand_GUID['Blue'] = 'fd5538'
+hand_GUID['Orange'] = '48113c'
+discard_GUID = 'e39cc7'
+deckBuilder_GUID = 'b8db70'
+
+players = {}
+--Table of Player Blue variables
+players['Blue'] = {
+  betState=false, --If player betted
+  betPos={7,1.15,3.75}, -- For player's bet position and bet button position
+  sumButtonPos={19,1.15,1.4}, -- Position of sum points button
+  --class='',     --player's class
+  --drawNum=0,    --amount player will draw by default (for classes?)
+  winPile='',    --player's winpile
+  points=0,       --player's points
+  hand=''        --player's hand
+}
+
+--Table of Player 2 variables (Orange)
+players['Orange'] = {
+  bet_state=false,--If player betted
+  betPos={7,1.15,-3.75}, -- For player's bet position and bet button position
+  sumButtonPos={19,1.15,-1.4}, -- Position of sum points button
+  --class='',     --player's class
+  --drawNum=0,    --amount player will draw by default (for classes?)
+  winPile='',    --player's winpile
+  points=0,       --player's points
+  hand=''        --player's hand
+}
+
+
+-- *~~* ~**~ *~~* [[  Events  ]] *~~* ~**~ *~~* --
+
+
+-- *~~* ~**~ *~~* [[  Events  ]] *~~* ~**~ *~~* --
+
+
+-- *~~* ~**~ *~~* [[  Events  ]] *~~* ~**~ *~~* --
+
+
+-- Runs once when the game loads
+function onLoad()
+  print('onLoad!')
+
+  --**-- Get objects from GUIDs (All these variables are global) --**--
+  -- Button is a tile at {0,0,0} that most buttons will be assigned to
+  button = getObjectFromGUID(button_GUID)
+  button.setPosition({0,0,0})
+  button.setRotation({0,0,0})
+
+  fieldZone = getObjectFromGUID(fieldZone_GUID)
+  deckZone = getObjectFromGUID(deckZone_GUID)
+  players['Blue'].winPile = getObjectFromGUID(winPile_GUID['Blue'])
+  players['Orange'].winPile = getObjectFromGUID(winPile_GUID['Orange'])
+  players['Blue'].hand = getAllObjects(hand1_GUID)
+  players['Orange'].hand = getAllObjects(hand2_GUID)
+  discard = getObjectFromGUID(discard_GUID)
+  deckBuilder = getObjectFromGUID(deckBuilder_GUID)
+
+  --players['Blue'].winPile.addTag("pile")
+  --players['Orange'].winPile.addTag("pile")
+  --discard.addTag("pile")
+
+  --log('Testing Win Pile: '..players['Blue'].winPile.getGUID())
+
+  --Shuffle deck
+  local deck = deckZone.getObjects()
+  for _, item in ipairs(deck) do -- Check if there's a deck
+      if item.tag == 'Deck' then
+          item.shuffle() -- Return deck
+      end
+  end
+
+  --Make deal button (setup button)
+  local bDeal_vars = {
+    click_function='dealCards', function_owner=nil, label='Deal',
+    position={7,3,0}, rotation={0,90,0}, width=1200, height=800, font_size=300,
+    color={1, 1, 1}, font_color={0, 0, 0},
+    tooltip="Give players 4 cards"
+  }
+  button.createButton(bDeal_vars)
+
+  --Make Build Deck button (a button to assign Havoc values to cards)
+  local bDeckBuilder_vars = {
+    click_function='build', function_owner=deckBuilder, label='Build Deck',
+    position={-19,4,-9}, rotation={0,180,0}, width=1500, height=800, font_size=300,
+    color={1,1,1}, font_color={0, 0, 0},
+    tooltip="Spread cards here then click button to use custom decks"
+  }
+  button.createButton(bDeckBuilder_vars)
+end
+
+-- Runs every frame
+function onUpdate()
+
+end
+
+-- Runs when an object enters a zone
+function onObjectEnterZone(zone, object)
+  log("Object " .. object.guid .. " entered zone " .. zone.guid) -- Degugging
+  if (zone==players['Blue'].winPile or zone==players['Orange'].winPile) then-- A win pile (doesn't work for discard because discard isn't a layout zone)
+    zone.LayoutZone.layout()
+  end
+end
+
+-- *~~* ~**~ *~~* [[  Utility  ]] *~~* ~**~ *~~* --
+
+
+-- *~~* ~**~ *~~* [[  Utility  ]] *~~* ~**~ *~~* --
+
+
+-- *~~* ~**~ *~~* [[  Utility  ]] *~~* ~**~ *~~* --
+
+-- Get a card from either the deck or card in the deck zone (a singe card deck turns into a card)
+function getDeck()
+    local zoneObjects = deckZone.getObjects()
+    for _, item in ipairs(zoneObjects) do -- Check if there's a deck
+        if item.tag == 'Deck' then
+            return item -- Return deck
+        end
+    end
+    for _, item in ipairs(zoneObjects) do -- Check if there's a card after checking for deck
+        if item.tag == 'Card' then
+            return item -- Return card
+        end
+    end
+    log('Deck is empty')
+    return nil
+end
+
+-- deals a card all players or a certain player from the deck Zone (playerColor optional)
+function dealDeck(number, playerColor)
+  if getDeck() != nil then
+    if player == nil then
+      getDeck().deal(number)
+    else
+      getDeck().deal(int, playerColor)
+    end
+  end
+end
+
+-- Removes button with specific position (because removeButton() only works with indexes)
+function deleteButtonHere(position)
+  for i, b in pairs(button.getButtons()) do
+    if button.positionToWorld(b.position) == button.positionToWorld(position) then -- So that both positions will match
+      button.removeButton(i-1) -- The corresponding indec (because indexes start at 1)
+      break
+    end
+  end
+end
+
+-- A speacil Lua wait function (specified for seconds)
+function wait(second)
+  --Is empty because this is all that is required (can add print functions)
+end
+
+-- *~~* ~**~ *~~* [[  Functions  ]] *~~* ~**~ *~~* --
+
+
+-- *~~* ~**~ *~~* [[  Functions  ]] *~~* ~**~ *~~* --
+
+
+-- *~~* ~**~ *~~* [[  Functions  ]] *~~* ~**~ *~~* --
+
+
+-- Deal 4 cards to both players and start planning phase
+-- Also spawn a bunch of buttons
+function dealCards()
+  log('deal')
+  dealDeck(4)
+  button.clearButtons() -- Remove Deal and Deck Builder buttons
+
+  --Bet button for blue player
+  local bBet_vars = {
+    click_function='playerBet', function_owner=nil, label='Bet',
+    position=players['Blue'].betPos, rotation={0,90,0}, width=1200, height=800, font_size=300,
+    color={1, 1, 1}, font_color={0, 0, 0},
+    tooltip="Bet to risk extra cards"
+  }
+  button.createButton(bBet_vars) -- Make bet button for blue player
+
+  --Bet button for orange player
+  bBet_vars.position = players['Orange'].betPos
+  button.createButton(bBet_vars) -- Make bet button for orange player
+
+  -- Sends cards on field to winner's Win Pile and proceedes to drawing phase
+  local bResults_vars = {
+    click_function='results', function_owner=nil, label='Results',
+    position={-7,1.15,0}, rotation={0,270,0}, width=1200, height=800, font_size=300,
+    color={1, 1, 1}, font_color={0, 0, 0},
+    tooltip="For the Winner"
+  }
+  button.createButton(bResults_vars) -- Make results button
+
+  --Sum button for blue player
+  local bSum_vars = {
+    click_function='sumPoints', function_owner=players['Blue'].winPile, label='Sum',
+    position=players['Blue'].sumButtonPos, rotation={0,90,0}, width=1200, height=800, font_size=300,
+    color={1, 1, 1}, font_color={0, 0, 0},
+    tooltip="Sum points in win pile"
+  }
+  button.createButton(bSum_vars) -- Make sum button for blue player
+
+  --Sum button for blue player
+  bSum_vars.position = players['Orange'].sumButtonPos
+  bSum_vars.function_owner = players['Orange'].betPos
+  button.createButton(bSum_vars) -- Make bet button for orange player
+
+end
+
+-- Puts cards in field into player 1's win pile
+function results(obj, color, alt_click)
+  if players[color] != nil then
+    local message = 'Player '..color..' Wins!'
+    print(message)
+    log(message)
+    local zoneObjects = fieldZone.getObjects()
+    local i = 0
+    local winPlacement = players[color].winPile.getPosition()
+    log('Testing Win Pile: '..players[color].winPile.getGUID())
+    --log('Win Pile Position: '..winPlacement[1]..' '..winPlacement[2]..' '..winPlacement[3])
+    for _, item in ipairs(zoneObjects) do -- Check each object in the zone
+      if #item.getZones() == 1 then     -- If in only 1 zone (so doesn't grab deck)
+          item.setPositionSmooth({winPlacement[1],winPlacement[2]+5+i,winPlacement[3]}, false, true) -- Put cards above win pile at varyisng heights
+          i = i + .8
+      end
+    end
+  else
+    print('The player does not have a color')
+    log('A player with no color tried to press results button')
+  end
+end
+
+-- Bet
+function playerBet(obj, color, alt_click)
+  log('Player '..color..' bets')
+  local betPlacement = players[color].betPos -- Bet button's place and bet card's place are the same
+  --log('Placement of bet is: '..betPlacement[1]..' '..betPlacement[2]..' '..betPlacement[3])
+  getDeck().takeObject({
+    position          = {-betPlacement[1],betPlacement[2],betPlacement[3]}, --Have to flip x cordinate because the takeObject position flips the x value
+    rotation          = {0,0,0},
+    --callback_function = function,
+    flip              = true
+  })
+  players[color].bet_state = true
+  deleteButtonHere(betPlacement)
+end
