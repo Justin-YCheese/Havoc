@@ -1,6 +1,6 @@
 # Havoc Tabletop Simulator Edition Changelog
 
-This document tracks all notables changes to Havoc Tabletop Simulator Edition.
+This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
@@ -9,7 +9,7 @@ This document tracks all notables changes to Havoc Tabletop Simulator Edition.
 ### Added
 
 - Add tablet that displays Havoc rule book
-- Add notes to in-game Notebook that keep a record of each round
+- Add notes to in-game notebook that keeps a record of each round
 
 ### Fixed
 
@@ -45,8 +45,8 @@ This document tracks all notables changes to Havoc Tabletop Simulator Edition.
 
 ### Added
 
-- Add Bet buttons
-- Add Sum buttons to count the number of points in win piles and discard
+- Add Bet buttons to easily bet a card
+- Add Sum buttons that count the number of points in win piles and discard
 
 ### Fixed
 
@@ -58,9 +58,9 @@ This document tracks all notables changes to Havoc Tabletop Simulator Edition.
 
 ### Added
 
-- Add basic table and layout
-- Create Steam Workshop page
-- Add Deal button to start the game
+- Create basic layout
+- Create Steam Workshop page for Havoc
+- Add Deal button to deal cards and start the game
 - Add Results button that stores cards in the win pile of whichever player pressed the button
 
 ---
