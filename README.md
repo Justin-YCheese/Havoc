@@ -32,7 +32,8 @@ If you want to learn how to play the game, here is the [rule book](https://docs.
 1. Clone the Havoc Tabletop Simulator Edition [git repository](https://github.com/Justin-YCheese/Havoc)
 1. Download [Atom](https://atom.io/)
 1. Open Atom > go to Settings > Install > search for 'tabletop' > install tabletopsimulator-lua
-1. Get added as a Havoc Steam Workshop collaborator and subscribe to the [Havoc mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2723093390&searchtext=Havoc)
+1. Get added as a Havoc Steam Workshop collaborator
+1. Subscribe to the [Havoc mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2723093390&searchtext=Havoc)
 1. Follow the installation steps to get the mod, but start a single player session instead
 1. In Atom, press `CTRL + SHIFT + L` to load game script files
 1. Edit script files and use `CTRL+ SHIFT + S` to test in Tabletop Simulator
@@ -42,7 +43,7 @@ If you want to learn how to play the game, here is the [rule book](https://docs.
 ### Requirements
 
 - Your development environment must be setup
-- Havoc Tabletop Simulator Edition must be installed.
+- Havoc Tabletop Simulator Edition must be installed
 
 ### Steps
 
