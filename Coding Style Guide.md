@@ -21,6 +21,14 @@ When in doubt, follow existing code base conventions.
  -- This is an example comment
 ```
 
+- When commenting multiple lines use `CTRL + /`
+
+```lua
+ -- -- This was already a comment
+ -- local sum = 0
+ -- local cardTable = {}
+```
+
 ## Whitespace & Indentation
 
 - Maximum of one statement per line
