@@ -3,11 +3,11 @@
 -- Notes:
 -- I use players['Blue'] because in a few functions you can input
 --     'players[Color of Player that clicked button]' to easily get the player variables
--- Indexes start at 1. So the first elemtent in a table is at 'table[1]'
+-- Indexes start at 1. So the first element in a table is at 'table[1]'
 -- You can use '#' to get the length of a table like '#table'
+-- Using editNotebookTab() is super janky, check Notebook info in Utility section
 --
 -- Workshop ID: 2723093390
---
 
 --assign GUIDs (get GUIDs from game, set here so only have to change GUIDs in one spot)
 button_GUID = '9fdc25'
@@ -55,7 +55,6 @@ record['points'] = {} -- Points won each rouund of the game
 
 -- Value of face cards
 faceCardValue = 10
-
 -- global table of card stats
 stats = {}
 stats['Ace'] = {1,1}
@@ -72,6 +71,10 @@ stats['Jack'] = {faceCardValue,11}
 stats['Queen'] = {faceCardValue,12}
 stats['King'] = {faceCardValue,13}
 stats['Joker'] = {0,0}
+
+-- Misc
+roundsTabIndex = 3 -- Index of Rounds Tab in Notebook
+summaryTabIndex = 4 -- Index of Summary Tab in Notebook
 
 -- Global table of zone variables
 zone_vars = {
@@ -96,7 +99,7 @@ gameStarted = false
 
 -- Runs once when the game loads
 function onLoad()
-  print('onLoad!')
+  log('onLoad!')
 
   --Get objects from GUIDs (All these variables are global)
   button = getObjectFromGUID(button_GUID)
@@ -143,6 +146,8 @@ function onLoad()
     tooltip="Spread cards here then click button to use custom decks"
   }
   button.createButton(bDeckBuilder_vars)
+
+
 
   -- Setup shortcuts
   addHotkey('Draw Card', drawCardShortcut)
@@ -197,7 +202,7 @@ function recordCard(player,name)
   else -- If card has been counted
     player.wonCards[name] = player.wonCards[name] + 1
     if player.wonCards[name] > 4 then
-      log('Counted more than 4 of '..name..'s')
+      log('Error: Counted more than 4 of '..name..'s')
     end
   end
   log('Count '..player.wonCards[name]..' '..name..'(s) in zone')
@@ -207,7 +212,7 @@ end
 function forgetCard(player,name)
   player.wonCards[name] = player.wonCards[name] - 1
   if player.wonCards[name] < 0 then
-    log('Counting Error: wonCards reads a negative value for '..name..'s')
+    log('Error: wonCards reads a negative value for '..name)
   end
   log('Count '..player.wonCards[name]..' '..name..'(s) in zone')
 end
@@ -258,6 +263,35 @@ function deleteButtonHere(position)
   end
 end
 
+--                     !!! IMPORTANT INFORMATION ABOUT NOTEBOOKS !!!
+--                     !!! IMPORTANT INFORMATION ABOUT NOTEBOOKS !!!
+-- Can't just make you own Notebooks, make sure you start with the default 12 notebooks (Gr,Wh,Br,R,O,Y,B,B,T,Pu,Pi,Bl)
+-- Each default notebook has an id which can't be changed with scripts. Ids are different from index and color
+--      Source of discovery (sebaestschjin) https://tabletopsimulator.nolt.io/398
+-- If you delete a default notebook, any new or old notebooks with a higher id can't be edited by the editNotebookTab() function
+--      My guess is that when finding the notebook to edit, if an id is missing, then it just stops searching for notebooks
+-- Another oddity is that you can't change the color with editNotebookTab(), and must do it manually in TableTop
+-- You are able to have more than 12 notebooks that are editable, by keeping the 12 default (and editing them to your desire), then adding additional notebooks
+--                     !!! IMPORTANT INFORMATION ABOUT NOTEBOOKS !!!
+--                     !!! IMPORTANT INFORMATION ABOUT NOTEBOOKS !!!
+
+-- Adds a new line to Rounds Notebook tab
+function addRoundNote(note)
+  -- Get the Notebook array, Get the Rounds Tab from index, get body of Rounds Tab
+  -- Plus one because arrays count from 1, but Notebook Index counts from 0
+  local roundsTabBody = Notes.getNotebookTabs()[roundsTabIndex+1].body
+  -- Get location of line Number in the Body String
+  local numberIndexEnd = roundsTabBody:match'^.*():' - 1
+  local numberIndexStart = roundsTabBody:match'^.*()\n'
+  -- Parse and convert Line Number
+  lineNumber = tonumber(string.sub(roundsTabBody, numberIndexStart, numberIndexEnd))
+  Notes.editNotebookTab({
+    index = roundsTabIndex,
+    body = roundsTabBody..'\n'..(lineNumber + 1)..': '..note
+  })
+  log('Adding \"'..note..'\" to Rounds on line '..lineNumber)
+end
+
 -- A speacil Lua wait function (specified for seconds)
 function wait(second)
 end
@@ -279,6 +313,15 @@ function dealCards()
 
   -- Make bet buttons for both players
   createBetButtons()
+
+  ---- Make a button to quickly test a function
+  -- local bTest_vars = {
+  --   click_function='resultAddedPoints', function_owner=nil, label='Test',
+  --   position={0,4,0}, rotation={0,90,0}, width=1200, height=800, font_size=300,
+  --   color={1, 1, 1}, font_color={0, 0, 0},
+  --   tooltip="temp function"
+  -- }
+  -- button.createButton(bTest_vars)
 
   -- Sends cards on field to winner's Win Pile and proceedes to drawing phase
   local bResults_vars = {
@@ -312,25 +355,6 @@ function dealCards()
   gameStarted = true
 end
 
-function calculatePoints()
-  local sum = 0
-  local players = Global.getVar('players')
-  local cardCount = players[owner].wonCards
-  for name, cards in pairs(cardCount) do
-    sum = sum + cards*stats[name][1] -- add value of cards to sum
-    if cards == 4 then-- If there are 4 of that type of card
-      sum = sum + 20 -- Add 4 of a kind bonus
-      local sumMessage = name..': '..cards*stats[name][1]..' + 20 + sum = '..sum
-      log(sumMessage)
-    else-- No bonus
-      local sumMessage = name..': '..cards*stats[name][1]..' + sum = '..sum
-      log(sumMessage)
-    end
-  end
-
-  print(owner..' has '..sum..' points')
-end
-
 -- Makes bet button for players
 function createBetButtons()
   --Bet card for blue player
@@ -361,20 +385,22 @@ end
 -- Puts cards in field into player 1's win pile
 function results(obj, color, alt_click)
   if players[color] == nil then
-    print('The player does not have a color')
+    broadcastToAll('The player does not have a color')
     log('A player with no color tried to press results button')
     return
   end
 
   local message = 'Player '..color..' Wins!'
-  print(message)
+  broadcastToAll(message)
   log(message)
   local zoneObjects = fieldZone.getObjects()
   local i = 0
   local winPlacement = players[color].winPile.getPosition()
 
-  local points = calculateAddedPoints(players[color],zoneObjects)
-  table.insert(record,points)
+  -- Calculate, Broadcast, and Record gained points & bonuses
+  resultAddedPoints(players[color],zoneObjects,true) -- True for returning messages
+  --table.insert(record['points'],points)
+
   --log('Testing Win Pile: '..players[color].winPile.getGUID())
   --log('Win Pile Position: '..winPlacement[1]..' '..winPlacement[2]..' '..winPlacement[3])
   for _, item in ipairs(zoneObjects) do -- Check each object in the zone
@@ -415,6 +441,61 @@ function results(obj, color, alt_click)
   end
 end
 
+-- Returns points earned from adding cards to winner
+-- Given the player that won and cards that will be added
+-- Doesn't work for decks in the field
+function resultAddedPoints() --playerColor,zoneObjects
+  local playerColor = 'Blue'
+  local zoneObjects = fieldZone.getObjects()
+  local player = players[playerColor]
+  -- local sum = 0
+  local numofCards = 0
+  local cardTable = {}
+  local bonusCards = {}
+  local initialPoints = calculatePoints(player.wonCards)
+  -- Copy values without referance
+  for name, cards in pairs(player.wonCards) do
+    cardTable[name] = player.wonCards[name]
+  end
+  -- simulates 'adding' cards from field to wonCards (doesn't actually change wonCards)
+  for _, item in pairs(zoneObjects) do
+    if #item.getZones() == 2 and item.tag == 'Card' then -- If a card is in only 2 zones (FieldZone and DeckBuilder | So not the deck)
+      numofCards = numofCards + 1
+      local name = item.getName()
+      if cardTable[name] == nil then -- If not counted yet
+        cardTable[name] = 1
+      else -- If already counted
+        cardTable[name] = cardTable[name] + 1
+        -- -- Record 4 of a kind
+        -- if cardTable[name] == 4 then
+        --   --log('Found 4 of a kind: '..name)
+        --   table.insert(bonusCards, name)
+        -- end
+      end
+    end
+  end
+
+  -- New sum of points
+  local simulatedPoints,bonusCards = calculatePoints(cardTable,true)
+
+  -- Points gained from new cards
+  local pointsGained = simulatedPoints - initialPoints
+  -- 'Point totals added' message
+  local pointMessage = 'Adding '..pointsGained..' to '..initialPoints..' for '..simulatedPoints..' points'
+  -- Bonuses gained
+  if #bonusCards > 0 then --There is at least a bonus
+    local bonusMessage = '\nWith bonuses from: '
+    for _, card in pairs(bonusCards) do
+      bonusMessage = bonusMessage..card..'s '
+    end
+    broadcastToAll(pointMessage..bonusMessage) -- Broadcast with bonusMessage (seems only one broadcast at a time)
+  else
+    broadcastToAll(pointMessage) -- Broadcast without bonusMessage
+  end
+  addRoundNote(playerColor..' gained '..pointsGained..' with '..(#bonusCards*20)..' bonus from '..numofCards..' cards')
+  return pointsGained
+end
+
 -- Bet
 function playerBet(obj, color, alt_click)
   log('Player '..color..' bets')
@@ -431,59 +512,58 @@ function playerBet(obj, color, alt_click)
   deleteButtonHere(betPlacement)
 end
 
---Returns points earned from adding cards to winner
---Given the player that won and cards that will be added
---Doesn't work for decks in the field
-function calculateAddedPoints(winner,zoneObjects)
-  local sum = 0
-  local cardCount = {}
-  local initialPoints = calculatePoints(winner.wonCards)
-  -- Copy values without referance
-  for name, cards in pairs(winner.wonCards) do
-    cardCount[name] = winner.wonCards[name]
-  end
-  --'add' cards from field to wonCards (doesn't actually change wonCards)
-  for _, item in pairs(zoneObjects) do
-    if #item.getZones() == 2 and item.tag == 'Card' then -- If a card and in only 2 zones (So not the deck)
-      local name = item.getName()
-      if cardCount[name] == nil then -- If not counted yet
-        if winner.wonCards[name] == nil then -- If not in winPile
-          cardCount[name] = 1
-        else -- If there are cards of the some rank in the winPile
-          cardCount[name] = winner.wonCards[name] + 1
-        end
-      else -- If already counted
-        cardCount[name] = cardCount[name] + 1
-      end
-    end
-  end
-  --New cardTable points minus old cardTable points
-  local pointsGained = calculatePoints(cardCount) - initialPoints
-  log('Adding '..pointsGained..' to '..initialPoints..' for '..calculatePoints(cardCount)..' points')
-  return pointsGained
-end
-
 -- Is this still used?
 --Given a table of cards, returns sum of points
 --If bonusIsSeperate defined, then return sum and bonus seperately
-function calculatePoints(cardTable)
-  log('Global Calculate')
-  local points = {}
-  points['sum'] = 0 -- Normal sum
-  points['bonus'] = 0 -- 4 of a kind bonus
+function calculatePoints(cardTable,bonusIsSeperate)
+  --log('      calculating points...')
+  local bonusCards = {}
+  local sum = 0 -- Normal sum
   for name, cards in pairs(cardTable) do
-    points['sum'] = points['sum'] + cards*stats[name][1] -- add value of cards to sum
+    sum = sum + cards*stats[name][1] -- add value of cards to sum
     if cards == 4 then-- If there are 4 of that type of card
-      points['bonus'] = points['bonus'] + 20 -- Add 4 of a kind bonus
+      table.insert(bonusCards,name)
+      sum = sum + 20 -- Add 4 of a kind bonus
     end
   end
-  --if bonusIsSeperate == nil then -- If not assigned
-    --return points['sum'] + points['bonus']
-  --else
-  return points['sum'] + points['bonus']
-  --end
+  if bonusIsSeperate == nil then -- If not assigned
+    return sum
+  else if bonusIsSeperate == true then
+    return sum, bonusCards end
+  end
 end
 
+-- TODO Isn't actually used but should be used in other layout zones
+function calculatePointsPrint(params)
+  local zoneObjects = params.zoneObjects
+  local zoneName = params.zoneName
+  -- Count the cards in the zone
+  local cardTable = {}
+  for _, item in pairs(zoneObjects) do
+    if item.tag == 'Card' then -- If a card
+      local name = item.getName()
+      if cardTable[name] == nil then -- If not counted yet
+        cardTable[name] = 1
+      else -- If already counted
+        cardTable[name] = cardTable[name] + 1
+      end
+    end
+  end
+  -- Calculate total points and record bonus cards
+  local sum, bonusCards = calculatePoints(cardTable,true)
+  -- Base points message
+  local pointMessage = zoneName..' has '..sum..' points'
+  -- Bonuses gained
+  if #bonusCards > 0 then --There is at least a bonus
+    local bonusMessage = '\nWith bonuses from: ' -- "Hello" "World" "HelloWorld"
+    for _, card in pairs(bonusCards) do
+      bonusMessage = bonusMessage..card..'s '
+    end
+    broadcastToAll(pointMessage..bonusMessage) -- Broadcast with bonusMessage (seems only one broadcast at a time)
+  else
+    broadcastToAll(pointMessage) -- Broadcast without bonusMessage
+  end
+end
 
 -------------------------------------------------------------------------------
 -- Shortcut-Specific Functions

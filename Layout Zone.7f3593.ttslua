@@ -1,4 +1,6 @@
 -- Discard Pile
+owner = 'Discard'
+
 -- Table of common zone variables
 zone_vars = Global.getTable('zone_vars')
 
@@ -10,38 +12,9 @@ function onLoad()
 end
 
 function calculatePoints()
-  local zoneObjects = self.getObjects() -- Get items in the zone
-  local cardCount = {}
-  for _, item in pairs(zoneObjects) do
-    if item.tag == 'Card' then -- If a card
-      local name = item.getName()
-      if cardCount[name] == nil then -- If not counted yet
-        cardCount[name] = 1
-      else -- If already counted
-        cardCount[name] = cardCount[name] + 1
-      end
-    end
-  end
-  --local points = Global.call('calculatePoints',{cardCount,true})
-  local sum = tempPoints(cardCount)
-  local discardSumMessage = 'Discard has '..sum..' points'
-  broadcastToAll(discardSumMessage)
-  print(discardSumMessage)
-end
-
-function tempPoints(cardTable)
-  local points = {}
-  points['sum'] = 0 -- Normal sum
-  points['bonus'] = 0 -- 4 of a kind bonus
-  for name, cards in pairs(cardTable) do
-    points['sum'] = points['sum'] + cards*stats[name][1] -- add value of cards to sum
-    if cards == 4 then-- If there are 4 of that type of card
-      points['bonus'] = points['bonus'] + 20 -- Add 4 of a kind bonus
-    end
-  end
-  --if bonusIsSeperate == nil then -- If not assigned
-    --return points['sum'] + points['bonus']
-  --else
-  return points['sum'] + points['bonus']
-  --end
+  params = {
+    zoneObjects = self.getObjects(), -- Get items in the zone
+    zoneName = owner
+  }
+  Global.call('calculatePointsPrint',params) -- Use function in global
 end

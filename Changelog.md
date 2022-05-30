@@ -2,14 +2,22 @@
 
 This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
+Added: 
+
 ---
 
-## Unreleased
+## v0.5.0 Notebook
 
 ### Added
 
 - Add tablet that displays Havoc rule book
 - Add notes to in-game notebook that keeps a record of each round
+  - Who won
+  - Round number
+  - Points earned
+  - Bonuses earned
+  - Number of cards won
+- Added `calculatePointsPrint` function to replace the temporary calculate points functions in layout zones
 
 ### Fixed
 
@@ -17,7 +25,8 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ### Changed
 
-- ???
+- Results button now states points earned and any 4 of a kinds gained
+- Added a `calculatePoints` function that is now used for the results button and sum button
 
 ---
 
