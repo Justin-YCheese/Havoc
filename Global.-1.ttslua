@@ -390,9 +390,9 @@ function results(obj, color, alt_click)
     return
   end
 
-  local message = 'Player '..color..' Wins!'
-  broadcastToAll(message)
-  log(message)
+  -- local message = 'Player '..color..' Wins!'
+  -- broadcastToAll(message)
+  -- log(message)
   local zoneObjects = fieldZone.getObjects()
   local i = 0
   local winPlacement = players[color].winPile.getPosition()
