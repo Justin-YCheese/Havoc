@@ -2,7 +2,19 @@
 
 This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
-Added: 
+---
+
+## v0.5.1 Notebook
+
+### Fixed
+
+- Rounds message now uses the win pile points of who presses the button and not just the Blue player
+- The Rounds Notebook now only counts 4-of-kinds gained instead of counting the bonuses that are already there
+
+### Deprecated
+
+- Removed 'Player wins' message when results button is pressed
+- The Rounds Notebook nolonger needs the 0th index 
 
 ---
 
@@ -19,20 +31,10 @@ Added:
   - Number of cards won
 - Added `calculatePointsPrint` function to replace the temporary calculate points functions in layout zones
 
-### Fixed
-
-- Rounds message now uses the win pile points of who presses the button and not just the Blue player
-- The Rounds Notebook now only counts 4-of-kinds gained instead of counting the bonuses that are already there
-
 ### Changed
 
 - Results button now states points earned and any 4 of a kinds gained
 - Added a `calculatePoints` function that is now used for the results button and sum button
-
-### Deprecated
-
-- Removed 'Player wins' message when results button is pressed
-- The Rounds Notebook nolonger needs the 0th index 
 
 ---
 
