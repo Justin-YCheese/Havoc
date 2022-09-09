@@ -10,6 +10,10 @@ When in doubt, follow existing code base conventions.
 
 - Names of files and directories: Pascal Case, but spaces are allowed
 
+## Imports
+
+- Keep `#include` statements at the top of the file and order them alphabetically
+
 ## Functions
 
 - Name using camelCase
