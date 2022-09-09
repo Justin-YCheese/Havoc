@@ -1,3 +1,9 @@
+--[[
+Constants.ttslua START
+
+This file contains global constants.
+]]
+
 BUTTON_GUID = '9fdc25'
 FIELD_ZONE_GUID = '7a6e1a'
 DECK_ZONE_GUID = '7f0e92'
@@ -33,3 +39,7 @@ stats['Joker'] = {0,0}
 -- Misc
 roundsTabIndex = 3 -- Index of Rounds Tab in Notebook
 summaryTabIndex = 4 -- Index of Summary Tab in Notebook
+
+--[[
+Constants.ttslua END
+]]

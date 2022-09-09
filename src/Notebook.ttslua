@@ -1,0 +1,44 @@
+--[[
+Notebook.ttslua START
+
+This file contains notebook-related functions.
+]]
+
+--                     !!! IMPORTANT INFORMATION ABOUT NOTEBOOKS !!!
+--                     !!! IMPORTANT INFORMATION ABOUT NOTEBOOKS !!!
+-- Can't just make you own Notebooks, make sure you start with the default 12 notebooks (Gr,Wh,Br,R,O,Y,B,B,T,Pu,Pi,Bl)
+-- Each default notebook has an id which can't be changed with scripts. Ids are different from index and color
+--      Source of discovery (sebaestschjin) https://tabletopsimulator.nolt.io/398
+-- If you delete a default notebook, any new or old notebooks with a higher id can't be edited by the editNotebookTab() function
+--      My guess is that when finding the notebook to edit, if an id is missing, then it just stops searching for notebooks
+-- Another oddity is that you can't change the color with editNotebookTab(), and must do it manually in TableTop
+-- You are able to have more than 12 notebooks that are editable, by keeping the 12 default (and editing them to your desire), then adding additional notebooks
+--                     !!! IMPORTANT INFORMATION ABOUT NOTEBOOKS !!!
+--                     !!! IMPORTANT INFORMATION ABOUT NOTEBOOKS !!!
+
+-- Adds a new line to Rounds Notebook tab
+function addRoundNote(note)
+  -- Get the Notebook array, Get the Rounds Tab from index, get body of Rounds Tab
+  -- Plus one because arrays count from 1, but Notebook Index counts from 0
+  local roundsTabBody = Notes.getNotebookTabs()[roundsTabIndex+1].body
+  -- Get location of line Number in the Body String
+  local numberIndexEnd = 0
+  local numberIndexStart = 0
+  local lineNumber = 0
+  if roundsTabBody:match'^.*():' != nil and roundsTabBody:match'^.*()\n' != nil then -- If there is a previous line
+    numberIndexEnd = roundsTabBody:match'^.*():' - 1
+    numberIndexStart = roundsTabBody:match'^.*()\n'
+    lineNumber = tonumber(string.sub(roundsTabBody, numberIndexStart, numberIndexEnd)) + 1
+  else -- The rounds notebook is empty
+    lineNumber = 1
+  end
+  Notes.editNotebookTab({
+    index = roundsTabIndex,
+    body = roundsTabBody..'\n'..lineNumber..': '..note
+  })
+  log('Adding \"'..note..'\" to Rounds on line '..lineNumber)
+end
+
+--[[
+Notebook.ttslua END
+]]

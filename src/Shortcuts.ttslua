@@ -1,3 +1,16 @@
+--[[
+Shortcut.ttslua START
+
+This file contains shortcut-related functions.
+]]
+
+function setupShortcuts()
+  addHotkey('Draw Card', drawCardShortcut)
+  addHotkey('Get Discard Sum', getDiscardSumShortcut)
+  addHotkey('Get My Sum', getMySumShortcut)
+  addHotkey("Get Opponent's Sum", getOpponentSumShortcut)
+end
+
 -- Draw a card for player when hotkey is pressed
 function drawCardShortcut(playerColor)
   -- Make sure game is at a state where card can be drawn (after 'Deal' button is pressed)
@@ -76,3 +89,7 @@ end
 function isValidColor(playerColor)
   return playerColor ~= 'Orange' and playerColor ~= 'Blue'
 end
+
+--[[
+Shortcuts.ttslua END
+]]
