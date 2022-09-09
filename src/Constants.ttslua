@@ -1,0 +1,35 @@
+BUTTON_GUID = '9fdc25'
+FIELD_ZONE_GUID = '7a6e1a'
+DECK_ZONE_GUID = '7f0e92'
+WIN_PILE_GUID = {}
+WIN_PILE_GUID['Blue'] = '4ca699'
+WIN_PILE_GUID['Orange'] = 'c641a0'
+HAND_GUID = {}
+HAND_GUID['Blue'] = 'fd5538'
+HAND_GUID['Orange'] = '48113c'
+DISCARD_GUID = '7f3593'
+DECK_BUILDER_GUID = 'b8db70'
+
+-- Value of face cards
+faceCardValue = 10
+
+-- global table of card stats
+stats = {}
+stats['Ace'] = {1,1}
+stats['2'] = {2,2}
+stats['3'] = {20,3}
+stats['4'] = {4,4}
+stats['5'] = {5,5}
+stats['6'] = {6,6}
+stats['7'] = {7,7}
+stats['8'] = {8,8}
+stats['9'] = {9,9}
+stats['10'] = {10,10}
+stats['Jack'] = {faceCardValue,11}
+stats['Queen'] = {faceCardValue,12}
+stats['King'] = {faceCardValue,13}
+stats['Joker'] = {0,0}
+
+-- Misc
+roundsTabIndex = 3 -- Index of Rounds Tab in Notebook
+summaryTabIndex = 4 -- Index of Summary Tab in Notebook
