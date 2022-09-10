@@ -4,6 +4,18 @@ ButtonActions.ttslua START
 This file contains functions that buttons directly trigger.
 ]]
 
+-- Deal 4 cards to both players, spawn buttons, and start planning phase
+function dealCards()
+  log('deal')
+  dealDeck(4)
+  button.clearButtons() -- Remove Deal and Deck Builder buttons
+  createBetButtons()
+  createResultsButton()
+  createClearButton()
+  createSumButtons()
+  gameStarted = true
+end
+
 -- Puts cards in field into player 1's win pile
 function results(obj, color, alt_click)
   if players[color] == nil then
@@ -104,6 +116,37 @@ function playerBet(obj, color, alt_click)
   })
   players[color].bet_state = true
   deleteButtonHere(betPlacement)
+end
+
+-- Puts cards in field into discard zone
+function clearField(obj, color)
+  if players[color] == nil then
+    broadcastToAll('The player does not have a color')
+    log('A player with no color tried to press results button')
+    return
+  end
+
+  local zoneObjects = fieldZone.getObjects()
+  local i = 0
+  local discardZonePosition = discardZone.getPosition()
+  local numCards = 0
+
+  for _, item in pairs(zoneObjects) do
+    if #item.getZones() == 2 and item.tag == 'Card' then
+      numCards = numCards + 1
+    end
+  end
+
+  addRoundNote('Clear '..numCards..' cards from the field.')
+
+  for _, item in ipairs(zoneObjects) do -- Check each object in the zone
+    if #item.getZones() == 2 then     -- If in only field zone and the zone surrounding the whole game (so doesn't grab deck)
+        item.setPositionSmooth({discardZonePosition[1], discardZonePosition[2]+5+i, discardZonePosition[3]}, false, true) -- Put cards above win pile at varying heights
+        i = i + .8
+    end
+  end
+
+  regenerateBetButtons()
 end
 
 --[[

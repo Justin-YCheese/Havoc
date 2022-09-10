@@ -40,6 +40,19 @@ stats['Joker'] = {0,0}
 roundsTabIndex = 3 -- Index of Rounds Tab in Notebook
 summaryTabIndex = 4 -- Index of Summary Tab in Notebook
 
+-- Button Dimensions
+SMALL_BUTTON_WIDTH = 900
+STANDARD_BUTTON_WIDTH = 1200
+BIG_BUTTON_WIDTH = 1500
+SMALL_BUTTON_HEIGHT = 650
+STANDARD_BUTTON_HEIGHT = 800
+BUTTON_FONT_SIZE = 300
+WHITE = {1, 1, 1}
+BLACK = {0, 0, 0}
+RED = {1, 0, 0}
+BUTTON_BACKGROUND_COLOR = WHITE
+BUTTON_TEXT_COLOR = BLACK
+
 --[[
 Constants.ttslua END
 ]]
