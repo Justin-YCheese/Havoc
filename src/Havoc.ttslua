@@ -19,6 +19,7 @@ The main file for running the Havoc (Tabletop Edition) game.
 #include GameUI
 #include Notebook
 #include Shortcuts
+#include Validation
 #include Zones
 
 players = {}
