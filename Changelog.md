@@ -4,6 +4,15 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.5.2 Clear Button
+
+### Added
+
+- Add clear button which moves cards on the field to discard
+  - Also updates the Rounds notebook with how many cards were discarded 
+
+---
+
 ## v0.5.1 Notebook
 
 ### Fixed
