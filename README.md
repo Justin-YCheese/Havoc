@@ -10,7 +10,7 @@ A card game by Justin and Brandon.
 
 ## Rule Book
 
-If you want to learn how to play the game, here is the [rule book](https://docs.google.com/document/d/1ESWBAIITw3sij_6mAaZukogW9wVgF9ka4w8vCTnF8v0/edit?usp=sharing)! It is updated when any new changes are made.  
+If you want to learn how to play the game, here is the [rule book](https://docs.google.com/document/d/1ESWBAIITw3sij_6mAaZukogW9wVgF9ka4w8vCTnF8v0/edit?usp=sharing)! It is updated when any new changes are made.
 
 ## Installation Steps
 
@@ -32,6 +32,7 @@ If you want to learn how to play the game, here is the [rule book](https://docs.
 1. Clone the Havoc Tabletop Simulator Edition [git repository](https://github.com/Justin-YCheese/Havoc)
 1. Download [Atom](https://atom.io/)
 1. Open Atom > go to Settings > Install > search for 'tabletop' > install tabletopsimulator-lua
+1. In Atom, go to File > Settings > Packages > tabletopsimulator-lua Settings and set 'Base path for files you wish to bundle or #include' to the full path to the repository directory.
 1. Get added as a Havoc Steam Workshop collaborator
 1. Subscribe to the [Havoc mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2723093390&searchtext=Havoc)
 1. Follow the installation steps to get the mod, but start a single player session instead
