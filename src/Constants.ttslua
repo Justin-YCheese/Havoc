@@ -19,7 +19,7 @@ DECK_BUILDER_GUID = 'b8db70'
 -- Value of face cards
 FACE_CARD_VALUE = 10
 
--- global table of card stats
+-- Global table of card stats
 stats = {}
 stats['Ace'] = {1,1}
 stats['2'] = {2,2}
@@ -36,7 +36,7 @@ stats['Queen'] = {FACE_CARD_VALUE,12}
 stats['King'] = {FACE_CARD_VALUE,13}
 stats['Joker'] = {0,0}
 
--- Misc
+-- Notebook constants
 ROUNDS_TAB_INDEX = 3 -- Index of Rounds Tab in Notebook
 SUMMARY_TAB_INDEX = 4 -- Index of Summary Tab in Notebook
 
@@ -54,6 +54,10 @@ STANDARD_BUTTON_HEIGHT = 800
 BUTTON_FONT_SIZE = 300
 BUTTON_BACKGROUND_COLOR = WHITE
 BUTTON_TEXT_COLOR = BLACK
+
+-- Discard constants
+DISCARD_X_OFFSET = 6
+DISCARD_Y_OFFSET = 5
 
 -- Messages
 PLAYER_HAS_NO_COLOR_BROADCAST_MESSAGE = 'The player does not have a color'
