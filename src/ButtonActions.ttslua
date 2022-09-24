@@ -141,8 +141,11 @@ function clearField(obj, color)
 
   for _, item in ipairs(zoneObjects) do -- Check each object in the zone
     if #item.getZones() == 2 then     -- If in only field zone and the zone surrounding the whole game (so doesn't grab deck)
-        item.setPositionSmooth({discardZonePosition[1], discardZonePosition[2]+5+i, discardZonePosition[3]}, false, true) -- Put cards above win pile at varying heights
-        i = i + .8
+      local randomXOffset = math.random(DISCARD_X_OFFSET * 2 + 1) - DISCARD_X_OFFSET;
+      local randomYOffset = math.random(DISCARD_Y_OFFSET * 2 + 1) - DISCARD_Y_OFFSET;
+
+      item.setPositionSmooth({discardZonePosition[1] + randomXOffset, discardZonePosition[2]+5+i, discardZonePosition[3] + randomYOffset}, false, true) -- Put cards above win pile at varying heights
+      i = i + .8
     end
   end
 
