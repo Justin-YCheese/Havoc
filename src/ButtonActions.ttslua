@@ -19,8 +19,8 @@ end
 -- Puts cards in field into player 1's win pile
 function results(obj, color, alt_click)
   if players[color] == nil then
-    broadcastToAll('The player does not have a color')
-    log('A player with no color tried to press results button')
+    broadcastToAll(PLAYER_HAS_NO_COLOR_BROADCAST_MESSAGE)
+    log(PLAYER_HAS_NO_COLOR_LOG_MESSAGE)
     return
   end
 
@@ -121,8 +121,8 @@ end
 -- Puts cards in field into discard zone
 function clearField(obj, color)
   if players[color] == nil then
-    broadcastToAll('The player does not have a color')
-    log('A player with no color tried to press results button')
+    broadcastToAll(PLAYER_HAS_NO_COLOR_BROADCAST_MESSAGE)
+    log(PLAYER_HAS_NO_COLOR_LOG_MESSAGE)
     return
   end
 

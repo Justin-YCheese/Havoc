@@ -20,7 +20,7 @@ This file contains notebook-related functions.
 function addRoundNote(note)
   -- Get the Notebook array, Get the Rounds Tab from index, get body of Rounds Tab
   -- Plus one because arrays count from 1, but Notebook Index counts from 0
-  local roundsTabBody = Notes.getNotebookTabs()[roundsTabIndex+1].body
+  local roundsTabBody = Notes.getNotebookTabs()[ROUNDS_TAB_INDEX+1].body
   -- Get location of line Number in the Body String
   local numberIndexEnd = 0
   local numberIndexStart = 0
@@ -33,7 +33,7 @@ function addRoundNote(note)
     lineNumber = 1
   end
   Notes.editNotebookTab({
-    index = roundsTabIndex,
+    index = ROUNDS_TAB_INDEX,
     body = roundsTabBody..'\n'..lineNumber..': '..note
   })
   log('Adding \"'..note..'\" to Rounds on line '..lineNumber)
