@@ -81,7 +81,7 @@ function createSumButtons()
     bSum_vars.function_owner = players['Orange'].winPile
     button.createButton(bSum_vars) -- Make sum button for orange player
     --Sum points for discard
-    bSum_vars.position = {11.4,2.15,0}
+    bSum_vars.position = {11.4,1.15,0}
     bSum_vars.rotation = {0,270,0}
     bSum_vars.function_owner = discardZone
     bSum_vars.click_function='calculatePoints'
