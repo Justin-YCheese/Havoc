@@ -1,0 +1,14 @@
+--[[
+Validation.ttslua START
+
+This file contains functions for checking the status or conditions of things.
+]]
+-- Check if player color is one of the actual player colors
+
+function isValidColor(playerColor)
+  return playerColor ~= 'Orange' and playerColor ~= 'Blue'
+end
+
+--[[
+Validation.ttslua END
+]]

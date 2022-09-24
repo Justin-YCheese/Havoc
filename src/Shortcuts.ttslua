@@ -85,11 +85,6 @@ function getOpponentSumShortcut(playerColor)
   opponentZone.call('calculatePoints')
 end
 
--- Check if player color is one of the actual player colors
-function isValidColor(playerColor)
-  return playerColor ~= 'Orange' and playerColor ~= 'Blue'
-end
-
 --[[
 Shortcuts.ttslua END
 ]]

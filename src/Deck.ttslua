@@ -62,56 +62,6 @@ function dealDeck(number, playerColor)
   end
 end
 
--- Deal 4 cards to both players, spawn buttons, and start planning phase
-function dealCards()
-  log('deal')
-  dealDeck(4)
-  button.clearButtons() -- Remove Deal and Deck Builder buttons
-
-  -- Make bet buttons for both players
-  createBetButtons()
-
-  ---- Make a button to quickly test a function
-  -- local bTest_vars = {
-  --   click_function='resultAddedPoints', function_owner=nil, label='Test',
-  --   position={0,4,0}, rotation={0,90,0}, width=1200, height=800, font_size=300,
-  --   color={1, 1, 1}, font_color={0, 0, 0},
-  --   tooltip="temp function"
-  -- }
-  -- button.createButton(bTest_vars)
-
-  -- Sends cards on field to winner's Win Pile and proceedes to drawing phase
-  local bResults_vars = {
-    click_function='results', function_owner=nil, label='Results',
-    position={-7,1.15,0}, rotation={0,270,0}, width=1200, height=800, font_size=300,
-    color={1, 1, 1}, font_color={0, 0, 0},
-    tooltip="For the Winner"
-  }
-  button.createButton(bResults_vars) -- Make results button
-
-  -- Make sum buttons
-  local bSum_vars = {
-    click_function='calculatePoints', function_owner=players['Blue'].winPile, label='Sum',
-    position=players['Blue'].sumButtonPos, rotation={0,0,0}, width=900, height=650, font_size=300,
-    color={1, 1, 1}, font_color={0, 0, 0},
-    tooltip="Click to find sum"
-  }
-  button.createButton(bSum_vars) -- Make sum button for blue player
-  --Sum points for orange player
-  bSum_vars.position = players['Orange'].sumButtonPos
-  bSum_vars.rotation = {0,180,0}
-  bSum_vars.function_owner = players['Orange'].winPile
-  button.createButton(bSum_vars) -- Make sum button for orange player
-  --Sum points for discard
-  bSum_vars.position = {11.4,2.15,0}
-  bSum_vars.rotation = {0,270,0}
-  bSum_vars.function_owner = discardZone
-  bSum_vars.click_function='calculatePoints'
-  button.createButton(bSum_vars) -- Make sum button for orange player
-
-  gameStarted = true
-end
-
 --[[
 Deck.ttslua END
 ]]
