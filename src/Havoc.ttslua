@@ -1,0 +1,155 @@
+--[[
+Havoc.ttslua START
+
+The main file for running the Havoc (Tabletop Edition) game.
+]]
+
+-- Notes:
+-- I use players['Blue'] because in a few functions you can input
+--     'players[Color of Player that clicked button]' to easily get the player variables
+-- Indexes start at 1. So the first element in a table is at 'table[1]'
+-- You can use '#' to get the length of a table like '#table'
+-- Using editNotebookTab() is super janky, check Notebook info in Utility section
+--
+-- Workshop ID: 2723093390
+
+#include ButtonActions
+#include Constants
+#include Deck
+#include GameUI
+#include Notebook
+#include Shortcuts
+#include Zones
+
+players = {}
+--Table of Player Blue variables
+players['Blue'] = {
+  betState=false, --If player betted
+  betPos={7,1.15,3.75}, -- For player's bet position
+  sumButtonPos={-19,1.15,1.4}, -- Position of sum points button
+  --class='',     --player's class
+  --drawNum=0,    --amount player will draw by default (for classes?)
+  winPile='',    --player's winpile
+  wonCards={},    --Table of cards in player's winPile
+  points=0,       --player's points
+  hand=''        --player's hand
+}
+
+--Table of Player 2 variables (Orange)
+players['Orange'] = {
+  bet_state=false,--If player betted
+  betPos={7,1.15,-3.75}, -- For player's bet position
+  sumButtonPos={-19,1.15,-1.4}, -- Position of sum points button
+  --class='',     --player's class
+  --drawNum=0,    --amount player will draw by default (for classes?)
+  winPile='',    --player's winpile
+  wonCards={},    --Table of cards in player's winPile
+  points=0,       --player's points
+  hand=''        --player's hand
+}
+
+-- For gathering game statistics
+record = {}
+record['points'] = {} -- Points won each rouund of the game
+
+-- Global table of zone variables
+zone_vars = {
+  allow_swapping=false,
+  cards_per_deck=1,
+  combine_into_decks=false,
+  meld_sort_existing=true,
+  --direction=0,
+  horizontal_group_padding=.1,
+  vertical_group_padding=.1,
+  horizontal_spread=.4,
+  vertical_spread=0,
+  max_objects_per_group=4,
+  max_objects_per_new_group=4,
+  new_object_facing=1,
+  split_added_decks=true,
+  sticky_cards=false
+}
+
+-- Track if players should be allowed to use Draw Card shortcut or not
+gameStarted = false
+
+-- Runs once when the game loads
+function onLoad()
+  log('onLoad!')
+
+  --Get objects from GUIDs (All these variables are global)
+  button = getObjectFromGUID(BUTTON_GUID)
+  button.setPosition({0,0,0})
+  button.setRotation({0,0,0})
+
+  fieldZone = getObjectFromGUID(FIELD_ZONE_GUID)
+  deckZone = getObjectFromGUID(DECK_ZONE_GUID)
+  players['Blue'].winPile = getObjectFromGUID(WIN_PILE_GUID['Blue'])
+  players['Orange'].winPile = getObjectFromGUID(WIN_PILE_GUID['Orange'])
+  players['Blue'].hand = getAllObjects(HAND_GUID['Blue'])
+  players['Orange'].hand = getAllObjects(HAND_GUID['Orange'])
+  discardZone = getObjectFromGUID(DISCARD_GUID)
+  deckBuilder = getObjectFromGUID(DECK_BUILDER_GUID)
+
+  local deck = deckZone.getObjects()
+  shuffle(deck)
+  createDealButton()
+  createBuildDeckButton(deckBuilder)
+  setupShortcuts()
+end
+
+-- Is this still used?
+--Given a table of cards, returns sum of points
+--If bonusIsSeperate defined, then return sum and bonus seperately
+function calculatePoints(cardTable, bonusIsSeperate)
+  --log('      calculating points...')
+  local bonusCards = {}
+  local sum = 0 -- Normal sum
+  for name, cards in pairs(cardTable) do
+    sum = sum + cards*stats[name][1] -- add value of cards to sum
+    if cards == 4 then-- If there are 4 of that type of card
+      table.insert(bonusCards,name)
+      sum = sum + 20 -- Add 4 of a kind bonus
+    end
+  end
+  if bonusIsSeperate == nil then -- If not assigned
+    return sum
+  else if bonusIsSeperate == true then
+    return sum, bonusCards end
+  end
+end
+
+-- TODO Isn't actually used but should be used in other layout zones
+function calculatePointsPrint(params)
+  local zoneObjects = params.zoneObjects
+  local zoneName = params.zoneName
+  -- Count the cards in the zone
+  local cardTable = {}
+  for _, item in pairs(zoneObjects) do
+    if item.tag == 'Card' then -- If a card
+      local name = item.getName()
+      if cardTable[name] == nil then -- If not counted yet
+        cardTable[name] = 1
+      else -- If already counted
+        cardTable[name] = cardTable[name] + 1
+      end
+    end
+  end
+  -- Calculate total points and record bonus cards
+  local sum, bonusCards = calculatePoints(cardTable, true)
+  -- Base points message
+  local pointMessage = zoneName..' has '..sum..' points'
+  -- Bonuses gained
+  if #bonusCards > 0 then --There is at least a bonus
+    local bonusMessage = '\nWith bonuses from: ' -- "Hello" "World" "HelloWorld"
+    for _, card in pairs(bonusCards) do
+      bonusMessage = bonusMessage..card..'s '
+    end
+    broadcastToAll(pointMessage..bonusMessage) -- Broadcast with bonusMessage (seems only one broadcast at a time)
+  else
+    broadcastToAll(pointMessage) -- Broadcast without bonusMessage
+  end
+end
+--[[
+Hvaco.ttslua END
+]]

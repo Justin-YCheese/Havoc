@@ -1,0 +1,95 @@
+--[[
+Shortcut.ttslua START
+
+This file contains shortcut-related functions.
+]]
+
+function setupShortcuts()
+  addHotkey('Draw Card', drawCardShortcut)
+  addHotkey('Get Discard Sum', getDiscardSumShortcut)
+  addHotkey('Get My Sum', getMySumShortcut)
+  addHotkey("Get Opponent's Sum", getOpponentSumShortcut)
+end
+
+-- Draw a card for player when hotkey is pressed
+function drawCardShortcut(playerColor)
+  -- Make sure game is at a state where card can be drawn (after 'Deal' button is pressed)
+  if gameStarted == false then
+    log("Draw Card shortcut is not allowed at this time")
+    return
+  end
+
+  -- Make sure only valid players can use shortcut
+  if isValidColor(playerColor) then
+    log(playerColor .. " player cannot use Draw Card shortcut")
+    return
+  end
+
+  log("Shortcut: deal a card to " .. playerColor .. " player")
+  dealDeck(1, playerColor)
+end
+
+-- Show sum of points in discard if hotkey is pressed
+function getDiscardSumShortcut()
+  -- Make sure game is at a state where zones are set up (after 'Deal' button is pressed)
+  if gameStarted == false then
+    log("Get Discard Sum shortcut is not allowed at this time")
+    return
+  end
+
+  log("Shortcut: get discard point sum")
+  discardZone.call('calculatePoints')
+end
+
+-- Show sum of points in player's win pile if hotkey is pressed
+function getMySumShortcut(playerColor)
+  -- Make sure game is at a state where zones are set up (after 'Deal' button is pressed)
+  if gameStarted == false then
+    log("Get My Sum shortcut is not allowed at this time")
+    return
+  end
+
+  -- Make sure only valid players can use shortcut
+  if isValidColor(playerColor) then
+    log(playerColor .. " player cannot use Get My Sum shortcut")
+    return
+  end
+
+  -- Get player zone and announce point sum
+  log("Shortcut: get my point sum")
+  players[playerColor].winPile.call('calculatePoints')
+end
+
+-- Show sum of points in opponent's win pile if hotkey is pressed
+function getOpponentSumShortcut(playerColor)
+  -- Make sure game is at a state where zones are set up (after 'Deal' button is pressed)
+  if gameStarted == false then
+    log("Get Opponent Sum shortcut is not allowed at this time")
+    return
+  end
+
+  -- Make sure only valid players can use shortcut
+  if isValidColor(playerColor) then
+    log(playerColor .. " player cannot use Get Opponent Sum shortcut")
+    return
+  end
+
+  local opponentZone = nil
+  if playerColor == 'Orange' then
+    opponentZone = players['Blue'].winPile
+  else
+    opponentZone = players['Orange'].winPile
+  end
+
+  log("Shortcut: get opponent point sum")
+  opponentZone.call('calculatePoints')
+end
+
+-- Check if player color is one of the actual player colors
+function isValidColor(playerColor)
+  return playerColor ~= 'Orange' and playerColor ~= 'Blue'
+end
+
+--[[
+Shortcuts.ttslua END
+]]

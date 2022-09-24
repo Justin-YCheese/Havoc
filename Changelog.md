@@ -14,7 +14,7 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 ### Deprecated
 
 - Removed 'Player wins' message when results button is pressed
-- The Rounds Notebook nolonger needs the 0th index 
+- The Rounds Notebook no longer needs the 0th index
 
 ---
 

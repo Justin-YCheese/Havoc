@@ -1,0 +1,41 @@
+--[[
+Zones.ttslua START
+
+This file contains zone-related functions
+]]
+-- Runs when an object enters a zone
+function onObjectEnterZone(zone, object)
+  --log("Object " .. object.guid .. " entered zone " .. zone.guid) -- Debugging
+  local color = zone.getVar('owner') -- Color of player who owns zone
+  if color != nil then
+    --log("player color: "..color)
+    if (zone==players[color].winPile) then-- A win or discard pile and card entering
+      zone.LayoutZone.layout()--So both cards and decks activate layout
+      if object.tag=='Card' then
+        --Can optionaly add 'true' as a parameter to log cards
+        recordCard(players[color],object.getName()) -- Add card to player's wonCards Table (Player and card name)
+      end
+    elseif zone==discardZone then
+      zone.LayoutZone.layout()
+    end
+  else
+    --log('Zone doesn\'t have an owner')
+  end
+end
+
+function onObjectLeaveZone(zone, object)
+  local color = zone.getVar('owner') -- Color of player who owns zone
+  if color != nil then
+    --log("player color: "..color)
+    if (zone==players[color].winPile and object.tag=='Card') then-- A win or discard pile and card entering
+      --Can optionaly add 'true' as a parameter to log cards
+      forgetCard(players[color],object.getName()) -- Add card to player's wonCards Table (Player and card name)
+    end
+  else
+    --log('Zone doesn\'t have an owner')
+  end
+end
+
+--[[
+Zones.ttslua END
+]]
