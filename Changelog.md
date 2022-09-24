@@ -13,7 +13,7 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ### Fixed
 
-- Fixed floating discard sum button
+- Fix floating discard sum button
 
 ---
 
