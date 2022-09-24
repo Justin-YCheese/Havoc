@@ -85,7 +85,7 @@ function createSumButtons()
     bSum_vars.rotation = {0,270,0}
     bSum_vars.function_owner = discardZone
     bSum_vars.click_function='calculatePoints'
-    button.createButton(bSum_vars) -- Make sum button for orange player
+    button.createButton(bSum_vars) -- Make sum button for discard
 end
 
 function createBuildDeckButton(deckBuilder)
@@ -131,7 +131,7 @@ function createBetButtons()
     font_size=BUTTON_FONT_SIZE,
     color=BUTTON_BACKGROUND_COLOR,
     font_color=BUTTON_TEXT_COLOR,
-    tooltip="Bet to risk extra cards"
+    tooltip=BET_BUTTON_TOOLTIP_MESSAGE
   }
   button.createButton(bBet_vars) -- Make bet button for blue player
 
@@ -153,7 +153,7 @@ function createBetButtonFor(color)
     font_size=BUTTON_FONT_SIZE,
     color=BUTTON_BACKGROUND_COLOR,
     font_color=BUTTON_TEXT_COLOR,
-    tooltip="Bet to risk extra cards"
+    tooltip=BET_BUTTON_TOOLTIP_MESSAGE
   }
   button.createButton(bBet_vars)
 end
