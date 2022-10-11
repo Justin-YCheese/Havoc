@@ -39,6 +39,17 @@ If you want to learn how to play the game, here is the [rule book](https://docs.
 1. In Atom, press `CTRL + SHIFT + L` to load game script files
 1. Edit script files and use `CTRL+ SHIFT + S` to test in Tabletop Simulator
 
+### With Github
+
+1. In Atom > go to Packages > GitHub > Toggle GitHub Tab
+1. Sign into GitHub in Atom and allow Atom access to your GitHub
+1. Open a new project and clone the Havoc repository with the HTML link
+1. Go to Files > Settings > Packages > tabletopsimulator-lua > Settings
+1. Where it says "Base path for files you wish to bundle or #include" put
+in the full path to your cloned repository (it should end with '\Havoc')
+1. Now open both the Tabletop Simulator Lua and Havoc repository for quick work
+1. To make a new branch, use the branch options of the bottom right tabs
+
 ## Project Building Steps
 
 ### Requirements
