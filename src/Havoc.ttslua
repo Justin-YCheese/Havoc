@@ -33,7 +33,8 @@ players['Blue'] = {
   winPile='',    --player's winpile
   wonCards={},    --Table of cards in player's winPile
   points=0,       --player's points
-  hand=''        --player's hand
+  hand='',        --player's hand
+  backup=false    --if player has gotten backup
 }
 
 --Table of Player 2 variables (Orange)
@@ -46,7 +47,8 @@ players['Orange'] = {
   winPile='',    --player's winpile
   wonCards={},    --Table of cards in player's winPile
   points=0,       --player's points
-  hand=''        --player's hand
+  hand='',        --player's hand
+  backup=false    --if player has gotten backup
 }
 
 -- For gathering game statistics
@@ -110,7 +112,8 @@ function calculatePoints(cardTable, bonusIsSeperate)
     sum = sum + cards*stats[name][1] -- add value of cards to sum
     if cards == 4 then-- If there are 4 of that type of card
       table.insert(bonusCards,name)
-      sum = sum + 20 -- Add 4 of a kind bonus
+      -- -- Removed 4ofKind bonus
+      -- sum = sum + 20 -- Add 4 of a kind bonus
     end
   end
   if bonusIsSeperate == nil then -- If not assigned
@@ -142,7 +145,7 @@ function calculatePointsPrint(params)
   local pointMessage = zoneName..' has '..sum..' points'
   -- Bonuses gained
   if #bonusCards > 0 then --There is at least a bonus
-    local bonusMessage = '\nWith bonuses from: ' -- "Hello" "World" "HelloWorld"
+    local bonusMessage = '\nFour of a Kind: ' -- "Hello" "World" "HelloWorld"
     for _, card in pairs(bonusCards) do
       bonusMessage = bonusMessage..card..'s '
     end

@@ -52,7 +52,7 @@ function createClearButton()
     height=STANDARD_BUTTON_HEIGHT,
     font_size=BUTTON_FONT_SIZE,
     color=RED,
-    font_color=BUTTON_TEXT_COLOR,
+    font_color=BUTTON_BACKGROUND_COLOR, -- Changed from text to background color for white colored text
     tooltip="Move fields cards to discard"
   }
 
