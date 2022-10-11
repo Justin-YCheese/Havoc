@@ -4,6 +4,20 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.5.3 Removed Bonus Points
+
+### Added
+
+- Backup Messeges
+  - For first time getting a Four of a Kind
+
+### Fixed
+
+- Calculating bonus points still calculating even through they are no longer in the game
+- Messeges pertaining to bonuses
+
+---
+
 ## v0.5.2 Clear Button
 
 ### Added
