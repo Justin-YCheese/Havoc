@@ -95,7 +95,7 @@ function resultAddedPoints(playerColor,zoneObjects) --playerColor,zoneObjects
   local pointMessage = 'Adding '..pointsGained..' to '..initialPoints..' for '..simulatedPoints..' points'
   -- Bonuses gained
   if #bonusCards > 0 then --There is at least a bonus
-    local bonusMessage = '\nWith 4 of Kind of: '
+    local bonusMessage = '\nFour of a Kind: '
     for _, card in pairs(bonusCards) do
       bonusMessage = bonusMessage..card..'s '
     end
@@ -106,7 +106,7 @@ function resultAddedPoints(playerColor,zoneObjects) --playerColor,zoneObjects
   else
     broadcastToAll(pointMessage) -- Broadcast without bonusMessage
   end
-  addRoundNote(playerColor..' gained '..pointsGained..' with '..#bonusCards..' 4 of Kind from '..numofCards..' cards '..backupMessage)
+  addRoundNote(playerColor..' gained '..pointsGained..' with '..#bonusCards..' FoK from '..numofCards..' cards '..backupMessage)
   return pointsGained
 end
 
