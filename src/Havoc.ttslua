@@ -142,10 +142,10 @@ function calculatePointsPrint(params)
   -- Calculate total points and record bonus cards
   local sum, bonusCards = calculatePoints(cardTable, true)
   -- Base points message
-  local pointMessage = ..zoneName..' has '..sum..' points'
+  local pointMessage = zoneName..' has '..sum..' points'
   -- Bonuses gained
   if #bonusCards > 0 then --There is at least a bonus
-    local bonusMessage = '\nWith bonuses from: ' -- "Hello" "World" "HelloWorld"
+    local bonusMessage = '\nWith 4 of Kind of: ' -- "Hello" "World" "HelloWorld"
     for _, card in pairs(bonusCards) do
       bonusMessage = bonusMessage..card..'s '
     end

@@ -59,6 +59,7 @@ function resultAddedPoints(playerColor,zoneObjects) --playerColor,zoneObjects
   local cardTable = {}
   local bonusCards = {}
   local initialPoints = calculatePoints(player.wonCards)
+  local backupMessage = '' -- Kept empty if there was no backup
   -- Copy values without referance
   for name, cards in pairs(player.wonCards) do
     cardTable[name] = player.wonCards[name]
@@ -76,6 +77,10 @@ function resultAddedPoints(playerColor,zoneObjects) --playerColor,zoneObjects
         if cardTable[name] == 4 then
           --log('Found 4 of a kind: '..name)
           table.insert(bonusCards, name)
+          if not player.backup then
+            player.backup = true
+            backupMessage = 'and got Backup!'
+          end
         end
       end
     end
@@ -90,15 +95,18 @@ function resultAddedPoints(playerColor,zoneObjects) --playerColor,zoneObjects
   local pointMessage = 'Adding '..pointsGained..' to '..initialPoints..' for '..simulatedPoints..' points'
   -- Bonuses gained
   if #bonusCards > 0 then --There is at least a bonus
-    local bonusMessage = '\nWith bonuses from: '
+    local bonusMessage = '\nWith 4 of Kind of: '
     for _, card in pairs(bonusCards) do
       bonusMessage = bonusMessage..card..'s '
     end
+
+    bonusMessage = bonusMessage..backupMessage -- If there was no backup, then backupMessage should be empty
+
     broadcastToAll(pointMessage..bonusMessage) -- Broadcast with bonusMessage (seems only one broadcast at a time)
   else
     broadcastToAll(pointMessage) -- Broadcast without bonusMessage
   end
-  addRoundNote(playerColor..' gained '..pointsGained..' with '..(#bonusCards*20)..' bonus from '..numofCards..' cards')
+  addRoundNote(playerColor..' gained '..pointsGained..' with '..#bonusCards..' 4 of Kind from '..numofCards..' cards '..backupMessage)
   return pointsGained
 end
 
