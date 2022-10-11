@@ -145,7 +145,7 @@ function calculatePointsPrint(params)
   local pointMessage = zoneName..' has '..sum..' points'
   -- Bonuses gained
   if #bonusCards > 0 then --There is at least a bonus
-    local bonusMessage = '\Four of a Kind: ' -- "Hello" "World" "HelloWorld"
+    local bonusMessage = '\nFour of a Kind: ' -- "Hello" "World" "HelloWorld"
     for _, card in pairs(bonusCards) do
       bonusMessage = bonusMessage..card..'s '
     end
