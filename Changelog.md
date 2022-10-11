@@ -10,7 +10,6 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 - Backup Messeges
   - For first time getting a Four of a Kind
-- 
 
 ### Fixed
 
