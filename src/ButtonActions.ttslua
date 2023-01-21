@@ -112,6 +112,12 @@ end
 
 -- Bet
 function playerBet(obj, color, alt_click)
+  if players[color] == nil then
+    broadcastToAll(PLAYER_HAS_NO_COLOR_BROADCAST_MESSAGE)
+    log(PLAYER_HAS_NO_COLOR_LOG_MESSAGE)
+    return
+  end
+
   log('Player '..color..' bets')
   --log('Player Ace: '..players[color].wonCards['Ace']) -- To test wonCards working
   local betPlacement = players[color].betPos -- Bet button's place and bet card's place are the same

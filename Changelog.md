@@ -4,17 +4,25 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.5.4
+
+### Fixed
+
+- Fix the bet button causing a nil error when the player has no valid color
+
+---
+
 ## v0.5.3 Removed Bonus Points
 
 ### Added
 
-- Backup Messeges
+- Backup Messages
   - For first time getting a Four of a Kind
 
 ### Fixed
 
 - Calculating bonus points still calculating even through they are no longer in the game
-- Messeges pertaining to bonuses
+- Messages pertaining to bonuses
 
 ---
 
