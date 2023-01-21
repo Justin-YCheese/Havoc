@@ -9,6 +9,7 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 ### Fixed
 
 - Fix the bet button causing a nil error when the player has no valid color
+- Fix moving the deck when drawing cards, usually when Orange draws cards quickly
 
 ---
 
