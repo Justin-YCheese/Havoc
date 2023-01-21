@@ -121,7 +121,7 @@ end
 function createBetButtons()
   --Bet card for blue player
   local bBet_vars = {
-    click_function='playerBet',
+    click_function='blueBet',
     function_owner=nil,
     label='Bet',
     position=players['Blue'].betPos,
@@ -137,13 +137,22 @@ function createBetButtons()
 
   --Bet card for orange player
   bBet_vars.position = players['Orange'].betPos
+  bBet_vars.click_function = 'orangeBet'
   button.createButton(bBet_vars) -- Make bet button for orange player
 end
 
 -- Mkae button for specified player
 function createBetButtonFor(color)
+  local bet_function = nil
+
+  if color == 'Blue' then
+    bet_function = 'blueBet'
+  elseif color == 'Orange' then
+    bet_function = 'orangeBet'
+  end
+
   local bBet_vars = {
-    click_function='playerBet',
+    click_function=bet_function,
     function_owner=nil,
     label='Bet',
     position=players[color].betPos,

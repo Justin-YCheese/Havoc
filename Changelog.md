@@ -6,10 +6,16 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ## v0.5.4
 
+### Added
+
+- Add checks so that only a player of the correct color can trigger their corresponding bet button
+  - A warning message appears if a player tries to bet with the wrong button
+
 ### Fixed
 
 - Fix the bet button causing a nil error when the player has no valid color
 - Fix moving the deck when drawing cards, usually when Orange draws cards quickly
+- Fix clicking an opponent's bet button causing the betted card to go to the wrong side
 
 ---
 
