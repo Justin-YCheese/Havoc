@@ -22,11 +22,7 @@ function build() -- For assigning values to cards when they are spread out
   end
 end
 
-
-
-
 --- Extra (Not Used) ---
-
 function deckBuild() -- For assiging values to cards in a Deck but card.setVar doesn't work when card is in deck
   local zoneObjects = self.getObjects() -- Get items in the zone
   for i, item in pairs(zoneObjects) do

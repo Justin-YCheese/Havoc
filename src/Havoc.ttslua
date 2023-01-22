@@ -21,6 +21,7 @@ The main file for running the Havoc (Tabletop Edition) game.
 #include Shortcuts
 #include Validation
 #include Zones
+#include Buttons/ResetButton
 
 players = {}
 --Table of Player Blue variables
@@ -53,7 +54,7 @@ players['Orange'] = {
 
 -- For gathering game statistics
 record = {}
-record['points'] = {} -- Points won each rouund of the game
+record['points'] = {} -- Points won each round of the game
 
 -- Global table of zone variables
 zone_vars = {

@@ -1,0 +1,95 @@
+--[[
+ResetButton.ttslua START
+
+This file contains functions that the reset button triggers.
+]]
+
+resetButtonPosition = {26.5, 1.15, 0}
+resetTimesPressed = 0
+resetPressedTimerId = nil
+
+function createResetButton(label)
+  local resetButtonVars = {
+    click_function='incrementResetCounter',
+    function_owner=nil,
+    label=label,
+    position=resetButtonPosition,
+    rotation={0, 90, 0},
+    width=SMALL_BUTTON_WIDTH,
+    height=SMALL_BUTTON_HEIGHT,
+    font_size=BUTTON_FONT_SIZE,
+    color=BUTTON_WARNING_BACKGROUND_COLOR,
+    font_color=BUTTON_WARNING_TEXT_COLOR,
+    tooltip="Click "..NUM_CLICKS_TO_RESET.." times to reset the game"
+  }
+
+  button.createButton(resetButtonVars)
+end
+
+function incrementResetCounter()
+  resetTimesPressed = resetTimesPressed + 1
+
+  if resetTimesPressed == NUM_CLICKS_TO_RESET then
+    resetTimesPressed = 0
+    stopResetTimer()
+    resetGame()
+  else
+    stopResetTimer()
+    resetPressedTimerId = Wait.time(function() updateResetTimesPressed(0) end, SECONDS_UNTIL_COUNTER_RESET)
+  end
+
+  updateResetTimesPressed(resetTimesPressed)
+end
+
+function updateResetTimesPressed(value)
+  resetTimesPressed = value
+
+  if value == 0 then
+    updateResetButtonLabel(DEFAULT_RESET_BUTTON_LABEL)
+  else
+    updateResetButtonLabel(value)
+  end
+end
+
+function updateResetButtonLabel(label)
+  deleteButtonHere(resetButtonPosition)
+  createResetButton(label)
+end
+
+function stopResetTimer()
+  if resetPressedTimerId ~= nil then
+    Wait.stop(resetPressedTimerId)
+    resetPressedTimerId = nil
+  end
+end
+
+function resetGame()
+  log('Game reset')
+  resetDeck()
+  resetRoundsNotebook()
+end
+
+function resetDeck()
+  local allObjects = getObjects()
+  local cardAndDecks = {}
+  local numFound = 0
+  local deckZonePosition = deckZone.getPosition()
+
+  for _, item in pairs(allObjects) do
+    if item.tag == 'Card' or item.tag == 'Deck' then
+      numFound = numFound + 1
+      cardAndDecks[numFound] = item
+    end
+  end
+
+  local combinedDeck = group(cardAndDecks)[1]
+  local targetPosition = deckZone.getPosition()
+  -- The extra 2 units is to prevent deck from clipping into the table
+  targetPosition[2] = targetPosition[2] + 2
+  combinedDeck.setPosition(targetPosition)
+  combinedDeck.locked = false
+end
+
+--[[
+ResetButton.ttslua END
+]]

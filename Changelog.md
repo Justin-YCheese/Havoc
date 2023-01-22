@@ -10,6 +10,15 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 - Add checks so that only a player of the correct color can trigger their corresponding bet button
   - A warning message appears if a player tries to bet with the wrong button
+- Add reset button
+  - Reset everything to quickly start another game
+  - Triggered by clicking the button three times in a row
+    - To prevent resetting by accident
+    - If not clicked fast enough (within 2 seconds between button presses), then the counter resets
+    - The button displays how many times the player has clicked it so far
+  - On reset:
+    - The deck is rebuilt and placed back in the correct spot
+    - The Rounds notebook is cleared
 
 ### Fixed
 

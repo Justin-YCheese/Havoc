@@ -47,15 +47,26 @@ WHITE = {1, 1, 1}
 BLACK = {0, 0, 0}
 RED = {1, 0, 0}
 
--- Button Dimensions
+-- Button colors
+BUTTON_BACKGROUND_COLOR = WHITE
+BUTTON_TEXT_COLOR = BLACK
+BUTTON_WARNING_BACKGROUND_COLOR = RED
+BUTTON_WARNING_TEXT_COLOR = WHITE
+
+-- Button attributes
 SMALL_BUTTON_WIDTH = 900
 STANDARD_BUTTON_WIDTH = 1200
 BIG_BUTTON_WIDTH = 1500
 SMALL_BUTTON_HEIGHT = 650
 STANDARD_BUTTON_HEIGHT = 800
 BUTTON_FONT_SIZE = 300
-BUTTON_BACKGROUND_COLOR = WHITE
-BUTTON_TEXT_COLOR = BLACK
+
+-- Button labels
+DEFAULT_RESET_BUTTON_LABEL = 'Reset'
+
+-- Reset button Constants
+NUM_CLICKS_TO_RESET = 3
+SECONDS_UNTIL_COUNTER_RESET = 2
 
 -- Discard constants
 DISCARD_X_OFFSET = 6
@@ -65,6 +76,9 @@ DISCARD_Y_OFFSET = 5
 PLAYER_HAS_NO_COLOR_BROADCAST_MESSAGE = 'The player does not have a color'
 PLAYER_HAS_NO_COLOR_LOG_MESSAGE = 'A player with no color tried to press results button'
 BET_BUTTON_TOOLTIP_MESSAGE = 'Bet to risk extra cards'
+
+-- Notebook constants
+STARTING_ROUNDS_NOTEBOOK_LINE = 'Recording Round Data Here'
 
 --[[
 Constants.ttslua END
