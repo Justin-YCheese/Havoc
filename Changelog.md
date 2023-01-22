@@ -4,7 +4,7 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
-## v0.5.4
+## v0.5.4 Reset Button
 
 ### Added
 
