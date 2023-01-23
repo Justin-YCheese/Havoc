@@ -87,6 +87,16 @@ function resetDeck()
   -- The extra 2 units is to prevent deck from clipping into the table
   targetPosition[2] = targetPosition[2] + 2
   combinedDeck.setPosition(targetPosition)
+
+  if combinedDeck.is_face_down == false then
+    combinedDeck.flip()
+  end
+
+  Wait.time(function()
+    combinedDeck.shuffle()
+    dealDeck(STARTING_HAND_SIZE)
+  end, SECONDS_UNTIL_RESET_DECK_SHUFFLE)
+
   combinedDeck.locked = false
 end
 

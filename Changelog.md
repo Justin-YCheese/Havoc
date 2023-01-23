@@ -4,7 +4,7 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
-## v0.5.4 Reset Button
+## v0.6.0 Reset Button
 
 ### Added
 
@@ -17,7 +17,7 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
     - If not clicked fast enough (within 2 seconds between button presses), then the counter resets
     - The button displays how many times the player has clicked it so far
   - On reset:
-    - The deck is rebuilt and placed back in the correct spot
+    - The deck is rebuilt, placed back in the correct spot face-down and shuffled, then 4 cards are dealt to each player
     - The Rounds notebook is cleared
 
 ### Fixed

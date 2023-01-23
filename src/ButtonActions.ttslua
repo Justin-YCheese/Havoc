@@ -7,7 +7,7 @@ This file contains functions that buttons directly trigger.
 -- Deal 4 cards to both players, spawn buttons, and start planning phase
 function dealCards()
   log('deal')
-  dealDeck(4)
+  dealDeck(STARTING_HAND_SIZE)
   button.clearButtons() -- Remove Deal and Deck Builder buttons
   createBetButtons()
   createResultsButton()

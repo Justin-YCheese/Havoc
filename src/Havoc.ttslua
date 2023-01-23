@@ -13,6 +13,7 @@ The main file for running the Havoc (Tabletop Edition) game.
 --
 -- Workshop ID: 2723093390
 
+#include Buttons/ResetButton
 #include ButtonActions
 #include Constants
 #include Deck
@@ -21,7 +22,6 @@ The main file for running the Havoc (Tabletop Edition) game.
 #include Shortcuts
 #include Validation
 #include Zones
-#include Buttons/ResetButton
 
 players = {}
 --Table of Player Blue variables
