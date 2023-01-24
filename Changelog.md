@@ -4,6 +4,14 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.6.1 Fix Reset Backup Flag
+
+### Fixed
+
+- Fix the reset button not resetting player backup flags
+
+---
+
 ## v0.6.0 Reset Button
 
 ### Added
