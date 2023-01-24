@@ -4,17 +4,41 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.6.0 Reset Button
+
+### Added
+
+- Add checks so that only a player of the correct color can trigger their corresponding bet button
+  - A warning message appears if a player tries to bet with the wrong button
+- Add reset button
+  - Reset everything to quickly start another game
+  - Triggered by clicking the button three times in a row
+    - To prevent resetting by accident
+    - If not clicked fast enough (within 2 seconds between button presses), then the counter resets
+    - The button displays how many times the player has clicked it so far
+  - On reset:
+    - The deck is rebuilt, placed back in the correct spot face-down and shuffled, then 4 cards are dealt to each player
+    - The Rounds notebook is cleared
+
+### Fixed
+
+- Fix the bet button causing a nil error when the player has no valid color
+- Fix moving the deck when drawing cards, usually when Orange draws cards quickly
+- Fix clicking an opponent's bet button causing the betted card to go to the wrong side
+
+---
+
 ## v0.5.3 Removed Bonus Points
 
 ### Added
 
-- Backup Messeges
+- Backup Messages
   - For first time getting a Four of a Kind
 
 ### Fixed
 
 - Calculating bonus points still calculating even through they are no longer in the game
-- Messeges pertaining to bonuses
+- Messages pertaining to bonuses
 
 ---
 

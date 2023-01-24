@@ -38,24 +38,40 @@ stats['Queen'] = {FACE_CARD_VALUE,12}
 stats['King'] = {FACE_CARD_VALUE,13}
 stats['Joker'] = {0,0}
 
+-- Game constants
+STARTING_HAND_SIZE = 4
+
 -- Notebook constants
 ROUNDS_TAB_INDEX = 3 -- Index of Rounds Tab in Notebook
 SUMMARY_TAB_INDEX = 4 -- Index of Summary Tab in Notebook
+STARTING_ROUNDS_NOTEBOOK_LINE = 'Recording Round Data Here'
 
 -- Colors
 WHITE = {1, 1, 1}
 BLACK = {0, 0, 0}
 RED = {1, 0, 0}
 
--- Button Dimensions
+-- Button colors
+BUTTON_BACKGROUND_COLOR = WHITE
+BUTTON_TEXT_COLOR = BLACK
+BUTTON_WARNING_BACKGROUND_COLOR = RED
+BUTTON_WARNING_TEXT_COLOR = WHITE
+
+-- Button attributes
 SMALL_BUTTON_WIDTH = 900
 STANDARD_BUTTON_WIDTH = 1200
 BIG_BUTTON_WIDTH = 1500
 SMALL_BUTTON_HEIGHT = 650
 STANDARD_BUTTON_HEIGHT = 800
 BUTTON_FONT_SIZE = 300
-BUTTON_BACKGROUND_COLOR = WHITE
-BUTTON_TEXT_COLOR = BLACK
+
+-- Button labels
+DEFAULT_RESET_BUTTON_LABEL = 'Reset'
+
+-- Reset button Constants
+NUM_CLICKS_TO_RESET = 3
+SECONDS_UNTIL_COUNTER_RESET = 2
+SECONDS_UNTIL_RESET_DECK_SHUFFLE = 0.25
 
 -- Discard constants
 DISCARD_X_OFFSET = 6

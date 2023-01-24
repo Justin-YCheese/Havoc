@@ -7,12 +7,13 @@ This file contains functions that buttons directly trigger.
 -- Deal 4 cards to both players, spawn buttons, and start planning phase
 function dealCards()
   log('deal')
-  dealDeck(4)
+  dealDeck(STARTING_HAND_SIZE)
   button.clearButtons() -- Remove Deal and Deck Builder buttons
   createBetButtons()
   createResultsButton()
   createClearButton()
   createSumButtons()
+  createResetButton(DEFAULT_RESET_BUTTON_LABEL)
   gameStarted = true
 end
 
@@ -111,19 +112,48 @@ function resultAddedPoints(playerColor,zoneObjects) --playerColor,zoneObjects
 end
 
 -- Bet
-function playerBet(obj, color, alt_click)
-  log('Player '..color..' bets')
-  --log('Player Ace: '..players[color].wonCards['Ace']) -- To test wonCards working
-  local betPlacement = players[color].betPos -- Bet button's place and bet card's place are the same
-  --log('Placement of bet is: '..betPlacement[1]..' '..betPlacement[2]..' '..betPlacement[3])
+function playerBet(obj, player_color, bet_color, alt_click)
+  if player_color ~= bet_color then
+    local logMessage = getColorSpecificLogMessage(player_color, bet_color)
+    log(logMessage)
+    local broadcastMessage = getColorSpecificGlobalMessage(bet_color)
+    broadcastToAll(broadcastMessage)
+    return
+  end
+
+  log('Player '..bet_color..' bets')
+  local betPlacement = players[bet_color].betPos -- Bet button's place and bet card's place are the same
+  -- log('Placement of bet is: '..positionToString(betPlacement))
+
   getDeck().takeObject({
     position = {-betPlacement[1],betPlacement[2],betPlacement[3]}, --Have to flip x cordinate because the takeObject position flips the x value
     rotation = {0,0,0},
     --callback_function = function,
     flip = true
   })
-  players[color].bet_state = true
+
+  players[bet_color].bet_state = true
   deleteButtonHere(betPlacement)
+end
+
+function orangeBet(obj, color, alt_click)
+  playerBet(obj, color, 'Orange', alt_click)
+end
+
+function blueBet(obj, color, alt_click)
+  playerBet(obj, color, 'Blue', alt_click)
+end
+
+function getColorSpecificGlobalMessage(expectedColor)
+  return 'Only '..expectedColor..' player can use this button'
+end
+
+function getColorSpecificLogMessage(playerColor, expectedColor)
+  return playerColor..' player tried using a button that only '..expectedColor..' player can use'
+end
+
+function positionToString(position)
+  return '['..position[1]..', '..position[2]..', '..position[3]..']'
 end
 
 -- Puts cards in field into discard zone

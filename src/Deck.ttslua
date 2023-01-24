@@ -53,11 +53,23 @@ end
 
 -- deals a card all players or a certain player from the deck Zone (playerColor optional)
 function dealDeck(number, playerColor)
-  if getDeck() != nil then
+  local deck = getDeck()
+
+  if deck != nil then
+    local locked = deck.locked
+
+    if not locked then
+      deck.locked = true
+    end
+
     if playerColor == nil then
-      getDeck().deal(number)
+      deck.deal(number)
     else
-      getDeck().deal(number, playerColor)
+      deck.deal(number, playerColor)
+    end
+
+    if not locked then
+      deck.locked = false
     end
   end
 end

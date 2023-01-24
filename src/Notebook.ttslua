@@ -39,6 +39,13 @@ function addRoundNote(note)
   log('Adding \"'..note..'\" to Rounds on line '..lineNumber)
 end
 
+function resetRoundsNotebook()
+  Notes.editNotebookTab({
+    index = ROUNDS_TAB_INDEX,
+    body = STARTING_ROUNDS_NOTEBOOK_LINE
+  })
+end
+
 --[[
 Notebook.ttslua END
 ]]
