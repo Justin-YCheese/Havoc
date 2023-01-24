@@ -65,8 +65,14 @@ end
 
 function resetGame()
   log('Game reset')
+  resetPlayers()
   resetDeck()
   resetRoundsNotebook()
+end
+
+function resetPlayers()
+  players['Blue'].backup = false
+  players['Orange'].backup = false
 end
 
 function resetDeck()
