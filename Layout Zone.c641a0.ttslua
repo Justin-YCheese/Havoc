@@ -1,10 +1,5 @@
---Orange's win pile
 owner = 'Orange'
-
--- Table of common zone variables
 zone_vars = Global.getTable('zone_vars')
-
---Table of card stats
 stats = Global.getTable('stats')
 
 function onLoad()

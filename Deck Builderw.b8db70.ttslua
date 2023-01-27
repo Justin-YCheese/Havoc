@@ -1,42 +1,25 @@
 --Table of card stats
 stats = Global.getTable('stats')
 
-function onLoad() -- Create Button
+-- Create Button
+function onLoad()
   self.createButton(button_vars)
 end
 
-function build() -- For assigning values to cards when they are spread out
+-- For assigning values to cards when they are spread out
+function build()
   local zoneObjects = self.getObjects()
   for i, item in pairs(zoneObjects) do
     if item.tag == 'Card' then
       local name = item.getName()
-      if item.getVar('value') != nil then -- Testing for variable (variable disapears when put in a deck)
+      -- Testing for variable (variable disapears when put in a deck)
+      if item.getVar('value') != nil then
         log('   The value is already '..item.getVar('value'))
       end
       log(name..' assigned '..stats[name][1].." and "..stats[name][2])
       -- set value and power of card by giving it Lua script
       -- This is because using setVar() won't keep variable if put in a deck
       item.setLuaScript('value='..stats[name][1]..'\npower='..stats[name][2])
-      --log(item.getVar('value')..' is the value')
     end
   end
-end
-
---- Extra (Not Used) ---
-function deckBuild() -- For assiging values to cards in a Deck but card.setVar doesn't work when card is in deck
-  local zoneObjects = self.getObjects() -- Get items in the zone
-  for i, item in pairs(zoneObjects) do
-      if item.tag == 'Deck' then        -- Check if item is a deck
-          log('Deck in deck builder:'..item.getGUID())
-          deckCards = item.getObjects() -- Get table of cards in deck
-          for j, card in ipairs(deckCards) do -- Go through all the cards
-            --log('test '..j)
-            log(card.name..' assigned '..stats[card.name][1].." and "..stats[card.name][2])
-            --card.setVar('value',stats[card.name][1]) -- set value of card
-            --card.setVar('power',stats[card.name][2]) -- set power of card
-          end
-          return true
-      end
-  end
-  log('Deck builder didn\'t find a deck')
 end

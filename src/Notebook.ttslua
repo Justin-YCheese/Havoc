@@ -25,6 +25,7 @@ function addRoundNote(note)
   local numberIndexEnd = 0
   local numberIndexStart = 0
   local lineNumber = 0
+  
   if roundsTabBody:match'^.*():' != nil and roundsTabBody:match'^.*()\n' != nil then -- If there is a previous line
     numberIndexEnd = roundsTabBody:match'^.*():' - 1
     numberIndexStart = roundsTabBody:match'^.*()\n'
@@ -32,10 +33,12 @@ function addRoundNote(note)
   else -- The rounds notebook is empty
     lineNumber = 1
   end
+
   Notes.editNotebookTab({
     index = ROUNDS_TAB_INDEX,
     body = roundsTabBody..'\n'..lineNumber..': '..note
   })
+
   log('Adding \"'..note..'\" to Rounds on line '..lineNumber)
 end
 

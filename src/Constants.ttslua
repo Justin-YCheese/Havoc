@@ -38,6 +38,9 @@ stats['Queen'] = {FACE_CARD_VALUE,12}
 stats['King'] = {FACE_CARD_VALUE,13}
 stats['Joker'] = {0,0}
 
+-- Player variables
+PLAYER_COLOR_STRINGS = {'Orange', 'Blue'}
+
 -- Game constants
 STARTING_HAND_SIZE = 4
 

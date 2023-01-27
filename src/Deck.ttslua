@@ -5,29 +5,32 @@ This file contains deck and card-related functions.
 ]]
 
 function shuffle(deck)
-  for _, item in ipairs(deck) do -- Check if there's a deck
+  for _, item in ipairs(deck) do
       if item.tag == 'Deck' then
-          item.shuffle() -- Return deck
+          item.shuffle()
       end
   end
 end
 
---Record card in player's wonCard table, Pass in player and name of card (boolean log if logging)
+-- Record card in player's wonCard table, Pass in player and name of card (boolean log if logging)
 function recordCard(player, name)
   if player.wonCards[name] == nil then -- If card hasn't been counted yet
     player.wonCards[name] = 1
   else -- If card has been counted
     player.wonCards[name] = player.wonCards[name] + 1
+
     if player.wonCards[name] > 4 then
       log('Error: Counted more than 4 of '..name..'s')
     end
   end
+
   log('Count '..player.wonCards[name]..' '..name..'(s) in zone')
 end
 
---Forget card in player's wonCard table, Pass in player and name of card
+-- Forget card in player's wonCard table, Pass in player and name of card
 function forgetCard(player, name)
   player.wonCards[name] = player.wonCards[name] - 1
+
   if player.wonCards[name] < 0 then
     log('Error: wonCards reads a negative value for '..name)
   end
@@ -37,21 +40,24 @@ end
 -- Get a card from either the deck or card in the deck zone (a single card deck turns into a card)
 function getDeck()
     local zoneObjects = deckZone.getObjects()
+
     for _, item in ipairs(zoneObjects) do -- Check if there's a deck
         if item.tag == 'Deck' then
             return item -- Return deck
         end
     end
+
     for _, item in ipairs(zoneObjects) do -- Check if there's a card after checking for deck
         if item.tag == 'Card' then
             return item -- Return card
         end
     end
+
     log('Deck is empty')
     return nil
 end
 
--- deals a card all players or a certain player from the deck Zone (playerColor optional)
+-- Deals a card all players or a certain player from the deck Zone (playerColor optional)
 function dealDeck(number, playerColor)
   local deck = getDeck()
 

@@ -4,6 +4,15 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.6.2 Shorten Rounds Notebook Message
+
+### Changed
+
+- Rounds notebook only records the number of four-of-a-kinds earned if a player gets one or more of them in the current round
+  - Won't see "with 0 FoK" anymore
+
+---
+
 ## v0.6.1 Fix Reset Backup Flag
 
 ### Fixed
