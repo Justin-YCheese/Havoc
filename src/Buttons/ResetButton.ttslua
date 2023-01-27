@@ -90,7 +90,7 @@ function resetDeck()
 
   local combinedDeck = group(cardAndDecks)[1]
   local targetPosition = deckZone.getPosition()
-  -- The extra 2 units is to prevent deck from clipping into the table
+  -- The extra 2 units is to prevent the deck from clipping into the table
   targetPosition[2] = targetPosition[2] + 2
   combinedDeck.setPosition(targetPosition)
 

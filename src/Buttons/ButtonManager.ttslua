@@ -1,0 +1,19 @@
+--[[
+GameUI.ttslua START
+
+This file contains functions that create or delete UI.
+]]
+
+-- Removes button with specific position (because removeButton() only works with indexes)
+function deleteButtonHere(position)
+  for i, b in pairs(button.getButtons()) do
+    if button.positionToWorld(b.position) == button.positionToWorld(position) then -- So that both positions will match
+      button.removeButton(i-1) -- The corresponding indec (because indexes start at 1)
+      break
+    end
+  end
+end
+
+--[[
+GameUI.ttslua END
+]]

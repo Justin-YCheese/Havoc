@@ -13,13 +13,20 @@ The main file for running the Havoc (Tabletop Edition) game.
 --
 -- Workshop ID: 2723093390
 
+#include Buttons/BetButton
+#include Buttons/ButtonManager
+#include Buttons/ClearButton
+#include Buttons/DealButton
+#include Buttons/DeckButton
 #include Buttons/ResetButton
-#include ButtonActions
+#include Buttons/ResultsButton
+#include Buttons/SumButton
 #include Constants
 #include Deck
-#include GameUI
 #include Notebook
 #include Shortcuts
+#include Utility/Messaging
+#include Utility/StringConverter
 #include Validation
 #include Zones
 
@@ -74,7 +81,7 @@ zone_vars = {
   sticky_cards=false
 }
 
--- Track if players should be allowed to use Draw Card shortcut or not
+-- Track if players should be allowed to use certain shortcuts or not
 gameStarted = false
 
 -- Runs once when the game loads
@@ -105,21 +112,23 @@ end
 -- Is this still used?
 --Given a table of cards, returns sum of points
 --If bonusIsSeperate defined, then return sum and bonus seperately
-function calculatePoints(cardTable, bonusIsSeperate)
-  --log('      calculating points...')
+function calculatePoints(cardTable, bonusIsSeparate)
   local bonusCards = {}
   local sum = 0 -- Normal sum
+
   for name, cards in pairs(cardTable) do
-    sum = sum + cards*stats[name][1] -- add value of cards to sum
-    if cards == 4 then-- If there are 4 of that type of card
+    -- add value of cards to sum
+    sum = sum + cards*stats[name][1]
+    -- If there are 4 of that type of card
+    if cards == 4 then
       table.insert(bonusCards,name)
-      -- -- Removed 4ofKind bonus
-      -- sum = sum + 20 -- Add 4 of a kind bonus
     end
   end
-  if bonusIsSeperate == nil then -- If not assigned
+
+  -- If not assigned
+  if bonusIsSeparate == nil then
     return sum
-  else if bonusIsSeperate == true then
+  else if bonusIsSeparate == true then
     return sum, bonusCards end
   end
 end
@@ -131,11 +140,15 @@ function calculatePointsPrint(params)
   -- Count the cards in the zone
   local cardTable = {}
   for _, item in pairs(zoneObjects) do
-    if item.tag == 'Card' then -- If a card
+    -- If a card
+    if item.tag == 'Card' then
       local name = item.getName()
-      if cardTable[name] == nil then -- If not counted yet
+
+      -- If not counted yet
+      if cardTable[name] == nil then
         cardTable[name] = 1
-      else -- If already counted
+      -- If already counted
+      else
         cardTable[name] = cardTable[name] + 1
       end
     end
@@ -150,9 +163,9 @@ function calculatePointsPrint(params)
     for _, card in pairs(bonusCards) do
       bonusMessage = bonusMessage..card..'s '
     end
-    broadcastToAll(pointMessage..bonusMessage) -- Broadcast with bonusMessage (seems only one broadcast at a time)
+    broadcast(pointMessage..bonusMessage) -- Broadcast with bonusMessage (seems only one broadcast at a time)
   else
-    broadcastToAll(pointMessage) -- Broadcast without bonusMessage
+    broadcast(pointMessage) -- Broadcast without bonusMessage
   end
 end
 --[[
