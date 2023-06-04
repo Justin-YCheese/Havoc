@@ -109,9 +109,8 @@ function onLoad()
   setupShortcuts()
 end
 
--- Is this still used?
 --Given a table of cards, returns sum of points
---If bonusIsSeperate defined, then return sum and bonus seperately
+--If bonusIsSeparate defined, then return sum and bonus seperately
 function calculatePoints(cardTable, bonusIsSeparate)
   local bonusCards = {}
   local sum = 0 -- Normal sum
@@ -133,10 +132,20 @@ function calculatePoints(cardTable, bonusIsSeparate)
   end
 end
 
--- TODO Isn't actually used but should be used in other layout zones
+function countCards(cardTable)
+  local numCards = 0
+
+  for name, cards in pairs(cardTable) do
+    numCards = numCards + cards
+  end
+
+  return numCards
+end
+
 function calculatePointsPrint(params)
   local zoneObjects = params.zoneObjects
   local zoneName = params.zoneName
+  local stopBroadcast = params.stopBroadcast
   -- Count the cards in the zone
   local cardTable = {}
   for _, item in pairs(zoneObjects) do
@@ -153,19 +162,37 @@ function calculatePointsPrint(params)
       end
     end
   end
-  -- Calculate total points and record bonus cards
+  -- Calculate total points, record bonus cards and num cards in zone
   local sum, bonusCards = calculatePoints(cardTable, true)
+  local numCards = countCards(cardTable)
+
   -- Base points message
   local pointMessage = zoneName..' has '..sum..' points'
+
+  if (numCards > 0) then
+    pointMessage = pointMessage..' and '..numCards..' cards'
+  end
+
   -- Bonuses gained
   if #bonusCards > 0 then --There is at least a bonus
     local bonusMessage = '\nFour of a Kind: ' -- "Hello" "World" "HelloWorld"
     for _, card in pairs(bonusCards) do
       bonusMessage = bonusMessage..card..'s '
     end
-    broadcast(pointMessage..bonusMessage) -- Broadcast with bonusMessage (seems only one broadcast at a time)
+
+    -- Broadcast with bonusMessage (seems only one broadcast at a time)
+    if stopBroadcast then
+      log(pointMessage..bonusMessage)
+    else
+      broadcast(pointMessage..bonusMessage)
+    end
   else
-    broadcast(pointMessage) -- Broadcast without bonusMessage
+    -- Broadcast without bonusMessage
+    if stopBroadcast then
+      log(pointMessage)
+    else
+      broadcast(pointMessage)
+    end
   end
 end
 --[[

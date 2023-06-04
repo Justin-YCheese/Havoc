@@ -4,7 +4,7 @@ ResultsButton.ttslua START
 This file contains functions that the reset button triggers.
 ]]
 
--- Sends cards on field to winner's Win Pile and proceedes to drawing phase
+-- Sends cards on field to winner's Win Pile and proceeds to drawing phase
 function createResultsButton()
   local bResults_vars = {
     click_function='results',

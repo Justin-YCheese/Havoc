@@ -4,6 +4,20 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.6.3 Quality of Life Changes
+
+### Changed
+
+- Update Sum buttons to display the number of cards in their respective zones
+- Update Reset button to show game data before resetting
+  - Shows the number of rounds played, plus the points and number of cards that are in the win piles and discard
+
+### Fixed
+
+- Added a bit more randomization to cleared card positions to reduce the chance of overlapping cards from forming a deck
+
+---
+
 ## v0.6.2 Shorten Rounds Notebook Message
 
 ### Changed
