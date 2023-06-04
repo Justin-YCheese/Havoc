@@ -4,6 +4,14 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.6.3 Quality of Life Changes
+
+### Changed
+
+- Update Sum button to display the number of cards in respective zones
+
+---
+
 ## v0.6.2 Shorten Rounds Notebook Message
 
 ### Changed
