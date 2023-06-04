@@ -49,20 +49,32 @@ end
 
 function moveCardsToDiscard()
     local fieldZoneObjects = fieldZone.getObjects()
-    local discardZonePosition = discardZone.getPosition()
     local i = 0
 
     for _, item in ipairs(fieldZoneObjects) do
       -- If in only field zone and the zone surrounding the whole game (so doesn't grab deck)
       if #item.getZones() == 2 then
-        local randomXOffset = math.random(DISCARD_X_OFFSET * 2 + 1) - DISCARD_X_OFFSET;
-        local randomYOffset = math.random(DISCARD_Y_OFFSET * 2 + 1) - DISCARD_Y_OFFSET;
-        local randomDiscardPosition = {discardZonePosition[1] + randomXOffset, discardZonePosition[2]+5+i, discardZonePosition[3] + randomYOffset}
-        item.setPositionSmooth(randomDiscardPosition, false, true)
+        -- Jitter is for 'shaking' the cards slightly to reduce a chance of exactly overlapping cards
+        local newPosition = getRandomDiscardPosition(i)
+        item.setPositionSmooth(newPosition, false, true)
         i = i + .8
       end
     end
 end
+
+function getRandomDiscardPosition(numIterations)
+  local discardZonePosition = discardZone.getPosition()
+  local randomXOffset = math.random(DISCARD_X_OFFSET * 2 + 1) - DISCARD_X_OFFSET;
+  local randomYOffset = math.random(DISCARD_Y_OFFSET * 2 + 1) - DISCARD_Y_OFFSET;
+  local xJitter = math.random() * 2 - 1
+  local yJitter = math.random() * 2 - 1
+
+  local newX = discardZonePosition[1] + randomXOffset + xJitter
+  local newZ = discardZonePosition[2] + 5 + numIterations
+  local newY = discardZonePosition[3] + randomYOffset + yJitter
+  return {newX, newZ, newY}
+end
+
 --[[
 ClearButton.ttslua END
 ]]
