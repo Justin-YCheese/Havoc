@@ -136,7 +136,7 @@ function countCards(cardTable)
   local numCards = 0
 
   for name, cards in pairs(cardTable) do
-    numCards = numCards + 1
+    numCards = numCards + cards
   end
 
   return numCards
