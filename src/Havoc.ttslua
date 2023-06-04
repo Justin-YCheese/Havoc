@@ -145,6 +145,7 @@ end
 function calculatePointsPrint(params)
   local zoneObjects = params.zoneObjects
   local zoneName = params.zoneName
+  local stopBroadcast = params.stopBroadcast
   -- Count the cards in the zone
   local cardTable = {}
   for _, item in pairs(zoneObjects) do
@@ -178,9 +179,20 @@ function calculatePointsPrint(params)
     for _, card in pairs(bonusCards) do
       bonusMessage = bonusMessage..card..'s '
     end
-    broadcast(pointMessage..bonusMessage) -- Broadcast with bonusMessage (seems only one broadcast at a time)
+
+    -- Broadcast with bonusMessage (seems only one broadcast at a time)
+    if stopBroadcast then
+      log(pointMessage..bonusMessage)
+    else
+      broadcast(pointMessage..bonusMessage)
+    end
   else
-    broadcast(pointMessage) -- Broadcast without bonusMessage
+    -- Broadcast without bonusMessage
+    if stopBroadcast then
+      log(pointMessage)
+    else
+      broadcast(pointMessage)
+    end
   end
 end
 --[[

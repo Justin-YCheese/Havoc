@@ -25,7 +25,7 @@ function addRoundNote(note)
   local numberIndexEnd = 0
   local numberIndexStart = 0
   local lineNumber = 0
-  
+
   if roundsTabBody:match'^.*():' != nil and roundsTabBody:match'^.*()\n' != nil then -- If there is a previous line
     numberIndexEnd = roundsTabBody:match'^.*():' - 1
     numberIndexStart = roundsTabBody:match'^.*()\n'
@@ -47,6 +47,19 @@ function resetRoundsNotebook()
     index = ROUNDS_TAB_INDEX,
     body = STARTING_ROUNDS_NOTEBOOK_LINE
   })
+end
+
+function getRoundsPlayed()
+  local roundsTabBody = Notes.getNotebookTabs()[ROUNDS_TAB_INDEX+1].body
+
+  if roundsTabBody:match'^.*():' == nil or roundsTabBody:match'^.*()\n' == nil then
+    return 0
+  end
+
+  local numberIndexEnd = roundsTabBody:match'^.*():' - 1
+  local numberIndexStart = roundsTabBody:match'^.*()\n'
+  local roundsPlayed = tonumber(string.sub(roundsTabBody, numberIndexStart, numberIndexEnd))
+  return roundsPlayed
 end
 
 --[[

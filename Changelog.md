@@ -9,6 +9,8 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 ### Changed
 
 - Update Sum button to display the number of cards in respective zones
+- Update Reset button to show round data before resetting
+  - Shows the number of rounds played, plus the points and number of cards that are in each player's win pile and discard
 
 ---
 

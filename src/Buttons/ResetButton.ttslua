@@ -64,10 +64,43 @@ function stopResetTimer()
 end
 
 function resetGame()
-  log('Game reset')
+  logGameData()
   resetPlayers()
   resetDeck()
   resetRoundsNotebook()
+  log('Game reset')
+end
+
+-- Log game data in case we forgot to trigger results buttons and check the notebook before resetting
+function logGameData()
+  broadcast('Rounds played: '..getRoundsPlayed())
+  logCardPileData('Orange')
+  logCardPileData('Blue')
+  logCardPileData('Discard')
+end
+
+function logCardPileData(targetName)
+  local params = nil
+
+  if targetName == 'Orange' then
+    params = {
+      zoneObjects = players['Orange'].winPile.getObjects()
+    }
+  elseif targetName == 'Blue' then
+    params = {
+      zoneObjects = players['Blue'].winPile.getObjects()
+    }
+  elseif targetName == 'Discard' then
+    params = {
+      zoneObjects = discardZone.getObjects()
+    }
+  else
+    return
+  end
+
+  params.zoneName = targetName
+  params.stopBroadcast = false
+  calculatePointsPrint(params)
 end
 
 function resetPlayers()
