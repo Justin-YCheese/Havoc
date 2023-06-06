@@ -21,6 +21,7 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 ### Fixed
 
 - Randomize cleared card positions a bit more to prevent cards from overlapping exactly and forming a deck
+- Fix Reset button not regenerating bet buttons
 
 ---
 
