@@ -65,6 +65,7 @@ end
 
 function resetGame()
   logGameData()
+  regenerateBetButtons()
   resetPlayers()
   resetDeck()
   resetRoundsNotebook()
