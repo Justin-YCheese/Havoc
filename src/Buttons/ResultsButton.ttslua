@@ -23,13 +23,14 @@ function createResultsButton()
   button.createButton(bResults_vars) -- Make results button
 end
 
--- Puts cards in field into player 1's win pile
+-- Puts cards in field into the win pile of the player who triggered this function
 function results(obj, color, alt_click)
   if players[color] == nil then
     broadcast(PLAYER_HAS_NO_COLOR_BROADCAST_MESSAGE)
     return
   end
 
+  resetBetStates()
   local zoneObjects = fieldZone.getObjects()
 
   -- Calculate, Broadcast, and Record gained points & bonuses

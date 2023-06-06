@@ -9,13 +9,14 @@ function setupShortcuts()
   addHotkey('Get Discard Sum', getDiscardSumShortcut)
   addHotkey('Get My Sum', getMySumShortcut)
   addHotkey("Get Opponent's Sum", getOpponentSumShortcut)
+  addHotkey("Bet", betShortcut)
 end
 
 -- Draw a card for player when hotkey is pressed
 function drawCardShortcut(playerColor)
   local shortcutName = "Draw Card"
 
-  if hasGameStarted(shortcutName) == false or isValidColor(playerColor, shortcutName) == false then
+  if isInGameShortcutUsable(playerColor, shortcutName) == false then
     return
   end
 
@@ -39,7 +40,7 @@ end
 function getMySumShortcut(playerColor)
   local shortcutName = "Get My Sum"
 
-  if hasGameStarted(shortcutName) == false or isValidColor(playerColor, shortcutName) == false then
+  if isInGameShortcutUsable(playerColor, shortcutName) == false then
     return
   end
 
@@ -51,11 +52,12 @@ end
 function getOpponentSumShortcut(playerColor)
   local shortcutName = "Get Opponent Sum"
 
-  if hasGameStarted(shortcutName) == false or isValidColor(playerColor, shortcutName) == false then
+  if isInGameShortcutUsable(playerColor, shortcutName) == false then
     return
   end
 
   local opponentZone = nil
+
   if playerColor == 'Orange' then
     opponentZone = players['Blue'].winPile
   else
@@ -64,6 +66,17 @@ function getOpponentSumShortcut(playerColor)
 
   log("Shortcut: get opponent point sum")
   opponentZone.call('calculatePoints')
+end
+
+-- Trigger bet button based on the given color
+function betShortcut(playerColor)
+  local shortcutName = "Bet"
+
+  if isInGameShortcutUsable(playerColor, shortcutName) == false then
+    return
+  end
+
+  playerBet(playerColor, playerColor)
 end
 
 --[[

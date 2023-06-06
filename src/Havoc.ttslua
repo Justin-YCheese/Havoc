@@ -24,6 +24,7 @@ The main file for running the Havoc (Tabletop Edition) game.
 #include Constants
 #include Deck
 #include Notebook
+#include PlayerManager
 #include Shortcuts
 #include Utility/Messaging
 #include Utility/StringConverter
@@ -47,7 +48,7 @@ players['Blue'] = {
 
 --Table of Player 2 variables (Orange)
 players['Orange'] = {
-  bet_state=false,--If player betted
+  betState=false,--If player betted
   betPos={7,1.15,-3.75}, -- For player's bet position
   sumButtonPos={-19,1.15,-1.4}, -- Position of sum points button
   --class='',     --player's class

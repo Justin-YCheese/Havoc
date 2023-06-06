@@ -65,6 +65,7 @@ end
 
 function resetGame()
   logGameData()
+  regenerateBetButtons()
   resetPlayers()
   resetDeck()
   resetRoundsNotebook()
@@ -101,11 +102,6 @@ function logCardPileData(targetName)
   params.zoneName = targetName
   params.stopBroadcast = false
   calculatePointsPrint(params)
-end
-
-function resetPlayers()
-  players['Blue'].backup = false
-  players['Orange'].backup = false
 end
 
 function resetDeck()

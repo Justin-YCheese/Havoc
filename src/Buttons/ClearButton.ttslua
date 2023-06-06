@@ -32,6 +32,7 @@ function clearField(obj, color)
   addRoundNote('Clear '..getNumCardsInField()..' cards from the field.')
   moveCardsToDiscard()
   regenerateBetButtons()
+  resetBetStates()
 end
 
 function getNumCardsInField()

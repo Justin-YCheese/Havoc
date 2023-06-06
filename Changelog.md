@@ -4,17 +4,24 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
-## v0.6.3 Quality of Life Changes
+## v0.6.3 Display More Data & Bet Shortcut
+
+### Added
+
+- Add bet shortcut which triggers the bet button based on player color
 
 ### Changed
 
 - Update Sum buttons to display the number of cards in their respective zones
 - Update Reset button to show game data before resetting
   - Shows the number of rounds played, plus the points and number of cards that are in the win piles and discard
+- Betting statuses are now tracked so that players can only bet once per round
+  - Pressing the Results, Clear or Reset buttons clears bet statuses for all players, allowing them to bet for the next round/game
 
 ### Fixed
 
-- Added a bit more randomization to cleared card positions to reduce the chance of overlapping cards from forming a deck
+- Randomize cleared card positions a bit more to prevent cards from overlapping exactly and forming a deck
+- Fix Reset button not regenerating bet buttons
 
 ---
 
