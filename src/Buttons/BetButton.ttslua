@@ -60,7 +60,7 @@ function doesBetButtonExist(color)
   return false
 end
 
-function playerBet(obj, player_color, bet_color, alt_click)
+function playerBet(player_color, bet_color)
   if player_color ~= bet_color then
     local logMessage = getColorSpecificLogMessage(player_color, bet_color)
     log(logMessage)
@@ -69,9 +69,14 @@ function playerBet(obj, player_color, bet_color, alt_click)
     return
   end
 
+  if players[bet_color].betState == true then
+    log(player_color..' already bet this round')
+    return
+  end
+
   log('Player '..bet_color..' bets')
   moveCardToBetZone(bet_color)
-  players[bet_color].bet_state = true
+  players[bet_color].betState = true
   local betPlacement = players[bet_color].betPos
   deleteButtonHere(betPlacement)
 end
@@ -97,11 +102,11 @@ function getColorSpecificGlobalMessage(expectedColor)
 end
 
 function orangeBet(obj, color, alt_click)
-  playerBet(obj, color, 'Orange', alt_click)
+  playerBet(color, 'Orange')
 end
 
 function blueBet(obj, color, alt_click)
-  playerBet(obj, color, 'Blue', alt_click)
+  playerBet(color, 'Blue')
 end
 
 --[[

@@ -103,11 +103,6 @@ function logCardPileData(targetName)
   calculatePointsPrint(params)
 end
 
-function resetPlayers()
-  players['Blue'].backup = false
-  players['Orange'].backup = false
-end
-
 function resetDeck()
   local allObjects = getObjects()
   local cardAndDecks = {}
