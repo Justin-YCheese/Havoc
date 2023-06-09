@@ -62,5 +62,13 @@ in the full path to your cloned repository (it should end with '\Havoc')
 1. Create a single player session in Tabletop Simulator
 1. Load Havoc from the Workshop category
 1. Open Atom and load game script files with `CTRL + SHIFT + L`
-1. Copy over latest changes from 'main' branch in the Havoc Tabletop Simulator Edition [git repository](https://github.com/Justin-YCheese/Havoc) to the Atom scripts
+1. Find the base path for Tabletop Simulator
+    - Open Atom
+    - Go to File > Settings > Packages
+    - Click 'Settings' for the tabletopsimulator-lua package
+    - Copy the file path for 'Base path for files you wish to bundle or #include'
+1. Open Windows Explorer and go to the base file path found above
+1. Go to the 'main' branch of the [github repository](https://github.com/Justin-YCheese/Havoc) > Code > Download ZIP
+1. Unzip the file and copy the folder's contents to the base file path
+1. In Atom, send the updated code to Tabletop Simulator by pressing `CTRL + SHIFT + S`
 1. Update the Havoc Steam Workshop mod through Tabletop Simulator
