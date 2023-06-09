@@ -171,7 +171,13 @@ function calculatePointsPrint(params)
   local pointMessage = zoneName..' has '..sum..' points'
 
   if (numCards > 0) then
-    pointMessage = pointMessage..' and '..numCards..' cards'
+    pointMessage = pointMessage..' and '..numCards
+
+    if (numCards == 1) then
+      pointMessage = pointMessage..' card'
+    else
+      pointMessage = pointMessage..' cards'
+    end
   end
 
   -- Bonuses gained
