@@ -45,7 +45,7 @@ function moveCardsToWinPile(color, zoneObjects)
 
   for _, item in ipairs(zoneObjects) do
     -- If in only field zone and the zone surrounding the whole game (so doesn't grab deck)
-    if #item.getZones() == 2 then
+    if #item.getZones() == NUM_OF_ZONES_FOR_FIELD_CARDS and item.tag == 'Card' then
       -- Put cards above win pile at varying heights
       local winPilePosition = {winPlacement[1], winPlacement[2]+5+i, winPlacement[3]}
       item.setPositionSmooth(winPilePosition, false, true)
@@ -72,7 +72,7 @@ function resultAddedPoints(playerColor,zoneObjects)
   -- simulates 'adding' cards from field to wonCards (doesn't actually change wonCards)
   for _, item in pairs(zoneObjects) do
     -- If a card is in only 2 zones (FieldZone and DeckBuilder | So not the deck)
-    if #item.getZones() == 2 and item.tag == 'Card' then
+    if #item.getZones() == NUM_OF_ZONES_FOR_FIELD_CARDS and item.tag == 'Card' then
       numofCards = numofCards + 1
       local name = item.getName()
       -- If not counted yet
