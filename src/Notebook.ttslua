@@ -18,28 +18,47 @@ This file contains notebook-related functions.
 
 -- Adds a new line to Rounds Notebook tab
 function addRoundNote(note)
+
+  local roundsTabBody = Notes.getNotebookTabs()[ROUNDS_TAB_INDEX+1].body
+  local lineNumber = 1
+  local lastRoundNum = getLatestRoundNumber()
+
+  if lastRoundNum != nil then
+    lineNumber = lastRoundNum + 1
+  end
+
   -- Get the Notebook array, Get the Rounds Tab from index, get body of Rounds Tab
   -- Plus one because arrays count from 1, but Notebook Index counts from 0
   local roundsTabBody = Notes.getNotebookTabs()[ROUNDS_TAB_INDEX+1].body
-  -- Get location of line Number in the Body String
-  local numberIndexEnd = 0
-  local numberIndexStart = 0
-  local lineNumber = 0
-
-  if roundsTabBody:match'^.*():' != nil and roundsTabBody:match'^.*()\n' != nil then -- If there is a previous line
-    numberIndexEnd = roundsTabBody:match'^.*():' - 1
-    numberIndexStart = roundsTabBody:match'^.*()\n'
-    lineNumber = tonumber(string.sub(roundsTabBody, numberIndexStart, numberIndexEnd)) + 1
-  else -- The rounds notebook is empty
-    lineNumber = 1
-  end
 
   Notes.editNotebookTab({
     index = ROUNDS_TAB_INDEX,
-    body = roundsTabBody..'\n'..lineNumber..': '..note
+    body = removeNewlinesFromEnd(roundsTabBody)..'\n'..lineNumber..': '..note
   })
 
   log('Adding \"'..note..'\" to Rounds on line '..lineNumber)
+end
+
+function getLatestRoundNumber()
+  local roundsTabBody = Notes.getNotebookTabs()[ROUNDS_TAB_INDEX+1].body
+  local roundNotePattern = "\n(%d+):[^\r\n]*[^\r\n%s]"
+  local lastLine = roundsTabBody:match(".*("..roundNotePattern..")")
+
+  if lastLine == nil then
+    return nil
+  end
+
+  local lastRoundNumber = tonumber(lastLine:match(roundNotePattern))
+
+  if lastRoundNumber == nil then
+    return nil
+  end
+
+  return lastRoundNumber
+end
+
+function removeNewlinesFromEnd(str)
+    return str:gsub("[\r\n]+$", "")
 end
 
 function resetRoundsNotebook()
@@ -49,17 +68,13 @@ function resetRoundsNotebook()
   })
 end
 
-function getRoundsPlayed()
-  local roundsTabBody = Notes.getNotebookTabs()[ROUNDS_TAB_INDEX+1].body
+function addSummaryNote(note)
+  local summaryNotes = Notes.getNotebookTabs()[SUMMARY_TAB_INDEX+1].body
 
-  if roundsTabBody:match'^.*():' == nil or roundsTabBody:match'^.*()\n' == nil then
-    return 0
-  end
-
-  local numberIndexEnd = roundsTabBody:match'^.*():' - 1
-  local numberIndexStart = roundsTabBody:match'^.*()\n'
-  local roundsPlayed = tonumber(string.sub(roundsTabBody, numberIndexStart, numberIndexEnd))
-  return roundsPlayed
+  Notes.editNotebookTab({
+    index = SUMMARY_TAB_INDEX,
+    body = summaryNotes..'\n'..note
+  })
 end
 
 --[[

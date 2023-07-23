@@ -74,18 +74,25 @@ function playerBet(player_color, bet_color)
     return
   end
 
-  log('Player '..bet_color..' bets')
-  moveCardToBetZone(bet_color)
-  players[bet_color].betState = true
-  local betPlacement = players[bet_color].betPos
-  deleteButtonHere(betPlacement)
+  if getDeck() != nil then
+    log('Player '..bet_color..' bets')
+    moveCardToBetZone(bet_color)
+    players[bet_color].betState = true
+    local betPlacement = players[bet_color].betPos
+    deleteButtonHere(betPlacement)
+  end
 end
 
 function moveCardToBetZone(bet_color)
   -- Bet button's place and bet card's place are the same
   local betPlacement = players[bet_color].betPos
+  local deck = getDeck()
 
-  getDeck().takeObject({
+  if deck == nil then
+    return
+  end
+
+  deck.takeObject({
     --Have to flip x cordinate because the takeObject position flips the x value
     position = {-betPlacement[1],betPlacement[2],betPlacement[3]},
     rotation = {0,0,0},
