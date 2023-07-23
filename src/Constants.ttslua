@@ -16,7 +16,9 @@ HAND_GUID['Orange'] = '48113c'
 DISCARD_GUID = '7f3593'
 DECK_BUILDER_GUID = 'b8db70'
 
-EXTRA_DECK_GUID = 'ec62a6' -- Use to spawn a new deck?
+COUNTER_GUID = {}
+COUNTER_GUID['Blue'] = '4e23ff'
+COUNTER_GUID['Orange'] = '30f8ba'
 
 -- Value of face cards
 FACE_CARD_VALUE = 10
