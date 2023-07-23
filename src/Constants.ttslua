@@ -16,9 +16,10 @@ HAND_GUID['Orange'] = '48113c'
 DISCARD_GUID = '7f3593'
 DECK_BUILDER_GUID = 'b8db70'
 
-COUNTER_GUID = {}
-COUNTER_GUID['Blue'] = '4e23ff'
-COUNTER_GUID['Orange'] = '30f8ba'
+SCORE_GUID = {}
+SCORE_GUID['Blue'] = 'f1b2b4'
+SCORE_GUID['Orange'] = '119183'
+SCORE_GUID['Discard'] = '5cf4ba'
 
 -- Value of face cards
 FACE_CARD_VALUE = 10
