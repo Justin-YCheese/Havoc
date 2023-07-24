@@ -39,7 +39,7 @@ players['Blue'] = {
   sumButtonPos={-19,1.15,1.4}, -- Position of sum points button
   --class='',     --player's class
   --drawNum=0,    --amount player will draw by default (for classes?)
-  winPile='',    --player's winpile
+  winPile='',     --player's winpile
   wonCards={},    --Table of cards in player's winPile
   points=0,       --player's points
   hand='',        --player's hand
@@ -53,7 +53,7 @@ players['Orange'] = {
   sumButtonPos={-19,1.15,-1.4}, -- Position of sum points button
   --class='',     --player's class
   --drawNum=0,    --amount player will draw by default (for classes?)
-  winPile='',    --player's winpile
+  winPile='',     --player's winpile
   wonCards={},    --Table of cards in player's winPile
   points=0,       --player's points
   hand='',        --player's hand
@@ -82,6 +82,11 @@ zone_vars = {
   sticky_cards=false
 }
 
+scores = {}
+scores['Blue'] = ''
+scores['Orange'] = ''
+scores['Discard'] = ''
+
 -- Track if players should be allowed to use certain shortcuts or not
 gameStarted = false
 
@@ -96,10 +101,17 @@ function onLoad()
 
   fieldZone = getObjectFromGUID(FIELD_ZONE_GUID)
   deckZone = getObjectFromGUID(DECK_ZONE_GUID)
+
   players['Blue'].winPile = getObjectFromGUID(WIN_PILE_GUID['Blue'])
   players['Orange'].winPile = getObjectFromGUID(WIN_PILE_GUID['Orange'])
-  players['Blue'].hand = getAllObjects(HAND_GUID['Blue'])
-  players['Orange'].hand = getAllObjects(HAND_GUID['Orange'])
+
+  players['Blue'].hand = getObjectFromGUID(HAND_GUID['Blue'])
+  players['Orange'].hand = getObjectFromGUID(HAND_GUID['Orange'])
+
+  scores['Blue'] = getObjectFromGUID(SCORE_GUID['Blue'])
+  scores['Orange'] = getObjectFromGUID(SCORE_GUID['Orange'])
+  scores['Discard'] = getObjectFromGUID(SCORE_GUID['Discard'])
+
   discardZone = getObjectFromGUID(DISCARD_GUID)
   deckBuilder = getObjectFromGUID(DECK_BUILDER_GUID)
 
@@ -179,6 +191,7 @@ function calculatePointsPrint(params)
   local stopBroadcast = params.stopBroadcast
   -- Count the cards in the zone
   local cardTable = {}
+
   for _, item in pairs(zoneObjects) do
     -- If a card
     if item.tag == 'Card' then
