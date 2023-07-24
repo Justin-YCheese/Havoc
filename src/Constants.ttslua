@@ -90,6 +90,7 @@ BET_BUTTON_TOOLTIP_MESSAGE = 'Bet to risk extra cards'
 
 -- Misc
 NUM_OF_ZONES_FOR_FIELD_CARDS = 1 -- The number of zones which a card on the field should be in
+NUM_OF_ZONES_FOR_SPOILS_CARD = 1
 
 --[[
 Constants.ttslua END

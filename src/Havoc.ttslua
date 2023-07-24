@@ -126,7 +126,7 @@ function onLoad()
   createDealButton()
   createBuildDeckButton(deckBuilder)
 
-  createTestButton()
+  -- createTestButton()
 
   setupShortcuts()
 end

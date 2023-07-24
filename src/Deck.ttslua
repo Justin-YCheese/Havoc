@@ -82,9 +82,8 @@ end
 
 -- Prevent cards from stacking when in a Spoils or Graveyard
 function tryObjectEnterContainer(_, object)
-  -- TODO Specify Spoils or Graveyard
   zone = object.getZones()
-  if zone == 1 and (zone == WIN_PILE_GUID['Blue'] or WIN_PILE_GUID['Orange'] or DISCARD_GUID) then
+  if zone == NUM_OF_ZONES_FOR_SPOILS_CARD and (zone == WIN_PILE_GUID['Blue'] or WIN_PILE_GUID['Orange'] or DISCARD_GUID) then
     return object.type != 'Card'
   end
   return true
