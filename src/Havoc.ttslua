@@ -31,6 +31,10 @@ The main file for running the Havoc (Tabletop Edition) game.
 #include Validation
 #include Zones
 
+-- Tools for debugging
+#include Buttons/TestButton
+#include Utility/Debug
+
 players = {}
 --Table of Player Blue variables
 players['Blue'] = {
@@ -119,6 +123,9 @@ function onLoad()
   shuffle(deck)
   createDealButton()
   createBuildDeckButton(deckBuilder)
+
+  createTestButton()
+
   setupShortcuts()
 end
 
