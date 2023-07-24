@@ -133,6 +133,36 @@ function calculatePoints(cardTable, bonusIsSeparate)
   end
 end
 
+-- A simpler version of calculate points which uses the objects instead of an array
+function calculatePointsFromObjects(zoneObjects)
+  broadcast("test calculating points from objects")
+
+  local sum = 0
+  local count = 0
+
+  for _, item in pairs(zoneObjects) do
+    -- If a card
+    if item.tag == 'Card' then
+      local name = item.getName()
+      -- add value of cards to sum
+      sum = sum + stats[name][1]
+      count = count + 1
+    end
+  end
+
+  return sum, count
+end
+
+function calculatePointsFromObjectsPrint(params)
+  local zoneObjects = params.zoneObjects -- All objects in zone
+  local zoneName = params.zoneName
+  local stopBroadcast = params.stopBroadcast
+
+  local sum, numCards = calculatePointsFromObjects(zoneObjects)
+
+  broadcast(zoneName.." has "..sum.." points")
+end
+
 function countCards(cardTable)
   local numCards = 0
 
