@@ -31,7 +31,7 @@ function dealCards()
   createBetButtons()
   createResultsButton()
   createClearButton()
-  createSumButtons()
+  --createSumButtons() --Added Score Counters
   createResetButton(DEFAULT_RESET_BUTTON_LABEL)
   gameStarted = true
 end
