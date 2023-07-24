@@ -25,6 +25,8 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 - Sum buttons
 
+---
+
 ## v0.6.3 Display More Data & Bet Shortcut
 
 ### Added
