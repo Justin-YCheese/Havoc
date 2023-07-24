@@ -4,6 +4,27 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.7.0 Organize & Score Counters
+
+### Added
+
+- Live Score Counters
+- Anti Stacking in Spoils and Graveyard
+
+### Changed
+
+- Shrunk Deck Builder Zone
+- Renamed Tabletop Object scripts
+- Made Spoils, Graveyard, and Field zones taller
+
+### Fixed
+
+- Tablet now displays rules again
+
+### Removed
+
+- Sum buttons
+
 ## v0.6.3 Display More Data & Bet Shortcut
 
 ### Added

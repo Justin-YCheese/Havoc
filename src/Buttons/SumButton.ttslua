@@ -24,7 +24,7 @@ end
 
 function createSumButton(position, rotation, function_owner)
   local sumButtonVars = {
-    click_function='calculatePoints',
+    click_function='tableCalculatePoints',
     function_owner=function_owner,
     label='Sum',
     position=position,

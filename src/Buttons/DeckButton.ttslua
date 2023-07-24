@@ -10,7 +10,7 @@ function createBuildDeckButton(deckBuilder)
     click_function='build',
     function_owner=deckBuilder,
     label='Build Deck',
-    position={-19,4,-9},
+    position={19,4,14},
     rotation={0,180,0},
     width=BIG_BUTTON_WIDTH,
     height=STANDARD_BUTTON_HEIGHT,

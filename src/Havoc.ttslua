@@ -13,6 +13,8 @@ The main file for running the Havoc (Tabletop Edition) game.
 --
 -- Workshop ID: 2723093390
 
+-- TODO: Remove dependancy on Player Won Cards
+
 #include Buttons/BetButton
 #include Buttons/ButtonManager
 #include Buttons/ClearButton
@@ -31,6 +33,10 @@ The main file for running the Havoc (Tabletop Edition) game.
 #include Validation
 #include Zones
 
+-- Tools for debugging
+#include Buttons/TestButton
+#include Utility/Debug
+
 players = {}
 --Table of Player Blue variables
 players['Blue'] = {
@@ -39,7 +45,7 @@ players['Blue'] = {
   sumButtonPos={-19,1.15,1.4}, -- Position of sum points button
   --class='',     --player's class
   --drawNum=0,    --amount player will draw by default (for classes?)
-  winPile='',    --player's winpile
+  winPile='',     --player's winpile
   wonCards={},    --Table of cards in player's winPile
   points=0,       --player's points
   hand='',        --player's hand
@@ -53,7 +59,7 @@ players['Orange'] = {
   sumButtonPos={-19,1.15,-1.4}, -- Position of sum points button
   --class='',     --player's class
   --drawNum=0,    --amount player will draw by default (for classes?)
-  winPile='',    --player's winpile
+  winPile='',     --player's winpile
   wonCards={},    --Table of cards in player's winPile
   points=0,       --player's points
   hand='',        --player's hand
@@ -82,6 +88,11 @@ zone_vars = {
   sticky_cards=false
 }
 
+scores = {}
+scores['Blue'] = ''
+scores['Orange'] = ''
+scores['Discard'] = ''
+
 -- Track if players should be allowed to use certain shortcuts or not
 gameStarted = false
 
@@ -96,10 +107,17 @@ function onLoad()
 
   fieldZone = getObjectFromGUID(FIELD_ZONE_GUID)
   deckZone = getObjectFromGUID(DECK_ZONE_GUID)
+
   players['Blue'].winPile = getObjectFromGUID(WIN_PILE_GUID['Blue'])
   players['Orange'].winPile = getObjectFromGUID(WIN_PILE_GUID['Orange'])
-  players['Blue'].hand = getAllObjects(HAND_GUID['Blue'])
-  players['Orange'].hand = getAllObjects(HAND_GUID['Orange'])
+
+  players['Blue'].hand = getObjectFromGUID(HAND_GUID['Blue'])
+  players['Orange'].hand = getObjectFromGUID(HAND_GUID['Orange'])
+
+  scores['Blue'] = getObjectFromGUID(SCORE_GUID['Blue'])
+  scores['Orange'] = getObjectFromGUID(SCORE_GUID['Orange'])
+  scores['Discard'] = getObjectFromGUID(SCORE_GUID['Discard'])
+
   discardZone = getObjectFromGUID(DISCARD_GUID)
   deckBuilder = getObjectFromGUID(DECK_BUILDER_GUID)
 
@@ -107,6 +125,9 @@ function onLoad()
   shuffle(deck)
   createDealButton()
   createBuildDeckButton(deckBuilder)
+
+  -- createTestButton()
+
   setupShortcuts()
 end
 
@@ -133,6 +154,34 @@ function calculatePoints(cardTable, bonusIsSeparate)
   end
 end
 
+-- A simpler version of calculate points which uses the objects instead of an array
+function calculatePointsFromObjects(zoneObjects)
+  local sum = 0
+  local count = 0
+
+  for _, item in pairs(zoneObjects) do
+    -- If a card
+    if item.tag == 'Card' then
+      local name = item.getName()
+      -- add value of cards to sum
+      sum = sum + stats[name][1]
+      count = count + 1
+    end
+  end
+
+  return sum, count
+end
+
+function calculatePointsFromObjectsPrint(params)
+  local zoneObjects = params.zoneObjects -- All objects in zone
+  local zoneName = params.zoneName
+  local stopBroadcast = params.stopBroadcast
+
+  local sum, numCards = calculatePointsFromObjects(zoneObjects)
+
+  broadcast(zoneName.." has "..sum.." points")
+end
+
 function countCards(cardTable)
   local numCards = 0
 
@@ -149,6 +198,7 @@ function calculatePointsPrint(params)
   local stopBroadcast = params.stopBroadcast
   -- Count the cards in the zone
   local cardTable = {}
+
   for _, item in pairs(zoneObjects) do
     -- If a card
     if item.tag == 'Card' then

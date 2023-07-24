@@ -16,7 +16,10 @@ HAND_GUID['Orange'] = '48113c'
 DISCARD_GUID = '7f3593'
 DECK_BUILDER_GUID = 'b8db70'
 
-EXTRA_DECK_GUID = 'ec62a6' -- Use to spawn a new deck?
+SCORE_GUID = {}
+SCORE_GUID['Blue'] = 'f1b2b4'
+SCORE_GUID['Orange'] = '119183'
+SCORE_GUID['Discard'] = '5cf4ba'
 
 -- Value of face cards
 FACE_CARD_VALUE = 10
@@ -84,6 +87,10 @@ DISCARD_Y_OFFSET = 5
 PLAYER_HAS_NO_COLOR_BROADCAST_MESSAGE = 'The player does not have a color'
 PLAYER_HAS_NO_COLOR_LOG_MESSAGE = 'A player with no color tried to press results button'
 BET_BUTTON_TOOLTIP_MESSAGE = 'Bet to risk extra cards'
+
+-- Misc
+NUM_OF_ZONES_FOR_FIELD_CARDS = 1 -- The number of zones which a card on the field should be in
+NUM_OF_ZONES_FOR_SPOILS_CARD = 1
 
 --[[
 Constants.ttslua END
