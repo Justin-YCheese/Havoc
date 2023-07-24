@@ -13,6 +13,8 @@ The main file for running the Havoc (Tabletop Edition) game.
 --
 -- Workshop ID: 2723093390
 
+-- TODO: Remove dependancy on Player Won Cards
+
 #include Buttons/BetButton
 #include Buttons/ButtonManager
 #include Buttons/ClearButton
@@ -154,8 +156,6 @@ end
 
 -- A simpler version of calculate points which uses the objects instead of an array
 function calculatePointsFromObjects(zoneObjects)
-  broadcast("test calculating points from objects")
-
   local sum = 0
   local count = 0
 
