@@ -74,7 +74,13 @@ end
 
 -- Log game data in case we forgot to trigger results buttons and check the notebook before resetting
 function logGameData()
-  broadcast('Rounds played: '..getRoundsPlayed())
+  local latestRoundNumber = getLatestRoundNumber()
+
+  if latestRoundNumber == nil then
+    latestRoundNumber = 0
+  end
+
+  broadcast('Rounds played: '..tostring(latestRoundNumber))
   logCardPileData('Orange')
   logCardPileData('Blue')
   logCardPileData('Discard')

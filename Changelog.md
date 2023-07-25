@@ -20,6 +20,9 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 ### Fixed
 
 - Tablet now displays rules again
+- Fix bug where Results, Clear and Reset buttons stop working after manually modifying the Rounds notebook
+  - Specifically by entering a newline at the end of the notebook
+- Fix bug where a nil operation error appears whenever a player attempts to bet when the deck is empty
 
 ### Removed
 
