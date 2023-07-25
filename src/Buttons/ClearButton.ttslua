@@ -40,7 +40,7 @@ function getNumCardsInField()
   local numCards = 0
 
   for _, item in pairs(fieldZoneObjects) do
-    if #item.getZones() == 2 and item.tag == 'Card' then
+    if #item.getZones() == NUM_OF_ZONES_FOR_FIELD_CARDS and item.tag == 'Card' then
       numCards = numCards + 1
     end
   end
@@ -54,7 +54,7 @@ function moveCardsToDiscard()
 
     for _, item in ipairs(fieldZoneObjects) do
       -- If in only field zone and the zone surrounding the whole game (so doesn't grab deck)
-      if #item.getZones() == 2 then
+      if #item.getZones() == NUM_OF_ZONES_FOR_FIELD_CARDS and item.tag == 'Card' then
         -- Jitter is for 'shaking' the cards slightly to reduce a chance of exactly overlapping cards
         local newPosition = getRandomDiscardPosition(i)
         item.setPositionSmooth(newPosition, false, true)
