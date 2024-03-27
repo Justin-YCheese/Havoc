@@ -1,10 +1,11 @@
 --[[
-Shortcut.lua START
+Shortcuts.lua START
 
 This file contains shortcut-related functions.
 ]]
 
 function setupShortcuts()
+  log("Setting up shortcuts")
   addHotkey("Draw Card", drawCardShortcut)
   addHotkey("Get Discard Sum", getDiscardSumShortcut)
   addHotkey("Get My Sum", getMySumShortcut)
@@ -44,13 +45,8 @@ function getMySumShortcut(playerColor)
     return
   end
 
-  local pointCalcParams = {
-    zoneObjects = players[playerColor].winPile.getObjects(),
-    zoneName = playerColor
-  }
-
-  log("This is in GetMySumShortcut")
-  players[playerColor].targetPlayer.winPile.call("tableCalculatePoints")
+  log("Shortcut: get my point sum")
+  players[playerColor].winPile.call("tableCalculatePoints")
 end
 
 -- Show sum of points in opponent's win pile if hotkey is pressed

@@ -77,6 +77,8 @@ in the full path to your cloned repository (it should end with '\Havoc')
 
 - Tabletop Simulator no longer supports Atom so developers need to switch to Visual Studio Code (VS Code) instead
 - [Tabletop Simulator extension documentation](https://tts-vscode.rolandostar.com/extension/setup)
+- Note that `require` checks `~/Documents/Tabletop Simulator` first and any included paths afterwards
+  - If files have duplicate names, then subsequent files are ignored
 
 1. Install [Visual Studio Code](https://code.visualstudio.com/download)
 1. Install [Tabletop Simulator extension for VS Code](https://marketplace.visualstudio.com/items?itemName=rolandostar.tabletopsimulator-lua)

@@ -1,5 +1,5 @@
 --[[
-Main.lua START
+Havoc.lua START
 
 The main file for running the Havoc (Tabletop Edition) game.
 ]]
@@ -254,5 +254,5 @@ function calculatePointsPrint(params)
 end
 
 --[[
-Main.lua END
+Havoc.lua END
 ]]
