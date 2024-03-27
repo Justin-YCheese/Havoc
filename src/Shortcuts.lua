@@ -1,13 +1,13 @@
 --[[
-Shortcut.ttslua START
+Shortcut.lua START
 
 This file contains shortcut-related functions.
 ]]
 
 function setupShortcuts()
-  addHotkey('Draw Card', drawCardShortcut)
-  addHotkey('Get Discard Sum', getDiscardSumShortcut)
-  addHotkey('Get My Sum', getMySumShortcut)
+  addHotkey("Draw Card", drawCardShortcut)
+  addHotkey("Get Discard Sum", getDiscardSumShortcut)
+  addHotkey("Get My Sum", getMySumShortcut)
   addHotkey("Get Opponent's Sum", getOpponentSumShortcut)
   addHotkey("Bet", betShortcut)
 end
@@ -33,7 +33,7 @@ function getDiscardSumShortcut()
   end
 
   log("Shortcut: get discard point sum")
-  discardZone.call('calculatePoints')
+  discardZone.call("tableCalculatePoints")
 end
 
 -- Show sum of points in player's win pile if hotkey is pressed
@@ -44,8 +44,13 @@ function getMySumShortcut(playerColor)
     return
   end
 
-  log("Shortcut: get my point sum")
-  players[playerColor].winPile.call('calculatePoints')
+  local pointCalcParams = {
+    zoneObjects = players[playerColor].winPile.getObjects(),
+    zoneName = playerColor
+  }
+
+  log("This is in GetMySumShortcut")
+  players[playerColor].targetPlayer.winPile.call("tableCalculatePoints")
 end
 
 -- Show sum of points in opponent's win pile if hotkey is pressed
@@ -58,14 +63,14 @@ function getOpponentSumShortcut(playerColor)
 
   local opponentZone = nil
 
-  if playerColor == 'Orange' then
-    opponentZone = players['Blue'].winPile
+  if playerColor == "Orange" then
+    opponentZone = players["Blue"].winPile
   else
-    opponentZone = players['Orange'].winPile
+    opponentZone = players["Orange"].winPile
   end
 
   log("Shortcut: get opponent point sum")
-  opponentZone.call('calculatePoints')
+  opponentZone.call("tableCalculatePoints")
 end
 
 -- Trigger bet button based on the given color
@@ -80,5 +85,5 @@ function betShortcut(playerColor)
 end
 
 --[[
-Shortcuts.ttslua END
+Shortcuts.lua END
 ]]

@@ -1,5 +1,5 @@
 --[[
-Messaging.ttslua START
+Messaging.lua START
 
 This file contains functions that the reset button triggers.
 ]]
@@ -10,5 +10,5 @@ function broadcast(message)
 end
 
 --[[
-Messaging.ttslua END
+Messaging.lua END
 ]]

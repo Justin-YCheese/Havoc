@@ -1,8 +1,9 @@
 --[[
-Zones.ttslua START
+Zones.lua START
 
 This file contains zone-related functions
 ]]
+
 -- Runs when an object enters a zone
 function onObjectEnterZone(zone, object)
    -- Color of player who owns zone
@@ -56,5 +57,5 @@ function updateScore(zone)
 end
 
 --[[
-Zones.ttslua END
+Zones.lua END
 ]]

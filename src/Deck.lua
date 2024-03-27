@@ -1,5 +1,5 @@
 --[[
-Deck.ttslua START
+Deck.lua START
 
 This file contains deck and card-related functions.
 ]]
@@ -90,5 +90,5 @@ function tryObjectEnterContainer(_, object)
 end
 
 --[[
-Deck.ttslua END
+Deck.lua END
 ]]

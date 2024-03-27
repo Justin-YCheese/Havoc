@@ -1,5 +1,5 @@
 --[[
-Constants.ttslua START
+Constants.lua START
 
 This file contains global constants.
 ]]
@@ -93,5 +93,5 @@ NUM_OF_ZONES_FOR_FIELD_CARDS = 1 -- The number of zones which a card on the fiel
 NUM_OF_ZONES_FOR_SPOILS_CARD = 1
 
 --[[
-Constants.ttslua END
+Constants.lua END
 ]]

@@ -1,5 +1,5 @@
 --[[
-Notebook.ttslua START
+Notebook.lua START
 
 This file contains notebook-related functions.
 ]]
@@ -78,5 +78,5 @@ function addSummaryNote(note)
 end
 
 --[[
-Notebook.ttslua END
+Notebook.lua END
 ]]

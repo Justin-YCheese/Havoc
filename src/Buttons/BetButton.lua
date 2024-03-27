@@ -1,5 +1,5 @@
 --[[
-BetButton.ttslua START
+BetButton.lua START
 
 This file contains functions that the reset button triggers.
 ]]
@@ -117,5 +117,5 @@ function blueBet(obj, color, alt_click)
 end
 
 --[[
-BetButton.ttslua END
+BetButton.lua END
 ]]

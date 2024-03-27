@@ -1,5 +1,5 @@
 --[[
-Havoc.ttslua START
+Main.lua START
 
 The main file for running the Havoc (Tabletop Edition) game.
 ]]
@@ -15,27 +15,27 @@ The main file for running the Havoc (Tabletop Edition) game.
 
 -- TODO: Remove dependancy on Player Won Cards
 
-#include Buttons/BetButton
-#include Buttons/ButtonManager
-#include Buttons/ClearButton
-#include Buttons/DealButton
-#include Buttons/DeckButton
-#include Buttons/ResetButton
-#include Buttons/ResultsButton
-#include Buttons/SumButton
-#include Constants
-#include Deck
-#include Notebook
-#include PlayerManager
-#include Shortcuts
-#include Utility/Messaging
-#include Utility/StringConverter
-#include Validation
-#include Zones
+require("src/Buttons/BetButton")
+require("src/Buttons/ButtonManager")
+require("src/Buttons/ClearButton")
+require("src/Buttons/DealButton")
+require("src/Buttons/DeckButton")
+require("src/Buttons/ResetButton")
+require("src/Buttons/ResultsButton")
+require("src/Buttons/SumButton")
+require("src/Constants")
+require("src/Deck")
+require("src/Notebook")
+require("src/PlayerManager")
+require("src/Shortcuts")
+require("src/Utility/Messaging")
+require("src/Utility/StringConverter")
+require("src/Validation")
+require("src/Zones")
 
 -- Tools for debugging
-#include Buttons/TestButton
-#include Utility/Debug
+require("src/Buttons/TestButton")
+require("src/Utility/Debug")
 
 players = {}
 --Table of Player Blue variables
@@ -252,6 +252,7 @@ function calculatePointsPrint(params)
     end
   end
 end
+
 --[[
-Hvaco.ttslua END
+Main.lua END
 ]]

@@ -1,5 +1,5 @@
 --[[
-StringConverter.ttslua START
+StringConverter.lua START
 
 This file contains functions that the reset button triggers.
 ]]
@@ -9,5 +9,5 @@ function positionToString(position)
 end
 
 --[[
-StringConverter.ttslua END
+StringConverter.lua END
 ]]

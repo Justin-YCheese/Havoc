@@ -1,5 +1,5 @@
 --[[
-ButtonManager.ttslua START
+ButtonManager.lua START
 
 This file contains functions for modifying or checking button state.
 ]]
@@ -15,5 +15,5 @@ function deleteButtonHere(position)
 end
 
 --[[
-ButtonManager.ttslua END
+ButtonManager.lua END
 ]]

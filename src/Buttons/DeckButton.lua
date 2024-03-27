@@ -1,5 +1,5 @@
 --[[
-DeckButton.ttslua START
+DeckButton.lua START
 
 This file contains functions that the reset button triggers.
 ]]
@@ -24,5 +24,5 @@ function createBuildDeckButton(deckBuilder)
 end
 
 --[[
-DeckButton.ttslua END
+DeckButton.lua END
 ]]

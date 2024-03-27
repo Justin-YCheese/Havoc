@@ -1,5 +1,5 @@
 --[[
-Validation.ttslua START
+Validation.lua START
 
 This file contains functions for checking the status or conditions of things.
 ]]
@@ -28,5 +28,5 @@ function hasGameStarted(shortcutName)
 end
 
 --[[
-Validation.ttslua END
+Validation.lua END
 ]]

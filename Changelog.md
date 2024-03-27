@@ -4,6 +4,13 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.7.1 VSCode Migration
+
+- Migrates the codebase to VSCode since Atom was sunsetted
+- All functionality remains the same
+
+---
+
 ## v0.7.0 Organize & Score Counters
 
 ### Added
@@ -23,6 +30,7 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 - Fix bug where Results, Clear and Reset buttons stop working after manually modifying the Rounds notebook
   - Specifically by entering a newline at the end of the notebook
 - Fix bug where a nil operation error appears whenever a player attempts to bet when the deck is empty
+- Fix bug where summing shortcuts trigger a function-not-found error
 
 ### Removed
 

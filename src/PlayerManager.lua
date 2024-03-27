@@ -1,5 +1,5 @@
 --[[
-PlayerManager.ttslua START
+PlayerManager.lua START
 
 This file contains functions for modifying or checking player state
 ]]
@@ -20,5 +20,5 @@ function resetBetStates()
 end
 
 --[[
-PlayerManager.ttslua END
+PlayerManager.lua END
 ]]

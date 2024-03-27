@@ -1,5 +1,5 @@
---Blue's win pile
-owner = 'Blue'
+-- Discard Pile
+owner = 'Discard'
 
 -- Table of common zone variables
 zone_vars = Global.getTable('zone_vars')

@@ -1,5 +1,5 @@
 --[[
-DealButton.ttslua START
+DealButton.lua START
 
 This file contains functions that the reset button triggers.
 ]]
@@ -37,5 +37,5 @@ function dealCards()
 end
 
 --[[
-DealButton.ttslua END
+DealButton.lua END
 ]]
