@@ -87,7 +87,8 @@ function resultAddedPoints(playerColor,zoneObjects)
           table.insert(bonusCards, name)
           if not player.backup then
             player.backup = true
-            backupMessage = 'and got Backup!'
+            -- Backup removed from the game
+            -- backupMessage = 'and got Backup!'
           end
         end
       end
