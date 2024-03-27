@@ -1,5 +1,5 @@
 --[[
-SumButton.ttslua START
+SumButton.lua START
 
 This file contains functions that the reset button triggers.
 ]]
@@ -41,5 +41,5 @@ function createSumButton(position, rotation, function_owner)
 end
 
 --[[
-SumButton.ttslua END
+SumButton.lua END
 ]]

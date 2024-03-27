@@ -1,5 +1,5 @@
 --[[
-ClearButton.ttslua START
+ClearButton.lua START
 
 This file contains functions that the reset button triggers.
 ]]
@@ -77,5 +77,5 @@ function getRandomDiscardPosition(numIterations)
 end
 
 --[[
-ClearButton.ttslua END
+ClearButton.lua END
 ]]

@@ -1,10 +1,11 @@
 --[[
-Shortcut.ttslua START
+Shortcuts.lua START
 
 This file contains shortcut-related functions.
 ]]
 
 function setupShortcuts()
+  log("Setting up shortcuts")
   addHotkey("Draw Card", drawCardShortcut)
   addHotkey("Get Discard Sum", getDiscardSumShortcut)
   addHotkey("Get My Sum", getMySumShortcut)
@@ -80,5 +81,5 @@ function betShortcut(playerColor)
 end
 
 --[[
-Shortcuts.ttslua END
+Shortcuts.lua END
 ]]

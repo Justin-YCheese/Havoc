@@ -1,5 +1,5 @@
 --[[
-ResetButton.ttslua START
+ResetButton.lua START
 
 This file contains functions that the reset button triggers.
 ]]
@@ -142,5 +142,5 @@ function resetDeck()
 end
 
 --[[
-ResetButton.ttslua END
+ResetButton.lua END
 ]]

@@ -1,5 +1,5 @@
 --[[
-ResultsButton.ttslua START
+ResultsButton.lua START
 
 This file contains functions that the reset button triggers.
 ]]
@@ -125,5 +125,5 @@ function resultAddedPoints(playerColor,zoneObjects)
 end
 
 --[[
-ResultsButton.ttslua END
+ResultsButton.lua END
 ]]
