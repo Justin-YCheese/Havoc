@@ -9,6 +9,10 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 - Migrates the codebase to VSCode since Atom was sunsetted
 - All functionality remains the same
 
+### Fixed
+
+- Remove backup message on Results button trigger
+
 ---
 
 ## v0.7.0 Organize & Score Counters
