@@ -10,7 +10,7 @@ A card game by Justin and Brandon.
 
 ## Rule Book
 
-If you want to learn how to play the game, here is the [rule book](https://docs.google.com/document/d/1ESWBAIITw3sij_6mAaZukogW9wVgF9ka4w8vCTnF8v0/edit?usp=sharing)! It is updated when any new changes are made.
+If you want to learn how to play the game, here is the [rule book](https://docs.google.com/document/d/1foQJ5_BKYie_It4hxwMqEcR7xeiID4BLHJoUC3gFIMc/edit?usp=sharing)! It is updated when any new changes are made.
 
 ## Installation Steps
 
