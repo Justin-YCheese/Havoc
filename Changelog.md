@@ -4,6 +4,18 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.7.2 Quality of Life Changes
+
+### Added
+
+- Highlight four-of-a-kinds in win piles
+
+### Fixed
+
+- Fix onObjectLeaveZone error messages when quitting to the TTS main menu
+
+---
+
 ## v0.7.1 VSCode Migration
 
 - Migrates the codebase to VSCode since Atom was sunsetted
