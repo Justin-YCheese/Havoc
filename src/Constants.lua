@@ -56,6 +56,7 @@ STARTING_ROUNDS_NOTEBOOK_LINE = 'Recording Round Data Here'
 WHITE = {1, 1, 1}
 BLACK = {0, 0, 0}
 RED = {1, 0, 0}
+BRIGHT_PURPLE = {212, 0, 255}
 
 -- Button colors
 BUTTON_BACKGROUND_COLOR = WHITE
@@ -87,6 +88,9 @@ DISCARD_Y_OFFSET = 5
 PLAYER_HAS_NO_COLOR_BROADCAST_MESSAGE = 'The player does not have a color'
 PLAYER_HAS_NO_COLOR_LOG_MESSAGE = 'A player with no color tried to press results button'
 BET_BUTTON_TOOLTIP_MESSAGE = 'Bet to risk extra cards'
+
+-- Card constants
+FOUR_OF_A_KIND_HIGHLIGHT_COLOR = BRIGHT_PURPLE
 
 -- Misc
 NUM_OF_ZONES_FOR_FIELD_CARDS = 1 -- The number of zones which a card on the field should be in
