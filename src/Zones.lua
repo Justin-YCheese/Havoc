@@ -36,6 +36,11 @@ function onObjectEnterZone(zone, object)
 end
 
 function onObjectLeaveZone(zone, object)
+  -- Check if game is still running before continuing
+  if Info == nil or Info.name == nil then 
+    return 
+  end
+  
   local color = zone.getVar('owner') -- Color of player who owns zone
 
   if color != nil and object != nil then
