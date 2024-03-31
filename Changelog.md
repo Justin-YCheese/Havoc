@@ -9,10 +9,8 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 ### Added
 
 - Highlight four-of-a-kinds in win piles
-
-### Fixed
-
-- Fix onObjectLeaveZone error messages when quitting to the TTS main menu
+- New shortcut: press 1 or 2 when hovering over a card in your hand to quickly play it on the field
+  - The key pressed corresponds to where the card will be placed on the board
 
 ---
 
