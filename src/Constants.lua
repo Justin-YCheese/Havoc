@@ -64,6 +64,9 @@ BUTTON_TEXT_COLOR = BLACK
 BUTTON_WARNING_BACKGROUND_COLOR = RED
 BUTTON_WARNING_TEXT_COLOR = WHITE
 
+-- Card color contants
+FOUR_OF_A_KIND_HIGHLIGHT_COLOR = BRIGHT_PURPLE
+
 -- Button attributes
 SMALL_BUTTON_WIDTH = 900
 STANDARD_BUTTON_WIDTH = 1200
@@ -89,8 +92,10 @@ PLAYER_HAS_NO_COLOR_BROADCAST_MESSAGE = 'The player does not have a color'
 PLAYER_HAS_NO_COLOR_LOG_MESSAGE = 'A player with no color tried to press results button'
 BET_BUTTON_TOOLTIP_MESSAGE = 'Bet to risk extra cards'
 
--- Card constants
-FOUR_OF_A_KIND_HIGHLIGHT_COLOR = BRIGHT_PURPLE
+-- Shortcut constants
+PLAY_CARD_X_OFFSET = 2
+PLAY_CARD_Y_OFFSET = 3
+PLAY_CARD_Z_OFFSET = 3
 
 -- Misc
 NUM_OF_ZONES_FOR_FIELD_CARDS = 1 -- The number of zones which a card on the field should be in
