@@ -8,8 +8,6 @@ function setupShortcuts()
   log("Setting up shortcuts")
   addHotkey("Draw Card", drawCardShortcut)
   addHotkey("Get Discard Sum", getDiscardSumShortcut)
-  addHotkey("Get My Sum", getMySumShortcut)
-  addHotkey("Get Opponent's Sum", getOpponentSumShortcut)
   addHotkey("Bet", betShortcut)
 end
 
@@ -37,38 +35,6 @@ function getDiscardSumShortcut()
   discardZone.call("tableCalculatePoints")
 end
 
--- Show sum of points in player's win pile if hotkey is pressed
-function getMySumShortcut(playerColor)
-  local shortcutName = "Get My Sum"
-
-  if isInGameShortcutUsable(playerColor, shortcutName) == false then
-    return
-  end
-
-  log("Shortcut: get my point sum")
-  players[playerColor].winPile.call("tableCalculatePoints")
-end
-
--- Show sum of points in opponent's win pile if hotkey is pressed
-function getOpponentSumShortcut(playerColor)
-  local shortcutName = "Get Opponent Sum"
-
-  if isInGameShortcutUsable(playerColor, shortcutName) == false then
-    return
-  end
-
-  local opponentZone = nil
-
-  if playerColor == "Orange" then
-    opponentZone = players["Blue"].winPile
-  else
-    opponentZone = players["Orange"].winPile
-  end
-
-  log("Shortcut: get opponent point sum")
-  opponentZone.call("tableCalculatePoints")
-end
-
 -- Trigger bet button based on the given color
 function betShortcut(playerColor)
   local shortcutName = "Bet"
@@ -82,7 +48,7 @@ end
 
 -- Overwrites default behavior and setup some shortcuts when number keys are pressed on cards
 function onObjectNumberTyped(object, player_color, number)
-  if object.tag != 'Card' then
+  if object.tag ~= 'Card' then
     return
   end
   
@@ -111,7 +77,7 @@ end
 -- Move a card from a player's hand to the field based on the key pressed
 -- Only keys "1" and "2" are supported
 function playCardFromHand(object, player_color, key_pressed)
-  if object.tag != 'Card' then
+  if object.tag ~= 'Card' then
     return
   end
 
