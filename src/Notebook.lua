@@ -18,12 +18,10 @@ This file contains notebook-related functions.
 
 -- Adds a new line to Rounds Notebook tab
 function addRoundNote(note)
-
-  local roundsTabBody = Notes.getNotebookTabs()[ROUNDS_TAB_INDEX+1].body
   local lineNumber = 1
   local lastRoundNum = getLatestRoundNumber()
 
-  if lastRoundNum != nil then
+  if lastRoundNum ~= nil then
     lineNumber = lastRoundNum + 1
   end
 

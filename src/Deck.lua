@@ -61,7 +61,7 @@ end
 function dealDeck(number, playerColor)
   local deck = getDeck()
 
-  if deck != nil then
+  if deck ~= nil then
     local locked = deck.locked
 
     if not locked then
@@ -84,7 +84,7 @@ end
 function tryObjectEnterContainer(_, object)
   zone = object.getZones()
   if zone == NUM_OF_ZONES_FOR_SPOILS_CARD and (zone == WIN_PILE_GUID['Blue'] or WIN_PILE_GUID['Orange'] or DISCARD_GUID) then
-    return object.type != 'Card'
+    return object.type ~= 'Card'
   end
   return true
 end

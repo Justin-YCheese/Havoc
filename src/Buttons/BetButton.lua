@@ -74,7 +74,7 @@ function playerBet(player_color, bet_color)
     return
   end
 
-  if getDeck() != nil then
+  if getDeck() ~= nil then
     log('Player '..bet_color..' bets')
     moveCardToBetZone(bet_color)
     players[bet_color].betState = true

@@ -9,10 +9,10 @@ function onObjectEnterZone(zone, object)
    -- Color of player who owns zone
   local color = zone.getVar('owner')
 
-  if color != nil and object != nil then
+  if color ~= nil and object ~= nil then
     updateScore(zone)
     -- A win or discard pile and card entering
-    if (color!='Discard' and zone==players[color].winPile) then
+    if (color ~='Discard' and zone==players[color].winPile) then
       --So both cards and decks activate layout
       zone.LayoutZone.layout()
 
@@ -43,11 +43,11 @@ function onObjectLeaveZone(zone, object)
   
   local color = zone.getVar('owner') -- Color of player who owns zone
 
-  if color != nil and object != nil then
+  if color ~= nil and object ~= nil then
     updateScore(zone)
     -- A win or discard pile and card entering
     -- If zone is discard than color is discard which isn't a player
-    if (color!='Discard' and zone==players[color].winPile and object.tag=='Card') then
+    if (color~='Discard' and zone==players[color].winPile and object.tag=='Card') then
       --Can optionaly add 'true' as a parameter to log cards
       -- Remove card from player's wonCards Table (Player and card name)
       local player = players[color]
@@ -74,7 +74,7 @@ function updateScore(zone)
   -- Need to finish below
   -- highlightBonusCards(cardTable, "Yellow")
 
-  if owner != 'Discard' then
+  if owner ~= 'Discard' then
     scoreText.TextTool.setValue("Score: "..points)
   else
     scoreText.TextTool.setValue("Total: "..points)
