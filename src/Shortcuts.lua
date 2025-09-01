@@ -7,7 +7,6 @@ This file contains shortcut-related functions.
 function setupShortcuts()
   log("Setting up shortcuts")
   addHotkey("Draw Card", drawCardShortcut)
-  addHotkey("Get Discard Sum", getDiscardSumShortcut)
   addHotkey("Bet", betShortcut)
 end
 
@@ -21,18 +20,6 @@ function drawCardShortcut(playerColor)
 
   log("Shortcut: deal a card to " .. playerColor .. " player")
   dealDeck(1, playerColor)
-end
-
--- Show sum of points in discard if hotkey is pressed
-function getDiscardSumShortcut()
-  local shortcutName = "Get Discard Sum"
-
-  if hasGameStarted(shortcutName) == false then
-    return
-  end
-
-  log("Shortcut: get discard point sum")
-  discardZone.call("tableCalculatePoints")
 end
 
 -- Trigger bet button based on the given color
