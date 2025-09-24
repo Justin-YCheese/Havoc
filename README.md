@@ -29,6 +29,8 @@ If you want to learn how to play the game, here is the [rule book](https://docs.
 
 ## Development Environment Setup
 
+- TODO: Update instructions for VS Code
+
 1. Clone the Havoc Tabletop Simulator Edition [git repository](https://github.com/Justin-YCheese/Havoc)
 1. Download [Atom](https://atom.io/)
 1. Open Atom > go to Settings > Install > search for 'tabletop' > install tabletopsimulator-lua
@@ -36,8 +38,8 @@ If you want to learn how to play the game, here is the [rule book](https://docs.
 1. Get added as a Havoc Steam Workshop collaborator
 1. Subscribe to the [Havoc mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2723093390&searchtext=Havoc)
 1. Follow the installation steps to get the mod, but start a single player session instead
-1. In Atom, press `CTRL + SHIFT + L` to load game script files
-1. Edit script files and use `CTRL+ SHIFT + S` to test in Tabletop Simulator
+1. In Atom, press `CTRL + ALT + L` to load game script files
+1. Edit script files and use `CTRL+ ALT + S` to test in Tabletop Simulator
 
 ### With Github
 
@@ -59,6 +61,8 @@ in the full path to your cloned repository (it should end with '\Havoc')
 
 ### Steps
 
+- TODO: Need to be updated for VS Code
+
 1. Create a single player session in Tabletop Simulator
 1. Load Havoc from the Workshop category
 1. Open Atom and load game script files with `CTRL + SHIFT + L`
@@ -70,7 +74,7 @@ in the full path to your cloned repository (it should end with '\Havoc')
 1. Open Windows Explorer and go to the base file path found above
 1. Go to the 'main' branch of the [github repository](https://github.com/Justin-YCheese/Havoc) > Code > Download ZIP
 1. Unzip the file and copy the folder's contents to the base file path
-1. In Atom, send the updated code to Tabletop Simulator by pressing `CTRL + SHIFT + S`
+1. In Atom, send the updated code to Tabletop Simulator by pressing `CTRL + ALT + S`
 1. Update the Havoc Steam Workshop mod through Tabletop Simulator
 
 ### Visual Studio Code Migration
@@ -84,13 +88,22 @@ in the full path to your cloned repository (it should end with '\Havoc')
 1. Install [Tabletop Simulator extension for VS Code](https://marketplace.visualstudio.com/items?itemName=rolandostar.tabletopsimulator-lua)
 1. Open Tabletop Simulator, open a game of Havoc
 1. Open VS Code and press `CTRL + ALT + L` to load game script files
-1. Make a small change to the Global file and use `CTRL + SHIFT + S` to send script changes to Tabletop Simulator. Check to make sure the change is uploaded. Revert the change when done testing.
-1. Open ATOM, go to File > Settings > Packages > tabletopsimulator-lua Settings and copy the value for 'Base path for files you wish to bundle or #include'
+1. Make a small change to the Global file and use `CTRL + ALT + S` to send script changes to Tabletop Simulator. Check to make sure the change is uploaded. Revert the change when done testing.
+1. Open ATOM, go to File > Settings > Packages > tabletopsimulator-lua Settings and copy the value for 'Base path for files you wish to bundle or #include'. The path should lead to the repo folder.
 1. In VS Code, go to Extensions list (four squares icon) > right-click "Tabletop Simulator Lua" extension > Extension Settings. Under "Include Other File Paths", paste the copied file path from Atom.
 
 ### VS Code Extension Controls
 
-- Commands have to be done while VS Code is active
-- Seems like Atom cannot be open while using these commands either
+- Commands have to be done while VS Code and Havoc TTS are open/running
 - Load game script files = `CTRL + ALT + L`
-- Send local script files to Tabletop Simulator = `CTRL+ SHIFT + S`
+- Send local script files to Tabletop Simulator = `CTRL+ ALT + S`
+
+### Fixing TTS Save/Get Scripts Not Found
+
+- Loading and saving files to/from Tabletop Simulator stopped working due to one of the VSCode updates (~Aug 2025)
+- To fix this, follow the steps below
+
+1. Go to `C:\Users\YOUR_USERNAME\.vscode\extensions\rolandostar.tabletopsimulator-lua-1.1.3\dist`
+1. Open `extension.js` and scroll to line 9406 which should start with: `const wasmBin = fs.readFileSync(path.join(vscode.env.appRoot, 'node_modules.asar', ...`
+1. Replace `node_modules.asar` with `node_modules` and save the file
+1. Try to load/save scripts from TTS
