@@ -10,7 +10,7 @@ function build() -- For assigning values to cards when they are spread out
   for i, item in pairs(zoneObjects) do
     if item.tag == 'Card' then
       local name = item.getName()
-      if item.getVar('value') != nil then -- Testing for variable (variable disapears when put in a deck)
+      if item.getVar('value') ~= nil then -- Testing for variable (variable disapears when put in a deck)
         log('   The value is already '..item.getVar('value'))
       end
       log(name..' assigned '..stats[name][1].." and "..stats[name][2])

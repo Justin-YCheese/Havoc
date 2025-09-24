@@ -101,6 +101,9 @@ PLAY_CARD_Z_OFFSET = 3
 NUM_OF_ZONES_FOR_FIELD_CARDS = 1 -- The number of zones which a card on the field should be in
 NUM_OF_ZONES_FOR_SPOILS_CARD = 1
 
+-- Suit mappings
+DEFAULT_SUIT_NAMES = {"diamond", "heart", "spade", "club"}
+
 --[[
 Constants.lua END
 ]]

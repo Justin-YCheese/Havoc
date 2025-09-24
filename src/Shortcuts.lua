@@ -7,10 +7,8 @@ This file contains shortcut-related functions.
 function setupShortcuts()
   log("Setting up shortcuts")
   addHotkey("Draw Card", drawCardShortcut)
-  addHotkey("Get Discard Sum", getDiscardSumShortcut)
-  addHotkey("Get My Sum", getMySumShortcut)
-  addHotkey("Get Opponent's Sum", getOpponentSumShortcut)
   addHotkey("Bet", betShortcut)
+  addHotkey("View Used Cards", viewDeckShortcut)
 end
 
 -- Draw a card for player when hotkey is pressed
@@ -25,50 +23,6 @@ function drawCardShortcut(playerColor)
   dealDeck(1, playerColor)
 end
 
--- Show sum of points in discard if hotkey is pressed
-function getDiscardSumShortcut()
-  local shortcutName = "Get Discard Sum"
-
-  if hasGameStarted(shortcutName) == false then
-    return
-  end
-
-  log("Shortcut: get discard point sum")
-  discardZone.call("tableCalculatePoints")
-end
-
--- Show sum of points in player's win pile if hotkey is pressed
-function getMySumShortcut(playerColor)
-  local shortcutName = "Get My Sum"
-
-  if isInGameShortcutUsable(playerColor, shortcutName) == false then
-    return
-  end
-
-  log("Shortcut: get my point sum")
-  players[playerColor].winPile.call("tableCalculatePoints")
-end
-
--- Show sum of points in opponent's win pile if hotkey is pressed
-function getOpponentSumShortcut(playerColor)
-  local shortcutName = "Get Opponent Sum"
-
-  if isInGameShortcutUsable(playerColor, shortcutName) == false then
-    return
-  end
-
-  local opponentZone = nil
-
-  if playerColor == "Orange" then
-    opponentZone = players["Blue"].winPile
-  else
-    opponentZone = players["Orange"].winPile
-  end
-
-  log("Shortcut: get opponent point sum")
-  opponentZone.call("tableCalculatePoints")
-end
-
 -- Trigger bet button based on the given color
 function betShortcut(playerColor)
   local shortcutName = "Bet"
@@ -80,9 +34,20 @@ function betShortcut(playerColor)
   playerBet(playerColor, playerColor)
 end
 
+-- Show the cards left in the deck
+function viewDeckShortcut(playerColor)
+  local shortcutName = "View Used Cards"
+
+  if isInGameShortcutUsable(playerColor, shortcutName) == false then
+    return
+  end
+
+  toggleDeckViewer(playerColor)
+end
+
 -- Overwrites default behavior and setup some shortcuts when number keys are pressed on cards
 function onObjectNumberTyped(object, player_color, number)
-  if object.tag != 'Card' then
+  if object.tag ~= 'Card' then
     return
   end
   
@@ -111,7 +76,7 @@ end
 -- Move a card from a player's hand to the field based on the key pressed
 -- Only keys "1" and "2" are supported
 function playCardFromHand(object, player_color, key_pressed)
-  if object.tag != 'Card' then
+  if object.tag ~= 'Card' then
     return
   end
 
@@ -147,13 +112,13 @@ function playCardFromHand(object, player_color, key_pressed)
   end
 
   -- Get the new card position based on the number pressed
-  for i, slot_data in pairs(slots) do
+  for _, slot_data in pairs(slots) do
     local slot_key = slot_data[1]
     local slot_position = slot_data[2]
 
     if slot_key == key_pressed then
       object.setPosition(slot_position)
-      return 
+      return
     end
   end
 end

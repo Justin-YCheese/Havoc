@@ -13,8 +13,10 @@ The main file for running the Havoc (Tabletop Edition) game.
 --
 -- Workshop ID: 2723093390
 
--- TODO: Remove dependancy on Player Won Cards
-
+-- Order matters for the require imports. If file A requires a function in file B, B should be higher than A.
+require("src/Utility/ListManager")
+require("src/Utility/StringConverter")
+require("src/Utility/Messaging")
 require("src/Buttons/BetButton")
 require("src/Buttons/ButtonManager")
 require("src/Buttons/ClearButton")
@@ -28,10 +30,9 @@ require("src/Deck")
 require("src/Notebook")
 require("src/PlayerManager")
 require("src/Shortcuts")
-require("src/Utility/Messaging")
-require("src/Utility/StringConverter")
 require("src/Validation")
 require("src/Zones")
+require("src/DeckViewer")
 
 -- Tools for debugging
 require("src/Buttons/TestButton")
@@ -96,6 +97,9 @@ scores['Discard'] = ''
 -- Track if players should be allowed to use certain shortcuts or not
 gameStarted = false
 
+-- To track number of jokers to display in the deck viewer
+numJokers = nil
+
 -- Runs once when the game loads
 function onLoad()
   log('onLoad!')
@@ -120,14 +124,14 @@ function onLoad()
 
   discardZone = getObjectFromGUID(DISCARD_GUID)
   deckBuilder = getObjectFromGUID(DECK_BUILDER_GUID)
+  usedCardZones = { players['Blue'].winPile, players['Orange'].winPile, discardZone }
 
   local deck = deckZone.getObjects()
   shuffle(deck)
   createDealButton()
   createBuildDeckButton(deckBuilder)
-
+  refreshDeckViewer()
   -- createTestButton()
-
   setupShortcuts()
 end
 

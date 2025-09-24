@@ -9,10 +9,10 @@ function onObjectEnterZone(zone, object)
    -- Color of player who owns zone
   local color = zone.getVar('owner')
 
-  if color != nil and object != nil then
+  if color ~= nil and object ~= nil then
     updateScore(zone)
     -- A win or discard pile and card entering
-    if (color!='Discard' and zone==players[color].winPile) then
+    if (color ~='Discard' and zone==players[color].winPile) then
       --So both cards and decks activate layout
       zone.LayoutZone.layout()
 
@@ -33,21 +33,25 @@ function onObjectEnterZone(zone, object)
       -- zone.LayoutZone.layout() Don't layout discard
     end
   end
+
+  if contains(usedCardZones, zone) and not inZones(object, copyWithException(usedCardZones, zone)) then
+    updateCardDisplay(object, true)
+  end
 end
 
 function onObjectLeaveZone(zone, object)
   -- Check if game is still running before continuing
-  if Info == nil or Info.name == nil then 
-    return 
+  if Info == nil or Info.name == nil then
+    return
   end
   
   local color = zone.getVar('owner') -- Color of player who owns zone
 
-  if color != nil and object != nil then
+  if color ~= nil and object ~= nil then
     updateScore(zone)
     -- A win or discard pile and card entering
     -- If zone is discard than color is discard which isn't a player
-    if (color!='Discard' and zone==players[color].winPile and object.tag=='Card') then
+    if (color~='Discard' and zone==players[color].winPile and object.tag=='Card') then
       --Can optionaly add 'true' as a parameter to log cards
       -- Remove card from player's wonCards Table (Player and card name)
       local player = players[color]
@@ -63,6 +67,25 @@ function onObjectLeaveZone(zone, object)
       object.highlightOff()
     end
   end
+
+  if contains(usedCardZones, zone) and not inZones(object, copyWithException(usedCardZones, zone)) then
+    updateCardDisplay(object, false)
+  end
+end
+
+-- Check if the object is inside any of the given zones
+function inZones(object, targetZones)
+  local objectZones = object.getZones()
+
+  for _, objectZone in ipairs(objectZones) do
+    for _, targetZone in ipairs(targetZones) do
+      if objectZone == targetZone then
+        return true
+      end
+    end
+  end
+
+  return false
 end
 
 function updateScore(zone)
@@ -74,7 +97,7 @@ function updateScore(zone)
   -- Need to finish below
   -- highlightBonusCards(cardTable, "Yellow")
 
-  if owner != 'Discard' then
+  if owner ~= 'Discard' then
     scoreText.TextTool.setValue("Score: "..points)
   else
     scoreText.TextTool.setValue("Total: "..points)
