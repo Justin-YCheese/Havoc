@@ -89,6 +89,40 @@ function tryObjectEnterContainer(_, object)
   return true
 end
 
+function contains(list, str)
+  for _, value in ipairs(list) do
+    if value == str then
+      return true
+    end
+  end
+
+  return false
+end
+
+-- Given a Card type object, get a string int the format "VALUE of SUIT"
+function getFullCardName(card)
+  local cardName = ""
+  local cardDescription = ""
+
+  if card.tag ~= "Card" then
+    cardName = card.name
+    cardDescription = card.description
+  else
+    -- For handling single card left in deck
+    cardName = card.getName()
+    cardDescription = card.getDescription()
+  end
+
+  local cardSuit = string.lower(cardDescription)
+
+  -- Make the suit name match the image file syntax (e.g. spades)
+  if contains(DEFAULT_SUIT_NAMES, cardSuit) then
+    cardSuit = cardSuit .. "s"
+  end
+
+  return string.lower(cardName) .. "_of_" .. cardSuit
+end
+
 --[[
 Deck.lua END
 ]]

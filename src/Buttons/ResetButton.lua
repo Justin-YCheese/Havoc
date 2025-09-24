@@ -114,7 +114,6 @@ function resetDeck()
   local allObjects = getObjects()
   local cardAndDecks = {}
   local numFound = 0
-  local deckZonePosition = deckZone.getPosition()
 
   for _, item in pairs(allObjects) do
     if item.tag == 'Card' or item.tag == 'Deck' then
@@ -125,6 +124,7 @@ function resetDeck()
 
   local combinedDeck = group(cardAndDecks)[1]
   local targetPosition = deckZone.getPosition()
+
   -- The extra 2 units is to prevent the deck from clipping into the table
   targetPosition[2] = targetPosition[2] + 2
   combinedDeck.setPosition(targetPosition)
@@ -139,6 +139,7 @@ function resetDeck()
   end, SECONDS_UNTIL_RESET_DECK_SHUFFLE)
 
   combinedDeck.locked = false
+  numJokers = 0
 end
 
 --[[

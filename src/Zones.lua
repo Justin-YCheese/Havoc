@@ -33,12 +33,16 @@ function onObjectEnterZone(zone, object)
       -- zone.LayoutZone.layout() Don't layout discard
     end
   end
+
+  if contains(usedCardZones, zone) and not inZones(object, copyWithException(usedCardZones, zone)) then
+    updateCardDisplay(object, true)
+  end
 end
 
 function onObjectLeaveZone(zone, object)
   -- Check if game is still running before continuing
-  if Info == nil or Info.name == nil then 
-    return 
+  if Info == nil or Info.name == nil then
+    return
   end
   
   local color = zone.getVar('owner') -- Color of player who owns zone
@@ -63,6 +67,25 @@ function onObjectLeaveZone(zone, object)
       object.highlightOff()
     end
   end
+
+  if contains(usedCardZones, zone) and not inZones(object, copyWithException(usedCardZones, zone)) then
+    updateCardDisplay(object, false)
+  end
+end
+
+-- Check if the object is inside any of the given zones
+function inZones(object, targetZones)
+  local objectZones = object.getZones()
+
+  for _, objectZone in ipairs(objectZones) do
+    for _, targetZone in ipairs(targetZones) do
+      if objectZone == targetZone then
+        return true
+      end
+    end
+  end
+
+  return false
 end
 
 function updateScore(zone)

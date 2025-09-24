@@ -4,6 +4,16 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.7.3 Used Card Viewer
+
+### Added
+
+- Add Used Card Viewer
+  - On trigger, a display appears that shows which cards that are in discard or the win piles
+  - The viewer does not show cards in the players hands or cards that are still in the deck
+
+---
+
 ## v0.7.2 Quality of Life Changes
 
 ### Added
@@ -17,7 +27,6 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 ## v0.7.1 VSCode Migration
 
 - Migrates the codebase to VSCode since Atom was sunsetted
-- All functionality remains the same
 
 ### Fixed
 

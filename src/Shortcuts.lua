@@ -8,6 +8,7 @@ function setupShortcuts()
   log("Setting up shortcuts")
   addHotkey("Draw Card", drawCardShortcut)
   addHotkey("Bet", betShortcut)
+  addHotkey("View Used Cards", viewDeckShortcut)
 end
 
 -- Draw a card for player when hotkey is pressed
@@ -31,6 +32,17 @@ function betShortcut(playerColor)
   end
 
   playerBet(playerColor, playerColor)
+end
+
+-- Show the cards left in the deck
+function viewDeckShortcut(playerColor)
+  local shortcutName = "View Used Cards"
+
+  if isInGameShortcutUsable(playerColor, shortcutName) == false then
+    return
+  end
+
+  toggleDeckViewer(playerColor)
 end
 
 -- Overwrites default behavior and setup some shortcuts when number keys are pressed on cards
@@ -100,13 +112,13 @@ function playCardFromHand(object, player_color, key_pressed)
   end
 
   -- Get the new card position based on the number pressed
-  for i, slot_data in pairs(slots) do
+  for _, slot_data in pairs(slots) do
     local slot_key = slot_data[1]
     local slot_position = slot_data[2]
 
     if slot_key == key_pressed then
       object.setPosition(slot_position)
-      return 
+      return
     end
   end
 end
