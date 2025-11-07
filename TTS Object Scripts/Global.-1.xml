@@ -5,450 +5,427 @@
     <!-- Set the defaultng the 'hidden' class -->
     <Image class="hidden" color="rgba(1,1,1,0.15)" />    
 </Defaults>
-<GridLayout
+<!-- TableLayout Visibility needs dummy Brown value -->
+<TableLayout
     id="deckViewer"
     height="65%"
     width="70%"
     color="rgba(0,0,0,0.5)"
-    padding="10 10 10 10"
-    spacing="0 30"
+    padding="25 25 25 25"
+    cellSpacing="30"
     childAlignment="MiddleCenter"
-
-
-
+    cellBackgroundColor="clear"
     visibility="Brown"
     >
-    <Image
-        id="ace_of_spades"
-        image="ace_of_spades"
-        class="hidden"
-    
-
-
->
-    </Image>
-    <Image
-        id="king_of_spades"
-        image="king_of_spades"
-    
-
-
->
-    </Image>
-    <Image
-        id="queen_of_spades"
-        image="queen_of_spades"
-    
-
-
->
-    </Image>
-    <Image
-        id="jack_of_spades"
-        image="jack_of_spades"
-    
-
-
->
-    </Image>
-    <Image
-        id="10_of_spades"
-        image="10_of_spades"
-    
-
-
->
-    </Image>
-    <Image
-        id="9_of_spades"
-        image="9_of_spades"
-    
-
-
->
-    </Image>
-    <Image
-        id="8_of_spades"
-        image="8_of_spades"
-    
-
-
->
-    </Image>
-    <Image
-        id="7_of_spades"
-        image="7_of_spades"
-    
-
-
->
-    </Image>
-    <Image
-        id="6_of_spades"
-        image="6_of_spades"
-    
-
-
->
-    </Image>
-    <Image
-        id="5_of_spades"
-        image="5_of_spades"
-    
-
-
->
-    </Image>
-    <Image
-        id="4_of_spades"
-        image="4_of_spades"
-    
-
-
->
-    </Image>
-    <Image
-        id="3_of_spades"
-        image="3_of_spades"
-    
-
-
->
-    </Image>
-    <Image
-        id="2_of_spades"
-        image="2_of_spades"
-    
-
-
->
-    </Image>
-    <Image
-        id="ace_of_hearts"
-        image="ace_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="king_of_hearts"
-        image="king_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="queen_of_hearts"
-        image="queen_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="jack_of_hearts"
-        image="jack_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="10_of_hearts"
-        image="10_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="9_of_hearts"
-        image="9_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="8_of_hearts"
-        image="8_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="7_of_hearts"
-        image="7_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="6_of_hearts"
-        image="6_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="5_of_hearts"
-        image="5_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="4_of_hearts"
-        image="4_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="3_of_hearts"
-        image="3_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="2_of_hearts"
-        image="2_of_hearts"
-    
-
-
->
-    </Image>
-    <Image
-        id="ace_of_clubs"
-        image="ace_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="king_of_clubs"
-        image="king_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="queen_of_clubs"
-        image="queen_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="jack_of_clubs"
-        image="jack_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="10_of_clubs"
-        image="10_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="9_of_clubs"
-        image="9_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="8_of_clubs"
-        image="8_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="7_of_clubs"
-        image="7_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="6_of_clubs"
-        image="6_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="5_of_clubs"
-        image="5_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="4_of_clubs"
-        image="4_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="3_of_clubs"
-        image="3_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="2_of_clubs"
-        image="2_of_clubs"
-    
-
-
->
-    </Image>
-    <Image
-        id="ace_of_diamonds"
-        image="ace_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="king_of_diamonds"
-        image="king_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="queen_of_diamonds"
-        image="queen_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="jack_of_diamonds" 
-        image="jack_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="10_of_diamonds"
-        image="10_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="9_of_diamonds"
-        image="9_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="8_of_diamonds"
-        image="8_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="7_of_diamonds"
-        image="7_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="6_of_diamonds"
-        image="6_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="5_of_diamonds"
-        image="5_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="4_of_diamonds"
-        image="4_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="3_of_diamonds"
-        image="3_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="2_of_diamonds"
-        image="2_of_diamonds"
-    
-
-
->
-    </Image>
-    <Image
-        id="joker1"
-        image="joker1"
-    
-
-
->
-    </Image>
-    <Image
-        id="joker2"
-        image="joker2"
-    
-
-
->
-    </Image>
-</GridLayout>
+    <Row>
+        <Cell>
+            <Image
+                id="ace_of_spades"
+                image="ace_of_spades"
+                class="hidden"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="king_of_spades"
+                image="king_of_spades"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="queen_of_spades"
+                image="queen_of_spades"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="jack_of_spades"
+                image="jack_of_spades"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="10_of_spades"
+                image="10_of_spades"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="9_of_spades"
+                image="9_of_spades"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="8_of_spades"
+                image="8_of_spades"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="7_of_spades"
+                image="7_of_spades"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="6_of_spades"
+                image="6_of_spades"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="5_of_spades"
+                image="5_of_spades"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="4_of_spades"
+                image="4_of_spades"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="3_of_spades"
+                image="3_of_spades"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="2_of_spades"
+                image="2_of_spades"
+            >
+            </Image>
+        </Cell>
+    </Row>
+    <Row>
+        <Cell>
+            <Image
+                id="ace_of_hearts"
+                image="ace_of_hearts"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="king_of_hearts"
+                image="king_of_hearts"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="queen_of_hearts"
+                image="queen_of_hearts"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="jack_of_hearts"
+                image="jack_of_hearts"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="10_of_hearts"
+                image="10_of_hearts"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="9_of_hearts"
+                image="9_of_hearts"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="8_of_hearts"
+                image="8_of_hearts"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="7_of_hearts"
+                image="7_of_hearts"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="6_of_hearts"
+                image="6_of_hearts"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="5_of_hearts"
+                image="5_of_hearts"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="4_of_hearts"
+                image="4_of_hearts"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="3_of_hearts"
+                image="3_of_hearts"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="2_of_hearts"
+                image="2_of_hearts"
+            >
+            </Image>
+        </Cell>
+    </Row>
+    <Row>
+        <Cell>
+            <Image
+                id="ace_of_clubs"
+                image="ace_of_clubs"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="king_of_clubs"
+                image="king_of_clubs"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="queen_of_clubs"
+                image="queen_of_clubs"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="jack_of_clubs"
+                image="jack_of_clubs"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="10_of_clubs"
+                image="10_of_clubs"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="9_of_clubs"
+                image="9_of_clubs"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="8_of_clubs"
+                image="8_of_clubs"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="7_of_clubs"
+                image="7_of_clubs"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="6_of_clubs"
+                image="6_of_clubs"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="5_of_clubs"
+                image="5_of_clubs"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="4_of_clubs"
+                image="4_of_clubs"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="3_of_clubs"
+                image="3_of_clubs"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="2_of_clubs"
+                image="2_of_clubs"
+            >
+            </Image>
+        </Cell>
+    </Row>
+    <Row>
+        <Cell>
+            <Image
+                id="ace_of_diamonds"
+                image="ace_of_diamonds"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="king_of_diamonds"
+                image="king_of_diamonds"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="queen_of_diamonds"
+                image="queen_of_diamonds"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="jack_of_diamonds" 
+                image="jack_of_diamonds"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="10_of_diamonds"
+                image="10_of_diamonds"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="9_of_diamonds"
+                image="9_of_diamonds"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="8_of_diamonds"
+                image="8_of_diamonds"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="7_of_diamonds"
+                image="7_of_diamonds"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="6_of_diamonds"
+                image="6_of_diamonds"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="5_of_diamonds"
+                image="5_of_diamonds"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="4_of_diamonds"
+                image="4_of_diamonds"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="3_of_diamonds"
+                image="3_of_diamonds"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+            <Image
+                id="2_of_diamonds"
+                image="2_of_diamonds"
+            >
+            </Image>
+        </Cell>
+    </Row>
+    <Row>
+        <Cell>
+        </Cell>
+        <Cell>
+        </Cell>
+        <Cell>
+        </Cell>
+        <Cell>
+        </Cell>
+        <Cell>
+        </Cell>
+        <Cell>
+            <Image
+                id="joker1"
+                image="joker1"
+            >
+            </Image>
+        </Cell>
+        <Cell>
+        </Cell>
+        <Cell>
+            <Image
+                id="joker2"
+                image="joker2"
+                >
+            </Image>
+        </Cell>
+        <Cell>
+        </Cell>
+        <Cell>
+        </Cell>
+        <Cell>
+        </Cell>
+        <Cell>
+        </Cell>
+        <Cell>
+        </Cell>
+    </Row>
+</TableLayout>

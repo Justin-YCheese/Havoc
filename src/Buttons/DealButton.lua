@@ -33,6 +33,7 @@ function dealCards()
   createClearButton()
   --createSumButtons() --Added Score Counters
   createResetButton(DEFAULT_RESET_BUTTON_LABEL)
+  refreshDeckViewer()
   gameStarted = true
 end
 
