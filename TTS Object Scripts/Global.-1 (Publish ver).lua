@@ -43,6 +43,7 @@ local __bundle_require, __bundle_loaded, __bundle_register, __bundle_modules = (
 end)(nil)
 __bundle_register("Global.-1.lua", function(require, _LOADED, __bundle_register, __bundle_modules)
 require("src/Havoc")
+
 end)
 __bundle_register("src/Havoc", function(require, _LOADED, __bundle_register, __bundle_modules)
 --[[
@@ -341,6 +342,9 @@ __bundle_register("src/DeckViewer", function(require, _LOADED, __bundle_register
 DeckViewer.lua START
 
 This file contains deck viewer functions.
+
+The deck viewer doesn't actually show cards in the deck or the players' hands.
+It shows the cards that are in discard and win piles, otherwise you get extra information you wouldn't otherwise in an offline game. 
 ]]
 
 -- If the player can see the deck viewer, turn it off for them. Otherwise show them the deck viewer.
@@ -379,11 +383,12 @@ end
 
 -- Get all image ids in the deck viewer layout
 function getDeckViewerImageIds()
+  -- Find deck viewer
   local xmlTable = UI.getXmlTable()
   local deckViewerChildren = {}
 
   for _, element in ipairs(xmlTable) do
-    if element.tag == "GridLayout" and element.attributes.id == "deckViewer" then
+    if element.tag == "TableLayout" and element.attributes.id == "deckViewer" then
       deckViewerChildren = element.children or {}
       break
     end
@@ -394,13 +399,38 @@ function getDeckViewerImageIds()
     return {}
   end
 
+  -- Get cells within the table
+  local deckViewerCells = {}
+
+  for _, deckViewerChild in ipairs(deckViewerChildren) do
+    if deckViewerChild.tag == "Row" then
+      for _, rowChild in ipairs(deckViewerChild.children) do
+        if rowChild.tag == "Cell" then
+          deckViewerCells[#deckViewerCells + 1] = rowChild
+        end
+      end
+    end
+  end
+
+  if #deckViewerCells == 0 then
+    log("No cells found within Deck Viewer layout")
+    return {}
+  end
+
+  -- Get image ids within the cells
   local imageIds = {}
   local imageIndex = 0
 
-  for _, childElement in ipairs(deckViewerChildren) do
-    if childElement.tag == "Image" then
-      imageIndex = imageIndex + 1
-      imageIds[imageIndex] = childElement.attributes.id
+  for _, cell in ipairs(deckViewerCells) do
+    local cellChildren = cell.children
+
+    if #cellChildren > 0 then
+      for _, cellChild in ipairs(cellChildren) do
+        if cellChild.tag == "Image" then
+          imageIndex = imageIndex + 1
+          imageIds[imageIndex] = cellChild.attributes.id
+        end
+      end
     end
   end
 
