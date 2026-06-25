@@ -15,7 +15,7 @@ function getObjectAtPosition(pos, tag)
       type = 2, -- Sphere cast
       size = {OBJ_SEARCH_RADIUS, OBJ_SEARCH_RADIUS, OBJ_SEARCH_RADIUS},
       max_distance = 0,
-      debug = true -- If true, see where the sphere cast is located 
+      -- debug = true -- If true, see where the sphere cast is located 
   })
 
   for _, hit in ipairs(hits) do
@@ -32,6 +32,8 @@ end
 
 function hasCardInBetZone(color)
   local betPos = players[color].betPos
+  
+  -- Invert the x position to point to the correct spot
   local convertedBetPos = {betPos[1] * -1, betPos[2], betPos[3]}
   local betCard = getObjectAtPosition(convertedBetPos, 'Card')
 
