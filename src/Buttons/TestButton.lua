@@ -11,7 +11,7 @@ function createTestButton()
     font_size=BUTTON_FONT_SIZE,
     color=BUTTON_BACKGROUND_COLOR,
     font_color=BUTTON_TEXT_COLOR,
-    tooltip="For degugging specific functions"
+    tooltip="For debugging specific functions"
   }
   button.createButton(testButtonVars)
 end

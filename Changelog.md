@@ -4,6 +4,25 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.7.5 Add Betted Tokens
+
+### Added
+
+- Add tokens that shows whether the player betted during the previous round
+  - If the user betted, their token becomes yellow
+  - If the user did not bet, then their token becomes white
+
+---
+
+## v0.7.4 Fix Card Viewer Alignment
+
+### Fixed
+
+- Fix card rows getting misaligned on smaller resolutions
+  - No matter the resolution, the cards should only change size, but always be aligned correctly
+
+---
+
 ## v0.7.3 Used Card Viewer
 
 ### Added
