@@ -40,6 +40,7 @@ If you want to learn how to play the game, here is the [rule book](https://docs.
 1. Subscribe to the [Havoc mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2723093390&searchtext=Havoc)
 1. Follow the installation steps above to get the mod
 1. In VS Code, press `CTRL + ALT + L` to load game script files. A `Tabletop Simulator Lua` folder should appear in your VS Code workspace.
+    - If the input isn't doing anything, make sure you aren't using US-International keyboard on Windows or another keyboard type that enters a character instead of triggering the TTS extension
 1. Open `Tabletop Simulator Lua\Global.-1.lua`. Replace everything in there with `require("src/Havoc")` so that your local code gets used.
 1. Edit script files and use `CTRL+ ALT + S` to test in Tabletop Simulator
 
@@ -89,8 +90,8 @@ in the full path to your cloned repository (it should end with '\Havoc')
 
 ### VS Code Extension Controls
 
-- Commands have to be done while VS Code and Havoc TTS are open and running
-- Load game script files = `CTRL + ALT + L`
+- Commands have to be done while both VS Code and Havoc TTS are open and running
+- Load game script files to VS Code = `CTRL + ALT + L`
 - Send local script files to Tabletop Simulator = `CTRL+ ALT + S`
 
 ### Fixing TTS Save/Get Scripts Not Found

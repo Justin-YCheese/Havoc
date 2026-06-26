@@ -14,18 +14,19 @@ The main file for running the Havoc (Tabletop Edition) game.
 -- Workshop ID: 2723093390
 
 -- Order matters for the require imports. If file A requires a function in file B, B should be higher than A.
+require("src/Constants")
 require("src/Utility/ListManager")
 require("src/Utility/StringConverter")
 require("src/Utility/Messaging")
+require("src/Utility/BettedTokenManager")
 require("src/Buttons/BetButton")
 require("src/Buttons/ButtonManager")
 require("src/Buttons/ClearButton")
 require("src/Buttons/DealButton")
 require("src/Buttons/DeckButton")
-require("src/Buttons/ResetButton")
 require("src/Buttons/ResultsButton")
 require("src/Buttons/SumButton")
-require("src/Constants")
+require("src/Buttons/ResetButton")
 require("src/Deck")
 require("src/Notebook")
 require("src/PlayerManager")
@@ -39,9 +40,11 @@ require("src/Buttons/TestButton")
 require("src/Utility/Debug")
 
 players = {}
+
 --Table of Player Blue variables
 players['Blue'] = {
-  betState=false, --If player betted
+  betState=false, --If player betted the current round using the bet button
+  betted=false,    --if player betted the last round
   betPos={7,1.15,3.75}, -- For player's bet position
   sumButtonPos={-19,1.15,1.4}, -- Position of sum points button
   --class='',     --player's class
@@ -50,12 +53,13 @@ players['Blue'] = {
   wonCards={},    --Table of cards in player's winPile
   points=0,       --player's points
   hand='',        --player's hand
-  backup=false    --if player has gotten backup
+  backup=false   --if player has gotten backup
 }
 
 --Table of Player 2 variables (Orange)
 players['Orange'] = {
-  betState=false,--If player betted
+  betState=false, --If player betted the current round using the bet button
+  betted=false,    --if player betted the last round
   betPos={7,1.15,-3.75}, -- For player's bet position
   sumButtonPos={-19,1.15,-1.4}, -- Position of sum points button
   --class='',     --player's class
@@ -64,7 +68,7 @@ players['Orange'] = {
   wonCards={},    --Table of cards in player's winPile
   points=0,       --player's points
   hand='',        --player's hand
-  backup=false    --if player has gotten backup
+  backup=false   --if player has gotten backup
 }
 
 -- For gathering game statistics

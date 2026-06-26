@@ -13,6 +13,9 @@ WIN_PILE_GUID['Orange'] = 'c641a0'
 HAND_GUID = {}
 HAND_GUID['Blue'] = 'fd5538'
 HAND_GUID['Orange'] = '48113c'
+BETTED_TOKEN_GUID = {}
+BETTED_TOKEN_GUID['Blue'] = 'b6a3fb'
+BETTED_TOKEN_GUID['Orange'] = '4b36ba'
 DISCARD_GUID = '7f3593'
 DECK_BUILDER_GUID = 'b8db70'
 
@@ -56,7 +59,9 @@ STARTING_ROUNDS_NOTEBOOK_LINE = 'Recording Round Data Here'
 WHITE = {1, 1, 1}
 BLACK = {0, 0, 0}
 RED = {1, 0, 0}
-BRIGHT_PURPLE = {212, 0, 255}
+RED2 = {0.949, 0, 0.239}
+BRIGHT_PURPLE = {0.831, 0, 1}
+YELLOW = {1, 1, 0}
 
 -- Button colors
 BUTTON_BACKGROUND_COLOR = WHITE
@@ -91,6 +96,8 @@ DISCARD_Y_OFFSET = 5
 PLAYER_HAS_NO_COLOR_BROADCAST_MESSAGE = 'The player does not have a color'
 PLAYER_HAS_NO_COLOR_LOG_MESSAGE = 'A player with no color tried to press results button'
 BET_BUTTON_TOOLTIP_MESSAGE = 'Bet to risk extra cards'
+BETTED_TOOLTIP = 'You betted last round'
+NO_BET_TOOLTIP = 'You did not bet last round'
 
 -- Shortcut constants
 PLAY_CARD_X_OFFSET = 2
@@ -100,6 +107,7 @@ PLAY_CARD_Z_OFFSET = 3
 -- Misc
 NUM_OF_ZONES_FOR_FIELD_CARDS = 1 -- The number of zones which a card on the field should be in
 NUM_OF_ZONES_FOR_SPOILS_CARD = 1
+OBJ_SEARCH_RADIUS = 3 -- Determines how far obj-search-by-position looks
 
 -- Suit mappings
 DEFAULT_SUIT_NAMES = {"diamond", "heart", "spade", "club"}

@@ -9,7 +9,10 @@ function resetPlayers()
   for _, color in pairs(PLAYER_COLOR_STRINGS) do
     players[color].backup = false
     players[color].betState = false
+    players[color].betted = false
   end
+
+  resetBettedTokens()
 end
 
 -- Reset player bet states

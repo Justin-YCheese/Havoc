@@ -33,6 +33,7 @@ function clearField(obj, color)
   moveCardsToDiscard()
   regenerateBetButtons()
   resetBetStates()
+  resetBettedTokens()
 end
 
 function getNumCardsInField()

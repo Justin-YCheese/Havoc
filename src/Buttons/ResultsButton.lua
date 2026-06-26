@@ -31,9 +31,10 @@ function results(obj, color, alt_click)
   end
 
   resetBetStates()
-  local zoneObjects = fieldZone.getObjects()
+  trackBettedStatus()
 
   -- Calculate, Broadcast, and Record gained points & bonuses
+  local zoneObjects = fieldZone.getObjects()
   resultAddedPoints(color,zoneObjects)
   moveCardsToWinPile(color, zoneObjects)
   regenerateBetButtons()
