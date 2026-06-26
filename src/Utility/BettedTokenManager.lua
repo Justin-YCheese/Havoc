@@ -48,7 +48,7 @@ end
 function activateBettedToken(color)
   local tokenGUID = BETTED_TOKEN_GUID[color]
   local bettedToken = getObjectFromGUID(tokenGUID)
-  bettedToken.setColorTint(YELLOW)
+  bettedToken.setColorTint(RED2)
   bettedToken.setName(BETTED_TOOLTIP)
 end
 

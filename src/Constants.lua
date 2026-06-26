@@ -14,8 +14,8 @@ HAND_GUID = {}
 HAND_GUID['Blue'] = 'fd5538'
 HAND_GUID['Orange'] = '48113c'
 BETTED_TOKEN_GUID = {}
-BETTED_TOKEN_GUID['Blue'] = '26062a'
-BETTED_TOKEN_GUID['Orange'] = '5c89f0'
+BETTED_TOKEN_GUID['Blue'] = 'b6a3fb'
+BETTED_TOKEN_GUID['Orange'] = '4b36ba'
 DISCARD_GUID = '7f3593'
 DECK_BUILDER_GUID = 'b8db70'
 
@@ -59,8 +59,9 @@ STARTING_ROUNDS_NOTEBOOK_LINE = 'Recording Round Data Here'
 WHITE = {1, 1, 1}
 BLACK = {0, 0, 0}
 RED = {1, 0, 0}
-BRIGHT_PURPLE = {212, 0, 255}
-YELLOW = {255, 255, 0}
+RED2 = {0.949, 0, 0.239}
+BRIGHT_PURPLE = {0.831, 0, 1}
+YELLOW = {1, 1, 0}
 
 -- Button colors
 BUTTON_BACKGROUND_COLOR = WHITE
