@@ -4,6 +4,14 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.8.0 Add Custom Deck
+
+### Added
+
+- Add custom havoc deck with values, ability descriptions, and art
+
+---
+
 ## v0.7.5 Add Betted Tokens
 
 ### Added
