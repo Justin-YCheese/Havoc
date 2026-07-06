@@ -9,6 +9,7 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 ### Added
 
 - Add custom havoc deck with values, ability descriptions, and art
+- Updated card viewer to match new deck
 
 ---
 
