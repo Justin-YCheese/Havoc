@@ -62,18 +62,20 @@ The main file for running the Havoc (Tabletop Edition) game.
 -- Workshop ID: 2723093390
 
 -- Order matters for the require imports. If file A requires a function in file B, B should be higher than A.
+require("src/Constants")
+require("src/Utility/Timer")
 require("src/Utility/ListManager")
 require("src/Utility/StringConverter")
 require("src/Utility/Messaging")
+require("src/Utility/BettedTokenManager")
 require("src/Buttons/BetButton")
 require("src/Buttons/ButtonManager")
 require("src/Buttons/ClearButton")
 require("src/Buttons/DealButton")
 require("src/Buttons/DeckButton")
-require("src/Buttons/ResetButton")
 require("src/Buttons/ResultsButton")
 require("src/Buttons/SumButton")
-require("src/Constants")
+require("src/Buttons/ResetButton")
 require("src/Deck")
 require("src/Notebook")
 require("src/PlayerManager")
@@ -86,10 +88,14 @@ require("src/DeckViewer")
 require("src/Buttons/TestButton")
 require("src/Utility/Debug")
 
+debugMode = false
+
 players = {}
+
 --Table of Player Blue variables
 players['Blue'] = {
-  betState=false, --If player betted
+  betState=false, --If player betted the current round using the bet button
+  betted=false,    --if player betted the last round
   betPos={7,1.15,3.75}, -- For player's bet position
   sumButtonPos={-19,1.15,1.4}, -- Position of sum points button
   --class='',     --player's class
@@ -98,12 +104,13 @@ players['Blue'] = {
   wonCards={},    --Table of cards in player's winPile
   points=0,       --player's points
   hand='',        --player's hand
-  backup=false    --if player has gotten backup
+  backup=false   --if player has gotten backup
 }
 
 --Table of Player 2 variables (Orange)
 players['Orange'] = {
-  betState=false,--If player betted
+  betState=false, --If player betted the current round using the bet button
+  betted=false,    --if player betted the last round
   betPos={7,1.15,-3.75}, -- For player's bet position
   sumButtonPos={-19,1.15,-1.4}, -- Position of sum points button
   --class='',     --player's class
@@ -112,7 +119,7 @@ players['Orange'] = {
   wonCards={},    --Table of cards in player's winPile
   points=0,       --player's points
   hand='',        --player's hand
-  backup=false    --if player has gotten backup
+  backup=false   --if player has gotten backup
 }
 
 -- For gathering game statistics
@@ -150,6 +157,12 @@ numJokers = nil
 
 -- Runs once when the game loads
 function onLoad()
+  local startTime = nil
+
+  if (debugMode) then
+    startTime = os.clock()
+  end
+
   log('onLoad!')
 
   --Get objects from GUIDs (All these variables are global)
@@ -181,6 +194,10 @@ function onLoad()
   refreshDeckViewer()
   -- createTestButton()
   setupShortcuts()
+
+  if (debugMode) then
+    logElapsedTime(startTime, 'onLoad')
+  end
 end
 
 --Given a table of cards, returns sum of points
@@ -194,7 +211,7 @@ function calculatePoints(cardTable, bonusIsSeparate)
     sum = sum + cards*stats[name][1]
     -- If there are 4 of that type of card
     if cards == 4 then
-      table.insert(bonusCards,name)
+      bonusCards[#bonusCards + 1] = name
     end
   end
 
@@ -250,8 +267,11 @@ function calculatePointsPrint(params)
   local stopBroadcast = params.stopBroadcast
   -- Count the cards in the zone
   local cardTable = {}
+  local item = nil
 
-  for _, item in pairs(zoneObjects) do
+  for i=1,#zoneObjects do
+    item = zoneObjects[i]
+
     -- If a card
     if item.tag == 'Card' then
       local name = item.getName()
@@ -265,6 +285,7 @@ function calculatePointsPrint(params)
       end
     end
   end
+
   -- Calculate total points, record bonus cards and num cards in zone
   local sum, bonusCards = calculatePoints(cardTable, true)
   local numCards = countCards(cardTable)
@@ -285,7 +306,10 @@ function calculatePointsPrint(params)
   -- Bonuses gained
   if #bonusCards > 0 then --There is at least a bonus
     local bonusMessage = '\nFour of a Kind: ' -- "Hello" "World" "HelloWorld"
-    for _, card in pairs(bonusCards) do
+    local card = nil
+
+    for i=1,#bonusCards do
+      card = bonusCards[i]
       bonusMessage = bonusMessage..card..'s '
     end
 
@@ -331,7 +355,7 @@ function createTestButton()
     font_size=BUTTON_FONT_SIZE,
     color=BUTTON_BACKGROUND_COLOR,
     font_color=BUTTON_TEXT_COLOR,
-    tooltip="For degugging specific functions"
+    tooltip="For debugging specific functions"
   }
   button.createButton(testButtonVars)
 end
@@ -386,8 +410,15 @@ function getDeckViewerImageIds()
   -- Find deck viewer
   local xmlTable = UI.getXmlTable()
   local deckViewerChildren = {}
+  local element = nil
 
-  for _, element in ipairs(xmlTable) do
+  for i=1,#xmlTable do
+    element = xmlTable[i]
+
+    if element == nil then
+      break
+    end
+
     if element.tag == "TableLayout" and element.attributes.id == "deckViewer" then
       deckViewerChildren = element.children or {}
       break
@@ -401,10 +432,24 @@ function getDeckViewerImageIds()
 
   -- Get cells within the table
   local deckViewerCells = {}
+  local deckViewerChild = nil
+  local rowChild = nil
 
-  for _, deckViewerChild in ipairs(deckViewerChildren) do
+  for i=1,#deckViewerChildren do
+    deckViewerChild = deckViewerChildren[i]
+
+    if deckViewerChild == nil then
+      break
+    end
+
     if deckViewerChild.tag == "Row" then
-      for _, rowChild in ipairs(deckViewerChild.children) do
+      for j=1,#deckViewerChild.children do
+        rowChild = deckViewerChild.children[j]
+
+        if rowChild == nil then
+          break
+        end
+
         if rowChild.tag == "Cell" then
           deckViewerCells[#deckViewerCells + 1] = rowChild
         end
@@ -420,12 +465,26 @@ function getDeckViewerImageIds()
   -- Get image ids within the cells
   local imageIds = {}
   local imageIndex = 0
+  local cell = nil
+  local cellChild = nil
 
-  for _, cell in ipairs(deckViewerCells) do
+  for i=1,#deckViewerCells do
+    cell = deckViewerCells[i]
+
+    if cell == nil then
+      break
+    end
+
     local cellChildren = cell.children
 
     if #cellChildren > 0 then
-      for _, cellChild in ipairs(cellChildren) do
+      for j=1,#cellChildren do
+        cellChild = cellChildren[j]
+
+        if cellChild == nil then
+          break
+        end
+
         if cellChild.tag == "Image" then
           imageIndex = imageIndex + 1
           imageIds[imageIndex] = cellChild.attributes.id
@@ -440,8 +499,15 @@ end
 -- Darken all cards in the deck viewer
 function darkenCardsInDeckViewer()
   local imageIds = getDeckViewerImageIds()
+  local id = nil
 
-  for _, id in ipairs(imageIds) do
+  for i=1,#imageIds do
+    id = imageIds[i]
+
+    if id == nil then
+      break
+    end
+
     UI.setClass(id, "hidden")
   end
 end
@@ -450,11 +516,11 @@ function combineLists(list1, list2)
   local result = {}
 
   for i = 1, #list1 do
-      table.insert(result, list1[i])
+    result[#result + 1] = list1[i]
   end
 
   for i = 1, #list2 do
-      table.insert(result, list2[i])
+    result[#result + 1] = list2[i]
   end
 
   return result
@@ -489,11 +555,11 @@ function getCardNames(zone)
       local deckCardNames = getCardNamesInDeck(item)
 
       for _, cardName in ipairs(deckCardNames) do
-        table.insert(cardNames, cardName)
+        cardNames[#cardNames + 1] = cardName
       end
     elseif item.tag == "Card" then
       local fullCardName = getFullCardName(item)
-      table.insert(cardNames, fullCardName)
+      cardNames[#cardNames + 1] = fullCardName
     end
   end
 
@@ -531,7 +597,15 @@ function refreshDeckViewer()
   numJokers = 0
 
   -- Make all cards that are actually in the deck visible
-  for _, cardName in ipairs(allCardNames) do
+  local cardName = nil
+
+  for i=1,#allCardNames do
+    cardName = allCardNames[i]
+
+    if cardName == nil then
+      break
+    end
+
     if cardName ~= "joker_of_joker" then
       UI.setClass(cardName, "")
     else
@@ -551,12 +625,12 @@ function updateCardDisplay(object, makeVisible)
   local cardNames = {}
 
   if object.tag == "Card" then
-    table.insert(cardNames, getFullCardName(object))
+    cardNames[#cardNames + 1] = getFullCardName(object)
   elseif object.tag == "Deck" then
     local deckCardNames = getCardNamesInDeck(object)
 
     for _, cardName in ipairs(deckCardNames) do
-      table.insert(cardNames, cardName)
+      cardNames[#cardNames + 1] = cardName
     end
   end
 
@@ -902,10 +976,12 @@ function resetPlayers()
   for _, color in pairs(PLAYER_COLOR_STRINGS) do
     players[color].backup = false
     players[color].betState = false
+    players[color].betted = false
   end
+
+  resetBettedTokens()
 end
 
--- Reset player bet states
 function resetBetStates()
   for _, color in pairs(PLAYER_COLOR_STRINGS) do
     players[color].betState = false
@@ -954,7 +1030,9 @@ function addRoundNote(note)
     body = removeNewlinesFromEnd(roundsTabBody)..'\n'..lineNumber..': '..note
   })
 
-  log('Adding \"'..note..'\" to Rounds on line '..lineNumber)
+  if debugMode then
+    log('Adding \"'..note..'\" to Rounds on line '..lineNumber)
+  end
 end
 
 function getLatestRoundNumber()
@@ -1027,7 +1105,9 @@ function recordCard(player, name)
     end
   end
 
-  log('Count '..player.wonCards[name]..' '..name..'(s) in zone')
+  if debugMode then
+      log('Count '..player.wonCards[name]..' '..name..'(s) in zone')
+  end
 end
 
 -- Forget card in player's wonCard table, Pass in player and name of card
@@ -1037,7 +1117,10 @@ function forgetCard(player, name)
   if player.wonCards[name] < 0 then
     log('Error: wonCards reads a negative value for '..name)
   end
-  log('Count '..player.wonCards[name]..' '..name..'(s) in zone')
+
+  if debugMode then
+      log('Count '..player.wonCards[name]..' '..name..'(s) in zone')
+  end
 end
 
 -- Get a card from either the deck or card in the deck zone (a single card deck turns into a card)
@@ -1131,115 +1214,166 @@ Deck.lua END
 ]]
 
 end)
-__bundle_register("src/Constants", function(require, _LOADED, __bundle_register, __bundle_modules)
+__bundle_register("src/Buttons/ResetButton", function(require, _LOADED, __bundle_register, __bundle_modules)
 --[[
-Constants.lua START
+ResetButton.lua START
 
-This file contains global constants.
+This file contains functions that the reset button triggers.
 ]]
 
-BUTTON_GUID = '9fdc25'
-FIELD_ZONE_GUID = '7a6e1a'
-DECK_ZONE_GUID = '7f0e92'
-WIN_PILE_GUID = {}
-WIN_PILE_GUID['Blue'] = '4ca699'
-WIN_PILE_GUID['Orange'] = 'c641a0'
-HAND_GUID = {}
-HAND_GUID['Blue'] = 'fd5538'
-HAND_GUID['Orange'] = '48113c'
-DISCARD_GUID = '7f3593'
-DECK_BUILDER_GUID = 'b8db70'
+resetButtonPosition = {26.5, 1.15, 0}
+resetTimesPressed = 0
+resetPressedTimerId = nil
 
-SCORE_GUID = {}
-SCORE_GUID['Blue'] = 'f1b2b4'
-SCORE_GUID['Orange'] = '119183'
-SCORE_GUID['Discard'] = '5cf4ba'
+function createResetButton(label)
+  local resetButtonVars = {
+    click_function='incrementResetCounter',
+    function_owner=nil,
+    label=label,
+    position=resetButtonPosition,
+    rotation={0, 90, 0},
+    width=SMALL_BUTTON_WIDTH,
+    height=SMALL_BUTTON_HEIGHT,
+    font_size=BUTTON_FONT_SIZE,
+    color=BUTTON_WARNING_BACKGROUND_COLOR,
+    font_color=BUTTON_WARNING_TEXT_COLOR,
+    tooltip="Click "..NUM_CLICKS_TO_RESET.." times to reset the game"
+  }
 
--- Value of face cards
-FACE_CARD_VALUE = 10
+  button.createButton(resetButtonVars)
+end
 
--- Global table of card stats
-stats = {}
-stats['Ace'] = {1,1}
-stats['2'] = {2,2}
-stats['3'] = {20,3}
-stats['4'] = {4,4}
-stats['5'] = {5,5}
-stats['6'] = {6,6}
-stats['7'] = {7,7}
-stats['8'] = {8,8}
-stats['9'] = {9,9}
-stats['10'] = {10,10}
-stats['Jack'] = {FACE_CARD_VALUE,11}
-stats['Queen'] = {FACE_CARD_VALUE,12}
-stats['King'] = {FACE_CARD_VALUE,13}
-stats['Joker'] = {0,0}
+function incrementResetCounter()
+  resetTimesPressed = resetTimesPressed + 1
 
--- Player variables
-PLAYER_COLOR_STRINGS = {'Orange', 'Blue'}
+  if resetTimesPressed == NUM_CLICKS_TO_RESET then
+    resetTimesPressed = 0
+    stopResetTimer()
+    resetGame()
+  else
+    stopResetTimer()
+    resetPressedTimerId = Wait.time(function() updateResetTimesPressed(0) end, SECONDS_UNTIL_COUNTER_RESET)
+  end
 
--- Game constants
-STARTING_HAND_SIZE = 4
+  updateResetTimesPressed(resetTimesPressed)
+end
 
--- Notebook constants
-ROUNDS_TAB_INDEX = 3 -- Index of Rounds Tab in Notebook
-SUMMARY_TAB_INDEX = 4 -- Index of Summary Tab in Notebook
-STARTING_ROUNDS_NOTEBOOK_LINE = 'Recording Round Data Here'
+function updateResetTimesPressed(value)
+  resetTimesPressed = value
 
--- Colors
-WHITE = {1, 1, 1}
-BLACK = {0, 0, 0}
-RED = {1, 0, 0}
-BRIGHT_PURPLE = {212, 0, 255}
+  if value == 0 then
+    updateResetButtonLabel(DEFAULT_RESET_BUTTON_LABEL)
+  else
+    updateResetButtonLabel(value)
+  end
+end
 
--- Button colors
-BUTTON_BACKGROUND_COLOR = WHITE
-BUTTON_TEXT_COLOR = BLACK
-BUTTON_WARNING_BACKGROUND_COLOR = RED
-BUTTON_WARNING_TEXT_COLOR = WHITE
+function updateResetButtonLabel(label)
+  deleteButtonHere(resetButtonPosition)
+  createResetButton(label)
+end
 
--- Card color contants
-FOUR_OF_A_KIND_HIGHLIGHT_COLOR = BRIGHT_PURPLE
+function stopResetTimer()
+  if resetPressedTimerId ~= nil then
+    Wait.stop(resetPressedTimerId)
+    resetPressedTimerId = nil
+  end
+end
 
--- Button attributes
-SMALL_BUTTON_WIDTH = 900
-STANDARD_BUTTON_WIDTH = 1200
-BIG_BUTTON_WIDTH = 1500
-SMALL_BUTTON_HEIGHT = 650
-STANDARD_BUTTON_HEIGHT = 800
-BUTTON_FONT_SIZE = 300
+function resetGame()
+  local startTime = nil
 
--- Button labels
-DEFAULT_RESET_BUTTON_LABEL = 'Reset'
+  if (debugMode) then
+    startTime = os.clock()
+  end
 
--- Reset button Constants
-NUM_CLICKS_TO_RESET = 3
-SECONDS_UNTIL_COUNTER_RESET = 2
-SECONDS_UNTIL_RESET_DECK_SHUFFLE = 0.25
+  logGameData()
+  regenerateBetButtons()
+  resetPlayers()
+  resetDeck()
+  resetRoundsNotebook()
+  log('Game reset')
 
--- Discard constants
-DISCARD_X_OFFSET = 6
-DISCARD_Y_OFFSET = 5
+  if (debugMode) then
+    logElapsedTime(startTime, 'resetGame')
+  end
+end
 
--- Messages
-PLAYER_HAS_NO_COLOR_BROADCAST_MESSAGE = 'The player does not have a color'
-PLAYER_HAS_NO_COLOR_LOG_MESSAGE = 'A player with no color tried to press results button'
-BET_BUTTON_TOOLTIP_MESSAGE = 'Bet to risk extra cards'
+-- Log game data in case we forgot to trigger results buttons and check the notebook before resetting
+function logGameData()
+  local latestRoundNumber = getLatestRoundNumber()
 
--- Shortcut constants
-PLAY_CARD_X_OFFSET = 2
-PLAY_CARD_Y_OFFSET = 3
-PLAY_CARD_Z_OFFSET = 3
+  if latestRoundNumber == nil then
+    latestRoundNumber = 0
+  end
 
--- Misc
-NUM_OF_ZONES_FOR_FIELD_CARDS = 1 -- The number of zones which a card on the field should be in
-NUM_OF_ZONES_FOR_SPOILS_CARD = 1
+  broadcast('Rounds played: '..tostring(latestRoundNumber))
+  logCardPileData('Orange')
+  logCardPileData('Blue')
+  logCardPileData('Discard')
+end
 
--- Suit mappings
-DEFAULT_SUIT_NAMES = {"diamond", "heart", "spade", "club"}
+function logCardPileData(targetName)
+  local params = nil
+
+  if targetName == 'Orange' then
+    params = {
+      zoneObjects = players['Orange'].winPile.getObjects()
+    }
+  elseif targetName == 'Blue' then
+    params = {
+      zoneObjects = players['Blue'].winPile.getObjects()
+    }
+  elseif targetName == 'Discard' then
+    params = {
+      zoneObjects = discardZone.getObjects()
+    }
+  else
+    return
+  end
+
+  params.zoneName = targetName
+  params.stopBroadcast = false
+  calculatePointsPrint(params)
+end
+
+function resetDeck()
+  local allObjects = getObjects()
+  local cardAndDecks = {}
+  local numFound = 0
+  local item = nil
+
+  for i=1,#allObjects do
+    item = allObjects[i]
+    
+    if item.tag == 'Card' or item.tag == 'Deck' then
+      numFound = numFound + 1
+      cardAndDecks[numFound] = item
+    end
+  end
+
+  local combinedDeck = group(cardAndDecks)[1]
+  local targetPosition = deckZone.getPosition()
+
+  -- The extra 2 units is to prevent the deck from clipping into the table
+  targetPosition[2] = targetPosition[2] + 2
+  combinedDeck.setPosition(targetPosition)
+
+  if combinedDeck.is_face_down == false then
+    combinedDeck.flip()
+  end
+
+  Wait.time(function()
+    combinedDeck.shuffle()
+    dealDeck(STARTING_HAND_SIZE)
+  end, SECONDS_UNTIL_RESET_DECK_SHUFFLE)
+
+  combinedDeck.locked = false
+  numJokers = 0
+end
 
 --[[
-Constants.lua END
+ResetButton.lua END
 ]]
 
 end)
@@ -1324,20 +1458,38 @@ function results(obj, color, alt_click)
     return
   end
 
+  local startTime = nil
+
+  if (debugMode) then
+    startTime = os.clock()
+  end
+
   resetBetStates()
-  local zoneObjects = fieldZone.getObjects()
+  trackBettedStatus()
 
   -- Calculate, Broadcast, and Record gained points & bonuses
+  local zoneObjects = fieldZone.getObjects()
   resultAddedPoints(color,zoneObjects)
   moveCardsToWinPile(color, zoneObjects)
   regenerateBetButtons()
+
+  if (debugMode) then
+    logElapsedTime(startTime, 'results')
+  end
 end
 
 function moveCardsToWinPile(color, zoneObjects)
   local i = 0
   local winPlacement = players[color].winPile.getPosition()
+  local item = nil
 
-  for _, item in ipairs(zoneObjects) do
+  for j=1,#zoneObjects do
+    item = zoneObjects[j]
+    
+    if item == nil then
+      break
+    end
+
     -- If in only field zone and the zone surrounding the whole game (so doesn't grab deck)
     if #item.getZones() == NUM_OF_ZONES_FOR_FIELD_CARDS and item.tag == 'Card' then
       -- Put cards above win pile at varying heights
@@ -1364,7 +1516,11 @@ function resultAddedPoints(playerColor,zoneObjects)
     cardTable[name] = player.wonCards[name]
   end
   -- simulates 'adding' cards from field to wonCards (doesn't actually change wonCards)
-  for _, item in pairs(zoneObjects) do
+  local item = nil
+
+  for i=1,#zoneObjects do
+    item = zoneObjects[i]
+    
     -- If a card is in only 2 zones (FieldZone and DeckBuilder | So not the deck)
     if #item.getZones() == NUM_OF_ZONES_FOR_FIELD_CARDS and item.tag == 'Card' then
       numofCards = numofCards + 1
@@ -1378,7 +1534,7 @@ function resultAddedPoints(playerColor,zoneObjects)
         -- Record 4 of a kind
         if cardTable[name] == 4 then
           --log('Found 4 of a kind: '..name)
-          table.insert(bonusCards, name)
+          bonusCards[#bonusCards + 1] = name
           if not player.backup then
             player.backup = true
             -- Backup removed from the game
@@ -1396,11 +1552,13 @@ function resultAddedPoints(playerColor,zoneObjects)
   local pointsGained = simulatedPoints - initialPoints
   -- 'Point totals added' message
   local pointMessage = 'Adding '..pointsGained..' to '..initialPoints..' for '..simulatedPoints..' points'
+
   -- Bonuses gained
   if #bonusCards > 0 then --There is at least a bonus
     local bonusMessage = '\nFour of a Kind: '
-    for _, card in pairs(bonusCards) do
-      bonusMessage = bonusMessage..card..'s '
+
+    for i=1,#bonusCards do
+      bonusMessage = bonusMessage..bonusCards[i]..'s '
     end
 
     -- If there was no backup, then backupMessage should be empty
@@ -1421,156 +1579,6 @@ end
 
 --[[
 ResultsButton.lua END
-]]
-
-end)
-__bundle_register("src/Buttons/ResetButton", function(require, _LOADED, __bundle_register, __bundle_modules)
---[[
-ResetButton.lua START
-
-This file contains functions that the reset button triggers.
-]]
-
-resetButtonPosition = {26.5, 1.15, 0}
-resetTimesPressed = 0
-resetPressedTimerId = nil
-
-function createResetButton(label)
-  local resetButtonVars = {
-    click_function='incrementResetCounter',
-    function_owner=nil,
-    label=label,
-    position=resetButtonPosition,
-    rotation={0, 90, 0},
-    width=SMALL_BUTTON_WIDTH,
-    height=SMALL_BUTTON_HEIGHT,
-    font_size=BUTTON_FONT_SIZE,
-    color=BUTTON_WARNING_BACKGROUND_COLOR,
-    font_color=BUTTON_WARNING_TEXT_COLOR,
-    tooltip="Click "..NUM_CLICKS_TO_RESET.." times to reset the game"
-  }
-
-  button.createButton(resetButtonVars)
-end
-
-function incrementResetCounter()
-  resetTimesPressed = resetTimesPressed + 1
-
-  if resetTimesPressed == NUM_CLICKS_TO_RESET then
-    resetTimesPressed = 0
-    stopResetTimer()
-    resetGame()
-  else
-    stopResetTimer()
-    resetPressedTimerId = Wait.time(function() updateResetTimesPressed(0) end, SECONDS_UNTIL_COUNTER_RESET)
-  end
-
-  updateResetTimesPressed(resetTimesPressed)
-end
-
-function updateResetTimesPressed(value)
-  resetTimesPressed = value
-
-  if value == 0 then
-    updateResetButtonLabel(DEFAULT_RESET_BUTTON_LABEL)
-  else
-    updateResetButtonLabel(value)
-  end
-end
-
-function updateResetButtonLabel(label)
-  deleteButtonHere(resetButtonPosition)
-  createResetButton(label)
-end
-
-function stopResetTimer()
-  if resetPressedTimerId ~= nil then
-    Wait.stop(resetPressedTimerId)
-    resetPressedTimerId = nil
-  end
-end
-
-function resetGame()
-  logGameData()
-  regenerateBetButtons()
-  resetPlayers()
-  resetDeck()
-  resetRoundsNotebook()
-  log('Game reset')
-end
-
--- Log game data in case we forgot to trigger results buttons and check the notebook before resetting
-function logGameData()
-  local latestRoundNumber = getLatestRoundNumber()
-
-  if latestRoundNumber == nil then
-    latestRoundNumber = 0
-  end
-
-  broadcast('Rounds played: '..tostring(latestRoundNumber))
-  logCardPileData('Orange')
-  logCardPileData('Blue')
-  logCardPileData('Discard')
-end
-
-function logCardPileData(targetName)
-  local params = nil
-
-  if targetName == 'Orange' then
-    params = {
-      zoneObjects = players['Orange'].winPile.getObjects()
-    }
-  elseif targetName == 'Blue' then
-    params = {
-      zoneObjects = players['Blue'].winPile.getObjects()
-    }
-  elseif targetName == 'Discard' then
-    params = {
-      zoneObjects = discardZone.getObjects()
-    }
-  else
-    return
-  end
-
-  params.zoneName = targetName
-  params.stopBroadcast = false
-  calculatePointsPrint(params)
-end
-
-function resetDeck()
-  local allObjects = getObjects()
-  local cardAndDecks = {}
-  local numFound = 0
-
-  for _, item in pairs(allObjects) do
-    if item.tag == 'Card' or item.tag == 'Deck' then
-      numFound = numFound + 1
-      cardAndDecks[numFound] = item
-    end
-  end
-
-  local combinedDeck = group(cardAndDecks)[1]
-  local targetPosition = deckZone.getPosition()
-
-  -- The extra 2 units is to prevent the deck from clipping into the table
-  targetPosition[2] = targetPosition[2] + 2
-  combinedDeck.setPosition(targetPosition)
-
-  if combinedDeck.is_face_down == false then
-    combinedDeck.flip()
-  end
-
-  Wait.time(function()
-    combinedDeck.shuffle()
-    dealDeck(STARTING_HAND_SIZE)
-  end, SECONDS_UNTIL_RESET_DECK_SHUFFLE)
-
-  combinedDeck.locked = false
-  numJokers = 0
-end
-
---[[
-ResetButton.lua END
 ]]
 
 end)
@@ -1641,6 +1649,7 @@ function dealCards()
   createClearButton()
   --createSumButtons() --Added Score Counters
   createResetButton(DEFAULT_RESET_BUTTON_LABEL)
+  refreshDeckViewer()
   gameStarted = true
 end
 
@@ -1681,10 +1690,21 @@ function clearField(obj, color)
     return
   end
 
+  local startTime = nil
+
+  if (debugMode) then
+    startTime = os.clock()
+  end
+
   addRoundNote('Clear '..getNumCardsInField()..' cards from the field.')
   moveCardsToDiscard()
   regenerateBetButtons()
   resetBetStates()
+  resetBettedTokens()
+
+  if (debugMode) then
+    logElapsedTime(startTime, 'clearField')
+  end
 end
 
 function getNumCardsInField()
@@ -1702,20 +1722,27 @@ end
 
 function moveCardsToDiscard()
     local fieldZoneObjects = fieldZone.getObjects()
-    local i = 0
+    local zOffset = 0
+    local item = 0
 
-    for _, item in ipairs(fieldZoneObjects) do
+    for j=1,#fieldZoneObjects do
+      item = fieldZoneObjects[j]
+
+      if item == nil then
+        break
+      end
+
       -- If in only field zone and the zone surrounding the whole game (so doesn't grab deck)
       if #item.getZones() == NUM_OF_ZONES_FOR_FIELD_CARDS and item.tag == 'Card' then
         -- Jitter is for 'shaking' the cards slightly to reduce a chance of exactly overlapping cards
-        local newPosition = getRandomDiscardPosition(i)
+        local newPosition = getRandomDiscardPosition(zOffset)
         item.setPositionSmooth(newPosition, false, true)
-        i = i + .8
+        zOffset = zOffset + .8
       end
     end
 end
 
-function getRandomDiscardPosition(numIterations)
+function getRandomDiscardPosition(zOffSet)
   local discardZonePosition = discardZone.getPosition()
   local randomXOffset = math.random(DISCARD_X_OFFSET * 2 + 1) - DISCARD_X_OFFSET;
   local randomYOffset = math.random(DISCARD_Y_OFFSET * 2 + 1) - DISCARD_Y_OFFSET;
@@ -1723,7 +1750,7 @@ function getRandomDiscardPosition(numIterations)
   local yJitter = math.random() * 2 - 1
 
   local newX = discardZonePosition[1] + randomXOffset + xJitter
-  local newZ = discardZonePosition[2] + 5 + numIterations
+  local newZ = discardZonePosition[2] + 5 + zOffSet
   local newY = discardZonePosition[3] + randomYOffset + yJitter
   return {newX, newZ, newY}
 end
@@ -1799,7 +1826,10 @@ end
 function regenerateBetButtons()
   for _, color in pairs(PLAYER_COLOR_STRINGS) do
     if doesBetButtonExist(color) == false then
-      log('Creating '..color..' bet button again')
+      if debugMode then
+        log('Creating '..color..' bet button again')
+      end
+
       createBetButton(color)
     end
   end
@@ -1807,10 +1837,17 @@ end
 
 function doesBetButtonExist(color)
   buttonPosition = button.positionToWorld(players[color].betPos)
+  local buttons = button.getButtons()
+  local btn = nil
 
-  for i, b in pairs(button.getButtons()) do
-    if button.positionToWorld(b.position) == buttonPosition then
-      log(color..' bet button found')
+  for i=1,#buttons do
+    btn = buttons[i]
+
+    if button.positionToWorld(btn.position) == buttonPosition then
+      if debugMode then
+        log(color..' bet button found')
+      end
+
       return true
     end
   end
@@ -1878,6 +1915,103 @@ end
 BetButton.lua END
 ]]
 
+end)
+__bundle_register("src/Utility/BettedTokenManager", function(require, _LOADED, __bundle_register, __bundle_modules)
+--[[
+BettedTokenManager.lua START
+
+This file contains functions to modify betted tokens
+]]
+
+-- Get an object at a specified position with a specific tag
+-- pos must be a world-relative position
+-- Returns the first such object found
+function getObjectAtPosition(pos, tag)
+  -- Use a sphere cast to find the object 
+  local hits = Physics.cast({
+      origin = pos,
+      direction = {0, 1, 0},
+      type = 2, -- Sphere cast
+      size = {OBJ_SEARCH_RADIUS, OBJ_SEARCH_RADIUS, OBJ_SEARCH_RADIUS},
+      max_distance = 0,
+      -- debug = true -- If true, see where the sphere cast is located 
+  })
+
+  local obj = nil
+
+  for i=1, #hits do
+    obj = hits[i].hit_object
+
+    if obj.tag == tag then
+      return obj
+    end
+  end
+
+  return nil
+end
+
+function hasCardInBetZone(color)
+  local betPos = players[color].betPos
+  
+  -- Invert the x position to point to the correct spot
+  local convertedBetPos = {betPos[1] * -1, betPos[2], betPos[3]}
+  local betCard = getObjectAtPosition(convertedBetPos, 'Card')
+
+  if betCard ~= nil then
+    return true
+  else
+    return false
+  end
+end
+
+-- Set the given player's token to BETTED
+function activateBettedToken(color)
+  local tokenGUID = BETTED_TOKEN_GUID[color]
+  local bettedToken = getObjectFromGUID(tokenGUID)
+  bettedToken.setColorTint(RED2)
+  bettedToken.setName(BETTED_TOOLTIP)
+end
+
+-- Set the given player's token to NOT BETTED
+function deactivateBettedToken(color)
+  if color == nil then
+    return
+  end
+
+  local tokenGUID = BETTED_TOKEN_GUID[color]
+  local bettedToken = getObjectFromGUID(tokenGUID)
+  bettedToken.setColorTint(WHITE)
+  bettedToken.setName(NO_BET_TOOLTIP)
+end
+
+-- Change bet token's color and name based on whether the player betted last round
+function updateBettedToken(color)
+  if players[color].betted then
+    activateBettedToken(color)
+  else
+    deactivateBettedToken(color)
+  end
+end
+
+-- Track whether each player's betted or not
+-- This should be used before bet cards are moved to the win piel
+function trackBettedStatus()
+  for _, color in pairs(PLAYER_COLOR_STRINGS) do
+    players[color].betted = hasCardInBetZone(color)
+    updateBettedToken(color)
+  end
+end
+
+-- Deactivate betted tokens for both players
+function resetBettedTokens()
+  for _, color in pairs(PLAYER_COLOR_STRINGS) do
+    deactivateBettedToken(color)
+  end
+end
+
+--[[
+BettedTokenManager.lua END
+]]
 end)
 __bundle_register("src/Utility/Messaging", function(require, _LOADED, __bundle_register, __bundle_modules)
 --[[
@@ -1951,7 +2085,7 @@ function copyWithException(list, excludeValue)
 
     for i = 1, #list do
         if list[i] ~= excludeValue then
-            table.insert(newList, list[i])
+            newList[#newList + 1] = list[i]
         end
     end
 
@@ -1960,6 +2094,151 @@ end
 
 --[[
 ListManager.lua END
+]]
+
+end)
+__bundle_register("src/Utility/Timer", function(require, _LOADED, __bundle_register, __bundle_modules)
+--[[
+Timer.lua START
+
+This file contains functions for timing other functions.
+]]
+
+-- Takes in a time value that represents when the function starts
+function logElapsedTime(startTime, funcName)
+  if startTime ~= nil and funcName ~= nil then
+    local elapsedTime = round(os.clock() - startTime)
+    log("Elapsed time for [" .. funcName .."]: " .. elapsedTime .. "s")
+  end
+end
+
+-- Not for general use, only for a specific timing case
+function round(num)
+  return math.floor(num * 10^6 + 0.5) * 10^-6
+end
+
+--[[
+Timer.lua END
+]]
+
+end)
+__bundle_register("src/Constants", function(require, _LOADED, __bundle_register, __bundle_modules)
+--[[
+Constants.lua START
+
+This file contains global constants.
+]]
+
+BUTTON_GUID = '9fdc25'
+FIELD_ZONE_GUID = '7a6e1a'
+DECK_ZONE_GUID = '7f0e92'
+WIN_PILE_GUID = {}
+WIN_PILE_GUID['Blue'] = '4ca699'
+WIN_PILE_GUID['Orange'] = 'c641a0'
+HAND_GUID = {}
+HAND_GUID['Blue'] = 'fd5538'
+HAND_GUID['Orange'] = '48113c'
+BETTED_TOKEN_GUID = {}
+BETTED_TOKEN_GUID['Blue'] = 'b6a3fb'
+BETTED_TOKEN_GUID['Orange'] = '4b36ba'
+DISCARD_GUID = '7f3593'
+DECK_BUILDER_GUID = 'b8db70'
+
+SCORE_GUID = {}
+SCORE_GUID['Blue'] = 'f1b2b4'
+SCORE_GUID['Orange'] = '119183'
+SCORE_GUID['Discard'] = '5cf4ba'
+
+-- Value of face cards
+FACE_CARD_VALUE = 10
+
+-- Global table of card stats
+stats = {}
+stats['Ace'] = {1,1}
+stats['2'] = {2,2}
+stats['3'] = {20,3}
+stats['4'] = {4,4}
+stats['5'] = {5,5}
+stats['6'] = {6,6}
+stats['7'] = {7,7}
+stats['8'] = {8,8}
+stats['9'] = {9,9}
+stats['10'] = {10,10}
+stats['Jack'] = {FACE_CARD_VALUE,11}
+stats['Queen'] = {FACE_CARD_VALUE,12}
+stats['King'] = {FACE_CARD_VALUE,13}
+stats['Joker'] = {0,0}
+
+-- Player variables
+PLAYER_COLOR_STRINGS = {'Orange', 'Blue'}
+
+-- Game constants
+STARTING_HAND_SIZE = 4
+
+-- Notebook constants
+ROUNDS_TAB_INDEX = 3 -- Index of Rounds Tab in Notebook
+SUMMARY_TAB_INDEX = 4 -- Index of Summary Tab in Notebook
+STARTING_ROUNDS_NOTEBOOK_LINE = 'Recording Round Data Here'
+
+-- Colors
+WHITE = {1, 1, 1}
+BLACK = {0, 0, 0}
+RED = {1, 0, 0}
+RED2 = {0.949, 0, 0.239}
+BRIGHT_PURPLE = {0.831, 0, 1}
+YELLOW = {1, 1, 0}
+
+-- Button colors
+BUTTON_BACKGROUND_COLOR = WHITE
+BUTTON_TEXT_COLOR = BLACK
+BUTTON_WARNING_BACKGROUND_COLOR = RED
+BUTTON_WARNING_TEXT_COLOR = WHITE
+
+-- Card color contants
+FOUR_OF_A_KIND_HIGHLIGHT_COLOR = BRIGHT_PURPLE
+
+-- Button attributes
+SMALL_BUTTON_WIDTH = 900
+STANDARD_BUTTON_WIDTH = 1200
+BIG_BUTTON_WIDTH = 1500
+SMALL_BUTTON_HEIGHT = 650
+STANDARD_BUTTON_HEIGHT = 800
+BUTTON_FONT_SIZE = 300
+
+-- Button labels
+DEFAULT_RESET_BUTTON_LABEL = 'Reset'
+
+-- Reset button Constants
+NUM_CLICKS_TO_RESET = 3
+SECONDS_UNTIL_COUNTER_RESET = 2
+SECONDS_UNTIL_RESET_DECK_SHUFFLE = 0.25
+
+-- Discard constants
+DISCARD_X_OFFSET = 6
+DISCARD_Y_OFFSET = 5
+
+-- Messages
+PLAYER_HAS_NO_COLOR_BROADCAST_MESSAGE = 'The player does not have a color'
+PLAYER_HAS_NO_COLOR_LOG_MESSAGE = 'A player with no color tried to press results button'
+BET_BUTTON_TOOLTIP_MESSAGE = 'Bet to risk extra cards'
+BETTED_TOOLTIP = 'You betted last round'
+NO_BET_TOOLTIP = 'You did not bet last round'
+
+-- Shortcut constants
+PLAY_CARD_X_OFFSET = 2
+PLAY_CARD_Y_OFFSET = 3
+PLAY_CARD_Z_OFFSET = 3
+
+-- Misc
+NUM_OF_ZONES_FOR_FIELD_CARDS = 1 -- The number of zones which a card on the field should be in
+NUM_OF_ZONES_FOR_SPOILS_CARD = 1
+OBJ_SEARCH_RADIUS = 3 -- Determines how far obj-search-by-position looks
+
+-- Suit mappings
+DEFAULT_SUIT_NAMES = {"diamond", "heart", "spade", "club"}
+
+--[[
+Constants.lua END
 ]]
 
 end)

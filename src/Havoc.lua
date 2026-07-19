@@ -15,6 +15,7 @@ The main file for running the Havoc (Tabletop Edition) game.
 
 -- Order matters for the require imports. If file A requires a function in file B, B should be higher than A.
 require("src/Constants")
+require("src/Utility/Timer")
 require("src/Utility/ListManager")
 require("src/Utility/StringConverter")
 require("src/Utility/Messaging")
@@ -38,6 +39,8 @@ require("src/DeckViewer")
 -- Tools for debugging
 require("src/Buttons/TestButton")
 require("src/Utility/Debug")
+
+debugMode = false
 
 players = {}
 
@@ -106,6 +109,12 @@ numJokers = nil
 
 -- Runs once when the game loads
 function onLoad()
+  local startTime = nil
+
+  if (debugMode) then
+    startTime = os.clock()
+  end
+
   log('onLoad!')
 
   --Get objects from GUIDs (All these variables are global)
@@ -137,6 +146,10 @@ function onLoad()
   refreshDeckViewer()
   -- createTestButton()
   setupShortcuts()
+
+  if (debugMode) then
+    logElapsedTime(startTime, 'onLoad')
+  end
 end
 
 --Given a table of cards, returns sum of points
@@ -150,7 +163,7 @@ function calculatePoints(cardTable, bonusIsSeparate)
     sum = sum + cards*stats[name][1]
     -- If there are 4 of that type of card
     if cards == 4 then
-      table.insert(bonusCards,name)
+      bonusCards[#bonusCards + 1] = name
     end
   end
 
@@ -206,8 +219,11 @@ function calculatePointsPrint(params)
   local stopBroadcast = params.stopBroadcast
   -- Count the cards in the zone
   local cardTable = {}
+  local item = nil
 
-  for _, item in pairs(zoneObjects) do
+  for i=1,#zoneObjects do
+    item = zoneObjects[i]
+
     -- If a card
     if item.tag == 'Card' then
       local name = item.getName()
@@ -221,6 +237,7 @@ function calculatePointsPrint(params)
       end
     end
   end
+
   -- Calculate total points, record bonus cards and num cards in zone
   local sum, bonusCards = calculatePoints(cardTable, true)
   local numCards = countCards(cardTable)
@@ -241,7 +258,10 @@ function calculatePointsPrint(params)
   -- Bonuses gained
   if #bonusCards > 0 then --There is at least a bonus
     local bonusMessage = '\nFour of a Kind: ' -- "Hello" "World" "HelloWorld"
-    for _, card in pairs(bonusCards) do
+    local card = nil
+
+    for i=1,#bonusCards do
+      card = bonusCards[i]
       bonusMessage = bonusMessage..card..'s '
     end
 

@@ -41,7 +41,10 @@ end
 function regenerateBetButtons()
   for _, color in pairs(PLAYER_COLOR_STRINGS) do
     if doesBetButtonExist(color) == false then
-      log('Creating '..color..' bet button again')
+      if debugMode then
+        log('Creating '..color..' bet button again')
+      end
+
       createBetButton(color)
     end
   end
@@ -49,10 +52,17 @@ end
 
 function doesBetButtonExist(color)
   buttonPosition = button.positionToWorld(players[color].betPos)
+  local buttons = button.getButtons()
+  local btn = nil
 
-  for i, b in pairs(button.getButtons()) do
-    if button.positionToWorld(b.position) == buttonPosition then
-      log(color..' bet button found')
+  for i=1,#buttons do
+    btn = buttons[i]
+
+    if button.positionToWorld(btn.position) == buttonPosition then
+      if debugMode then
+        log(color..' bet button found')
+      end
+
       return true
     end
   end
