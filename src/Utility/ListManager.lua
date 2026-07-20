@@ -21,7 +21,7 @@ function copyWithException(list, excludeValue)
 
     for i = 1, #list do
         if list[i] ~= excludeValue then
-            table.insert(newList, list[i])
+            newList[#newList + 1] = list[i]
         end
     end
 

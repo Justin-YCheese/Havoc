@@ -18,9 +18,10 @@ function getObjectAtPosition(pos, tag)
       -- debug = true -- If true, see where the sphere cast is located 
   })
 
-  for _, hit in ipairs(hits) do
-    local obj = hit.hit_object
-    print('hit obj tag' .. obj.tag)
+  local obj = nil
+
+  for i=1, #hits do
+    obj = hits[i].hit_object
 
     if obj.tag == tag then
       return obj
@@ -54,6 +55,10 @@ end
 
 -- Set the given player's token to NOT BETTED
 function deactivateBettedToken(color)
+  if color == nil then
+    return
+  end
+
   local tokenGUID = BETTED_TOKEN_GUID[color]
   local bettedToken = getObjectFromGUID(tokenGUID)
   bettedToken.setColorTint(WHITE)

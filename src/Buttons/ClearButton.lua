@@ -29,11 +29,21 @@ function clearField(obj, color)
     return
   end
 
+  local startTime = nil
+
+  if (debugMode) then
+    startTime = os.clock()
+  end
+
   addRoundNote('Clear '..getNumCardsInField()..' cards from the field.')
   moveCardsToDiscard()
   regenerateBetButtons()
   resetBetStates()
   resetBettedTokens()
+
+  if (debugMode) then
+    logElapsedTime(startTime, 'clearField')
+  end
 end
 
 function getNumCardsInField()
@@ -51,20 +61,27 @@ end
 
 function moveCardsToDiscard()
     local fieldZoneObjects = fieldZone.getObjects()
-    local i = 0
+    local zOffset = 0
+    local item = 0
 
-    for _, item in ipairs(fieldZoneObjects) do
+    for j=1,#fieldZoneObjects do
+      item = fieldZoneObjects[j]
+
+      if item == nil then
+        break
+      end
+
       -- If in only field zone and the zone surrounding the whole game (so doesn't grab deck)
       if #item.getZones() == NUM_OF_ZONES_FOR_FIELD_CARDS and item.tag == 'Card' then
         -- Jitter is for 'shaking' the cards slightly to reduce a chance of exactly overlapping cards
-        local newPosition = getRandomDiscardPosition(i)
+        local newPosition = getRandomDiscardPosition(zOffset)
         item.setPositionSmooth(newPosition, false, true)
-        i = i + .8
+        zOffset = zOffset + .8
       end
     end
 end
 
-function getRandomDiscardPosition(numIterations)
+function getRandomDiscardPosition(zOffSet)
   local discardZonePosition = discardZone.getPosition()
   local randomXOffset = math.random(DISCARD_X_OFFSET * 2 + 1) - DISCARD_X_OFFSET;
   local randomYOffset = math.random(DISCARD_Y_OFFSET * 2 + 1) - DISCARD_Y_OFFSET;
@@ -72,7 +89,7 @@ function getRandomDiscardPosition(numIterations)
   local yJitter = math.random() * 2 - 1
 
   local newX = discardZonePosition[1] + randomXOffset + xJitter
-  local newZ = discardZonePosition[2] + 5 + numIterations
+  local newZ = discardZonePosition[2] + 5 + zOffSet
   local newY = discardZonePosition[3] + randomYOffset + yJitter
   return {newX, newZ, newY}
 end

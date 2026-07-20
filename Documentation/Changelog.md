@@ -4,6 +4,14 @@ This document tracks all notables changes of Havoc Tabletop Simulator Edition.
 
 ---
 
+## v0.8.1 Improve Speed
+
+### Changed
+
+- Slight performance enhancement for certain actions (e.g. initial setup, results button)
+
+---
+
 ## v0.8.0 Add Custom Deck
 
 ### Added

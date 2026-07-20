@@ -64,12 +64,22 @@ function stopResetTimer()
 end
 
 function resetGame()
+  local startTime = nil
+
+  if (debugMode) then
+    startTime = os.clock()
+  end
+
   logGameData()
   regenerateBetButtons()
   resetPlayers()
   resetDeck()
   resetRoundsNotebook()
   log('Game reset')
+
+  if (debugMode) then
+    logElapsedTime(startTime, 'resetGame')
+  end
 end
 
 -- Log game data in case we forgot to trigger results buttons and check the notebook before resetting
@@ -114,8 +124,11 @@ function resetDeck()
   local allObjects = getObjects()
   local cardAndDecks = {}
   local numFound = 0
+  local item = nil
 
-  for _, item in pairs(allObjects) do
+  for i=1,#allObjects do
+    item = allObjects[i]
+    
     if item.tag == 'Card' or item.tag == 'Deck' then
       numFound = numFound + 1
       cardAndDecks[numFound] = item

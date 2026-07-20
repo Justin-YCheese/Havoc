@@ -30,6 +30,12 @@ function results(obj, color, alt_click)
     return
   end
 
+  local startTime = nil
+
+  if (debugMode) then
+    startTime = os.clock()
+  end
+
   resetBetStates()
   trackBettedStatus()
 
@@ -38,13 +44,24 @@ function results(obj, color, alt_click)
   resultAddedPoints(color,zoneObjects)
   moveCardsToWinPile(color, zoneObjects)
   regenerateBetButtons()
+
+  if (debugMode) then
+    logElapsedTime(startTime, 'results')
+  end
 end
 
 function moveCardsToWinPile(color, zoneObjects)
   local i = 0
   local winPlacement = players[color].winPile.getPosition()
+  local item = nil
 
-  for _, item in ipairs(zoneObjects) do
+  for j=1,#zoneObjects do
+    item = zoneObjects[j]
+    
+    if item == nil then
+      break
+    end
+
     -- If in only field zone and the zone surrounding the whole game (so doesn't grab deck)
     if #item.getZones() == NUM_OF_ZONES_FOR_FIELD_CARDS and item.tag == 'Card' then
       -- Put cards above win pile at varying heights
@@ -71,7 +88,11 @@ function resultAddedPoints(playerColor,zoneObjects)
     cardTable[name] = player.wonCards[name]
   end
   -- simulates 'adding' cards from field to wonCards (doesn't actually change wonCards)
-  for _, item in pairs(zoneObjects) do
+  local item = nil
+
+  for i=1,#zoneObjects do
+    item = zoneObjects[i]
+    
     -- If a card is in only 2 zones (FieldZone and DeckBuilder | So not the deck)
     if #item.getZones() == NUM_OF_ZONES_FOR_FIELD_CARDS and item.tag == 'Card' then
       numofCards = numofCards + 1
@@ -85,7 +106,7 @@ function resultAddedPoints(playerColor,zoneObjects)
         -- Record 4 of a kind
         if cardTable[name] == 4 then
           --log('Found 4 of a kind: '..name)
-          table.insert(bonusCards, name)
+          bonusCards[#bonusCards + 1] = name
           if not player.backup then
             player.backup = true
             -- Backup removed from the game
@@ -103,11 +124,13 @@ function resultAddedPoints(playerColor,zoneObjects)
   local pointsGained = simulatedPoints - initialPoints
   -- 'Point totals added' message
   local pointMessage = 'Adding '..pointsGained..' to '..initialPoints..' for '..simulatedPoints..' points'
+
   -- Bonuses gained
   if #bonusCards > 0 then --There is at least a bonus
     local bonusMessage = '\nFour of a Kind: '
-    for _, card in pairs(bonusCards) do
-      bonusMessage = bonusMessage..card..'s '
+
+    for i=1,#bonusCards do
+      bonusMessage = bonusMessage..bonusCards[i]..'s '
     end
 
     -- If there was no backup, then backupMessage should be empty

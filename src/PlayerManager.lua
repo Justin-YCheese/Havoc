@@ -15,7 +15,6 @@ function resetPlayers()
   resetBettedTokens()
 end
 
--- Reset player bet states
 function resetBetStates()
   for _, color in pairs(PLAYER_COLOR_STRINGS) do
     players[color].betState = false

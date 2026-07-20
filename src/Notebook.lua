@@ -34,7 +34,9 @@ function addRoundNote(note)
     body = removeNewlinesFromEnd(roundsTabBody)..'\n'..lineNumber..': '..note
   })
 
-  log('Adding \"'..note..'\" to Rounds on line '..lineNumber)
+  if debugMode then
+    log('Adding \"'..note..'\" to Rounds on line '..lineNumber)
+  end
 end
 
 function getLatestRoundNumber()

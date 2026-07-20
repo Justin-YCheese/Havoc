@@ -24,7 +24,9 @@ function recordCard(player, name)
     end
   end
 
-  log('Count '..player.wonCards[name]..' '..name..'(s) in zone')
+  if debugMode then
+      log('Count '..player.wonCards[name]..' '..name..'(s) in zone')
+  end
 end
 
 -- Forget card in player's wonCard table, Pass in player and name of card
@@ -34,7 +36,10 @@ function forgetCard(player, name)
   if player.wonCards[name] < 0 then
     log('Error: wonCards reads a negative value for '..name)
   end
-  log('Count '..player.wonCards[name]..' '..name..'(s) in zone')
+
+  if debugMode then
+      log('Count '..player.wonCards[name]..' '..name..'(s) in zone')
+  end
 end
 
 -- Get a card from either the deck or card in the deck zone (a single card deck turns into a card)

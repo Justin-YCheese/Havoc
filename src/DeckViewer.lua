@@ -46,8 +46,15 @@ function getDeckViewerImageIds()
   -- Find deck viewer
   local xmlTable = UI.getXmlTable()
   local deckViewerChildren = {}
+  local element = nil
 
-  for _, element in ipairs(xmlTable) do
+  for i=1,#xmlTable do
+    element = xmlTable[i]
+
+    if element == nil then
+      break
+    end
+
     if element.tag == "TableLayout" and element.attributes.id == "deckViewer" then
       deckViewerChildren = element.children or {}
       break
@@ -61,10 +68,24 @@ function getDeckViewerImageIds()
 
   -- Get cells within the table
   local deckViewerCells = {}
+  local deckViewerChild = nil
+  local rowChild = nil
 
-  for _, deckViewerChild in ipairs(deckViewerChildren) do
+  for i=1,#deckViewerChildren do
+    deckViewerChild = deckViewerChildren[i]
+
+    if deckViewerChild == nil then
+      break
+    end
+
     if deckViewerChild.tag == "Row" then
-      for _, rowChild in ipairs(deckViewerChild.children) do
+      for j=1,#deckViewerChild.children do
+        rowChild = deckViewerChild.children[j]
+
+        if rowChild == nil then
+          break
+        end
+
         if rowChild.tag == "Cell" then
           deckViewerCells[#deckViewerCells + 1] = rowChild
         end
@@ -80,12 +101,26 @@ function getDeckViewerImageIds()
   -- Get image ids within the cells
   local imageIds = {}
   local imageIndex = 0
+  local cell = nil
+  local cellChild = nil
 
-  for _, cell in ipairs(deckViewerCells) do
+  for i=1,#deckViewerCells do
+    cell = deckViewerCells[i]
+
+    if cell == nil then
+      break
+    end
+
     local cellChildren = cell.children
 
     if #cellChildren > 0 then
-      for _, cellChild in ipairs(cellChildren) do
+      for j=1,#cellChildren do
+        cellChild = cellChildren[j]
+
+        if cellChild == nil then
+          break
+        end
+
         if cellChild.tag == "Image" then
           imageIndex = imageIndex + 1
           imageIds[imageIndex] = cellChild.attributes.id
@@ -100,8 +135,15 @@ end
 -- Darken all cards in the deck viewer
 function darkenCardsInDeckViewer()
   local imageIds = getDeckViewerImageIds()
+  local id = nil
 
-  for _, id in ipairs(imageIds) do
+  for i=1,#imageIds do
+    id = imageIds[i]
+
+    if id == nil then
+      break
+    end
+
     UI.setClass(id, "hidden")
   end
 end
@@ -110,11 +152,11 @@ function combineLists(list1, list2)
   local result = {}
 
   for i = 1, #list1 do
-      table.insert(result, list1[i])
+    result[#result + 1] = list1[i]
   end
 
   for i = 1, #list2 do
-      table.insert(result, list2[i])
+    result[#result + 1] = list2[i]
   end
 
   return result
@@ -149,11 +191,11 @@ function getCardNames(zone)
       local deckCardNames = getCardNamesInDeck(item)
 
       for _, cardName in ipairs(deckCardNames) do
-        table.insert(cardNames, cardName)
+        cardNames[#cardNames + 1] = cardName
       end
     elseif item.tag == "Card" then
       local fullCardName = getFullCardName(item)
-      table.insert(cardNames, fullCardName)
+      cardNames[#cardNames + 1] = fullCardName
     end
   end
 
@@ -191,7 +233,15 @@ function refreshDeckViewer()
   numJokers = 0
 
   -- Make all cards that are actually in the deck visible
-  for _, cardName in ipairs(allCardNames) do
+  local cardName = nil
+
+  for i=1,#allCardNames do
+    cardName = allCardNames[i]
+
+    if cardName == nil then
+      break
+    end
+
     if cardName ~= "joker_of_joker" then
       UI.setClass(cardName, "")
     else
@@ -211,12 +261,12 @@ function updateCardDisplay(object, makeVisible)
   local cardNames = {}
 
   if object.tag == "Card" then
-    table.insert(cardNames, getFullCardName(object))
+    cardNames[#cardNames + 1] = getFullCardName(object)
   elseif object.tag == "Deck" then
     local deckCardNames = getCardNamesInDeck(object)
 
     for _, cardName in ipairs(deckCardNames) do
-      table.insert(cardNames, cardName)
+      cardNames[#cardNames + 1] = cardName
     end
   end
 
